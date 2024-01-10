@@ -1,0 +1,351 @@
+* {
+    box-sizing: border-box;
+    font-family: Inter;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(26, 55, 80);
+}
+
+.example-page {
+    position: absolute;
+    min-width: 1440px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    background-color: white;
+}
+
+@media (max-width: 1439px) {
+    .example-page {
+        min-width: 100%;
+    }
+
+    .links {
+        width: 75% !important;
+        transform: translateX(-35%);
+    }
+}
+
+.frame1 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%) scale(0.9);
+    background-color: #00000035;
+}
+
+.group1 {
+    position: relative;
+    top: 2em;
+    left: 2em;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.group1 > img {
+    float: left;
+    height: 5rem;
+    margin-left: -1.5rem;
+    overflow: clip;
+}
+
+.group1 > p {
+    display: inline-block;
+    min-height: 100%;
+}
+
+.group1 > p::before {
+    content: "PRISM";
+}
+
+.container {
+    display: inline-block;
+    position: relative;
+    height: 40%;
+    top: 20%;
+    left: 20%;
+}
+
+.welcome-to-prism::before {
+    font-weight: bold;
+    font-size: 64px;
+    content: "Welcome to PRISM";
+}
+
+.getting-started::before {
+    font-size: 48px;
+    content: "Let's Get Started";
+}
+
+.settings-btn {
+    position: absolute;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    background-color: black;
+    padding: 15px;
+    top: 14rem;
+    left: 50px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.settings-btn:hover {
+    transition-duration: 0.4s;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: whitesmoke;
+    color: black;
+}
+
+.settings-btn::before {
+    content: "settings";
+}
+
+/* styling second.html here */
+
+body.is-transitioned {
+    opacity: 0;
+    animation: fade-in 4s forwards;
+    overflow: clip;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        overflow: clip;
+    }
+
+    100% {
+        opacity: 1;
+        overflow: clip;
+    }
+}
+
+header {
+    height: 100px;
+    padding: 30px;
+    background: white;
+    color: black;
+    border-bottom: solid black 2px;
+    font-size: 30px;
+}
+
+.group2 {
+    position: absolute;
+    color: black;
+    font-weight: bold;
+    top: calc(12% * 50%);
+    transform: translateY(-25%);
+}
+
+.group2 > img {
+    float: left;
+    height: 5rem;
+    margin-left: -1.5rem;
+    overflow: clip;
+}
+
+.group2 > p {
+    display: inline-block;
+    min-height: 100%;
+}
+
+.group2 > p::before {
+    content: "PRISM";
+}
+
+a.icon {
+    display: none;
+}
+
+.links {
+    display: inline-flex;
+    height: 100%;
+    width: 50%;
+    position: relative;
+    left: 50%;
+    justify-content: space-between;
+    font-size: 22px;
+}
+
+.links > a {
+    text-decoration: none;
+    color: black;
+}
+
+.links > a:hover {
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.24), 2px 2px 8px rgba(0,0,0,0.19);
+    color: gray;
+}
+
+.links > a::before {
+    content: "quick settings";
+}
+
+.links#myLinks > a {
+    display: none;
+}
+
+.container1 {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-56%) scale(0.9) scaleY(0.9);
+    background-color: #00000035;
+    padding: 0;
+    margin: 0;
+}
+
+.frame2 {
+    float: left;
+    width: 26%;
+    height: 100%;
+    position: relative;
+    border-radius: 30px 0 0 30px;
+    background-color: #E2E2E2;
+    overflow-y: auto;
+}
+
+.frame2 > p {
+    margin-left: 3rem;
+}
+
+.frame2 > p:not(:last-child) {
+    margin-bottom: 3rem;
+}
+
+.frame2 > p::before {
+    content: "setting";
+}
+
+.frame3 {
+    display: inline-block;
+    width: 74%;
+    height: 100%;
+    position: relative;
+    border-radius: 0 30px 30px 0;
+    overflow-y: auto;
+}
+
+.frame3 > p {
+    margin-left: 5rem;
+    font-size: 20px;
+}
+
+.frame3 > p:not(:last-child) {
+    margin-bottom: 20rem;
+}
+
+.frame3 > p::before {
+    content: "change stuff here";
+}
+
+/* for mobile & tablet here */
+
+@media (max-width: 767px) {
+    .group1 {
+        left: 50%;
+        transform: translateX(-3em) translateY(2em);
+    }
+
+    .group1 > img {
+        transform: scale(1.5) translateX(-0.5em);
+    }
+
+    .container {
+        text-align: center;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    .welcome-to-prism::before {
+        font-size: 34px;
+    }
+
+    .getting-started::before {
+        font-size: 24px;
+    }
+
+    .settings-btn {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+    }
+
+    .links {
+        display: none;
+    }
+
+    .links#myLinks {
+        display: none;
+        position: absolute;
+        height: fit-content;
+        top: 100px;
+        left: 90%;
+        background-color: white;
+        z-index: 1;
+    }
+
+    .links#myLinks > a {
+        color: black;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        display: block;
+        border: solid black 1px;
+    }
+
+    .links#myLinks > a:hover {
+        background-color: gray;
+    }
+
+    a.icon {
+        display: block;
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 22px;
+    }
+
+    a.icon:hover {
+        background-color: gray;
+    }
+
+    .frame2 {
+        display: none;
+    }
+
+    .frame3 {
+        width: 100%;
+        border-radius: 30px;
+    }
+}
+
+
+/* if height is too low */
+
+@media (max-height: 526px) {
+    .frame1 {
+        overflow-x: clip;
+        overflow-y: auto;
+    }
+}
