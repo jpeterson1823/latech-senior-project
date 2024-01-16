@@ -190,10 +190,6 @@ a.icon {
     color: gray;
 }
 
-.links > a::before {
-    content: "quick settings";
-}
-
 .links#myLinks > a {
     display: none;
 }
