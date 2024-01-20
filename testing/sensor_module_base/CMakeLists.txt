@@ -4,7 +4,7 @@ if (NOT DEFINED ENV{PICO_SDK_PATH})
     if(WIN32)
         set(ENV{PICO_SDK_PATH} "/Users/peter/Documents/pico-dev/pico-sdk")
     elseif(UNIX)
-        set(ENV{PICO_SDK_PATH} "/home/invisa/Documents/code_stuffs/pi_pico/pico-files/pico-sdk")
+        set(ENV{PICO_SDK_PATH} "/home/invisa/Documents/code_stuffs/pico_stuff/pico-sdk")
     endif()
 endif()
 
@@ -35,7 +35,7 @@ add_executable(main
     src/parallel_eeprom.cpp
     src/serial_interface.cpp
 
-    src/wireless/wifi.cpp
+    src/networking/wifi.cpp
 )
 
 # custom include
@@ -46,7 +46,6 @@ target_include_directories(main PRIVATE
 target_link_libraries( main
     pico_stdlib
     pico_cyw43_arch_lwip_threadsafe_background
-    pico_mbedtls
     hardware_gpio
     hardware_pwm
 )

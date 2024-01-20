@@ -10,6 +10,8 @@ extern "C" {
 #define SHIFT_REG_DELAY 10
 #define EEPROM_OE_MASK 0x4000
 #define EEPROM_WE_MASK 0x8000
+#define EEPROM_IO_IN false
+#define EEPROM_IO_OUT true
 
 class EEPROM {
 private:
@@ -19,18 +21,22 @@ private:
     const uint8_t srclk = 15;
     const uint8_t we = 4;
     const uint8_t oe = 5;
+    const uint8_t ser   = 28;
     bool ioDirection = false;
 
-//private:
-public:
-    const uint8_t ser   = 28;
+private:
+    void pulseSCLK();
     void shiftLatch();
     void shiftOut(uint16_t data);
-    void pulseSCLK();
+
+    void setBusOutput();
+    void setBusInput();
+
 public:
     EEPROM();
     void writeByte(uint8_t data, uint16_t address);
     void writeString(const char* str, uint16_t address);
     uint8_t readByte(uint16_t address);
-    void readString(char* buf, size_t buflen, uint16_t address);
+    void readString(uint16_t address, char* buf, size_t buflen);
+    uint16_t readUntil(uint16_t addrress, char delimiter, char* buf, size_t buflen);
 };

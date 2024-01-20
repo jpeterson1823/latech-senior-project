@@ -6,6 +6,10 @@ EEPROM::EEPROM() {
     // Init IO pins
     gpio_init_mask(IO_MASK);
 
+    // pull down all IO pins (GPIO 9-15)
+    for (uint8_t i = 9; i < 16; i++)
+        gpio_pull_down(i);
+
     // init and set dir of shift register pins
     gpio_init(rclk);
     gpio_init(srclk);
@@ -19,8 +23,15 @@ EEPROM::EEPROM() {
     gpio_set_dir(srclk, GPIO_OUT);
     gpio_set_dir(ser,   GPIO_OUT);
 
+    gpio_pull_down(rclk);
+    gpio_pull_down(srclk);
+    gpio_pull_down(ser);
+
     gpio_set_dir(we, GPIO_OUT);
     gpio_set_dir(oe, GPIO_OUT);
+    
+    gpio_pull_down(we);
+    gpio_pull_down(oe);
 
     gpio_put(rclk, false);
     gpio_put(ser, false);
@@ -31,6 +42,22 @@ EEPROM::EEPROM() {
 
     ioDirection = true;
     gpio_put_masked(IO_MASK, 0x0000);
+}
+
+void EEPROM::setBusOutput() {
+    if (ioDirection != EEPROM_IO_OUT) {
+        std::cout << "Setting IO bus to OUTPUT\n";
+        gpio_set_dir_out_masked(IO_MASK);
+        ioDirection = EEPROM_IO_OUT;
+    }
+}
+
+void EEPROM::setBusInput() {
+    if (ioDirection != EEPROM_IO_IN) {
+        std::cout << "Setting IO bus to INPUT\n";
+        gpio_set_dir_in_masked(IO_MASK);
+        ioDirection = EEPROM_IO_IN;
+    }
 }
 
 void EEPROM::shiftLatch() {
@@ -48,57 +75,25 @@ void EEPROM::pulseSCLK() {
 }
 
 void EEPROM::shiftOut(uint16_t data) {
-    gpio_put(ser, (data & 0x8000) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x4000) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x2000) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x1000) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0800) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0400) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0200) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0100) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0080) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0040) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0020) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0010) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0008) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0004) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0002) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, (data & 0x0001) == 0 ? 0 : 1);
-    pulseSCLK();
-    gpio_put(ser, 0);
+    for (uint8_t i = 0; i < 16; i++) {
+        gpio_put(ser, (data & (0x8000 >> i)) == 0 ? 0 : 1);
+        pulseSCLK();
+    }
     shiftLatch();
+    gpio_put(ser, 0);
 }
 
 
 uint8_t EEPROM::readByte(uint16_t address) {
-    // set IO lines to read
-    if (ioDirection) {
-        std::cout << "Setting IO bus to INPUT\n";
-        gpio_set_dir_in_masked(IO_MASK);
-        ioDirection = false;
-    }
+    // set io bus to input if not already
+    setBusInput();
 
     // shift out address and enable output
     shiftOut(address);
     gpio_put(oe, 1);
-    sleep_ms(1);
+    sleep_us(SHIFT_REG_DELAY);
 
-    std::cout << std::hex << address << std::endl;
+    //std::cout << std::hex << address << std::endl;
 
     // read data lines into var
     uint8_t data = (gpio_get_all() & IO_MASK) >> 6;
@@ -106,29 +101,39 @@ uint8_t EEPROM::readByte(uint16_t address) {
     return data;
 }
 
-void EEPROM::readString(char* buf, size_t buflen, uint16_t address) {
+void EEPROM::readString(uint16_t address, char* buf, size_t buflen) {
     for (size_t i = 0; i < buflen; i++) {
         *buf = readByte(address + i);
-        std::cout << *buf << ", " << i << std::endl;
-        sleep_ms(1000);
+        // if nullchar is read, end of string has been reached
         if (*buf == '\0')
-            break;
+            return;
         else
             buf++;
     }
 }
 
-void EEPROM::writeByte(uint8_t data, uint16_t address) {
-    // set IO bus to output
-    if (!ioDirection) {
-        std::cout << "Setting IO bus to OUTPUT\n";
-        gpio_set_dir_out_masked(IO_MASK);
-        ioDirection = true;
+uint16_t EEPROM::readUntil(uint16_t address, char delimiter, char* buf, size_t buflen) {
+    for (size_t i = 0; i < buflen; i++) {
+        *buf = readByte(address + i);
+
+        // if delimiter has been read, replace with nullchar and return current address
+        if (*buf == delimiter) {
+            *buf = '\0';
+            return address + i;
+        }
+        else
+            buf++;
     }
+    // out of bounds has occurred
+    return 0xFFFF;
+}
+
+void EEPROM::writeByte(uint8_t data, uint16_t address) {
+    // set IO bus to output if not already
+    setBusOutput();
 
     // shift out address
     shiftOut(address);
-    sleep_ms(1000);
 
     // write data to data bus
     gpio_put_masked(IO_MASK, (uint32_t)data << 6);
@@ -140,6 +145,7 @@ void EEPROM::writeByte(uint8_t data, uint16_t address) {
     gpio_put(we, 1);
     sleep_ms(10);
     gpio_put(we, 0);
+    sleep_ms(10);
 
     // unset data lines
     gpio_put_masked(IO_MASK, 0x0000);

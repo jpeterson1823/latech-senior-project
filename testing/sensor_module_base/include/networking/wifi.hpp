@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 extern "C" {
     #include "pico/cyw43_arch.h"

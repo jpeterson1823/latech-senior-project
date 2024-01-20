@@ -1,5 +1,10 @@
 #include <iostream>
-#include "wireless/wifi.hpp"
+#include "networking/wifi.hpp"
+
+extern "C" {
+    #include <pico/stdlib.h>
+    #include <pico/cyw43_arch.h>
+}
 
 
 int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t auth, const char* hostname, ip_addr_t* ip, ip_addr_t* mask, ip_addr_t* gw) {
