@@ -32,8 +32,8 @@ add_compile_options(
 
 add_executable(main 
     src/main.cpp
-    src/parallel_eeprom.cpp
-    src/serial_interface.cpp
+    src/hardware/parallel_eeprom.cpp
+    src/hardware/serial_interface.cpp
 
     src/networking/wifi.cpp
 )

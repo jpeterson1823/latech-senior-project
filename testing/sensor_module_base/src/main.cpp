@@ -7,79 +7,96 @@ extern "C" {
 }
 
 #include "networking/wifi.hpp"
-#include "serial_interface.hpp"
-#include "parallel_eeprom.hpp"
+#include "hardware/serial_interface.hpp"
+#include "hardware/parallel_eeprom.hpp"
 
+#define WIFI_RECONNECT_TRIES 2
 #define CREDS_ADDR 0x0000
 #define BUFSIZE 1024*5
 
-char buf[BUFSIZE];
-char header[] = "GET / HTTP/1.1\r\nHost: example.com\r\nAccept: text/html\r\nConnection: keep-alive\r\n\r\n";
-//char header[] = "GET / HTTP/1.1\r\n\r\n";
+#define TCP_SOCKET_BUFSIZE 2048
+char recvBuf[TCP_SOCKET_BUFSIZE];
+char connBuf[TCP_SOCKET_BUFSIZE];
+err_t recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err);
+err_t connCallback(void* arg, struct tcp_pcb* pcb, err_t err);
+std::string testHeader = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n";
 
-err_t recv(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err);
-static err_t connected(void* arg, struct tcp_pcb* pcb, err_t err);
-
+// Hardware Abstraction Layer struct to aid in passing variables
+struct ModuleHAL {
+    EEPROM prom;
+};
 
 int main() {
-    // allocate all stack memory to make sure crash occurs first if out of memory
-    char ssid[BUFSIZE];
-    char pswd[BUFSIZE];
-
-    // pico(w) stdio initialization
     stdio_init_all();
-
-    // clear serial monitor
     serial_clear();
 
-    // create necessary objects
-    EEPROM rom;
+    // initialize hardware abstraction layer
+    struct ModuleHAL hal;
     //rom.writeString("bingus;FizzBuzz23!", CREDS_ADDR);
 
     // retrieve login info from EEPROM
-    uint16_t delimAddr = rom.readUntil(CREDS_ADDR, ';', ssid, BUFSIZE);
-    rom.readUntil(delimAddr + 1, '\0', pswd, BUFSIZE);
+    char ssid[BUFSIZE];
+    char pswd[BUFSIZE];
+    uint16_t delimAddr = hal.prom.readUntil(CREDS_ADDR, ';', ssid, BUFSIZE);
+    hal.prom.readUntil(delimAddr + 1, '\0', pswd, BUFSIZE);
 
-    std::cout << "Creds:\n";
+    std::cout << "Retrieved Creds:\n";
     std::cout << "  SSID: " << ssid << '\n';
     std::cout << "  PSWD: " << pswd << std::endl;
 
     // setup and connect to wifi
-    Wifi::Connect(ssid, pswd);
+    int status = Wifi::Connect(ssid, pswd);
+    for (uint8_t i = 0; i < WIFI_RECONNECT_TRIES; i++) {
+        if (status != CYW43_LINK_UP) {
+            std::cout << "Failed to connect to network with SSID: \"" << ssid << "\"\n";
+            std::cout << "Retrying (attempt " << i + 1 << '/' << WIFI_RECONNECT_TRIES << ')' << std::endl;
+            status = Wifi::Connect(ssid, pswd);
+        } else {
+            std::cout << "Successfully connected to WiFi network." << std::endl;
+            break;
+        }
+    }
+    if (status != CYW43_LINK_UP) {
+        std::cout << "Could not connect to WiFi network. Exiting..." << std::endl;
+        return 1;
+    }
 
-
-    sleep_ms(1000);
-
+    // copy test header to connection buffer
+    strcpy(connBuf, testHeader.c_str());
     // attempt to make a get request to HTTP server
     std::cout << "Attempting tcp connection...\n";
     struct tcp_pcb* pcb = tcp_new();
-    tcp_recv(pcb, recv);
+    tcp_recv(pcb, recvCallback);
     ip_addr_t ip;
     IP4_ADDR(&ip, 93, 184, 216, 34);
     //IP4_ADDR(&ip, 192,168,43,49);
     cyw43_arch_lwip_begin();
-    err_t err = tcp_connect(pcb, &ip, 80, connected);
+    err_t err = tcp_connect(pcb, &ip, 80, connCallback);
     //err_t err = tcp_connect(pcb, &ip, 1200, connected);
     cyw43_arch_lwip_end();
     std::cout << "TCP connection attempt finished" << std::endl;
     std::cout << err << std::endl;
 
+    // control loop
     while(true) {
-        sleep_ms(500);
+
     }
+
     return 0;
 }
 
-err_t recv(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err) {
+
+// lwip's tcp receive callback
+err_t recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err) {
     std::cout << "RECEIVED: " << p << std::endl;
     if (p != NULL) {
         std::cout << "Pbuf is not null" << std::endl;
         std::cout << "recv total " << p->tot_len << "  this buffer " << p->len << " next " << p->next << "  err " << err << std::endl;
         if (p->tot_len > 2) {
-            if (!pbuf_copy_partial(p, buf, p->tot_len, 0))
+            if (!pbuf_copy_partial(p, recvBuf, p->tot_len, 0))
                 std::cout << "No data in pbuf" << std::endl;
-            buf[p->tot_len] = 0;
-            std::cout << "Buffer=" << buf << std::endl;
+            recvBuf[p->tot_len] = 0;
+            std::cout << "Buffer=" << recvBuf << std::endl;
             tcp_recved(pcb, p->tot_len);
         }
         pbuf_free(p);
@@ -89,13 +106,14 @@ err_t recv(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err) {
         err = tcp_close(pcb);
     }
     return ERR_OK;
-}
+};
 
-static err_t connected(void* arg, struct tcp_pcb* pcb, err_t err) {
+// lwip's tcp connection callback
+err_t connCallback(void* arg, struct tcp_pcb* pcb, err_t err) {
     std::cout << "CONNECTED" << std::endl;
-    err = tcp_write(pcb, header, strlen(header), TCP_WRITE_FLAG_COPY);
+    err = tcp_write(pcb, connBuf, strlen(connBuf), TCP_WRITE_FLAG_COPY);
     std::cout << "tcp_write" << std::endl;
     err = tcp_output(pcb);
     std::cout << "tcp_output" << std::endl;
     return err;
-}
+};

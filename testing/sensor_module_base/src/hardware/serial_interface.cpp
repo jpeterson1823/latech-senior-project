@@ -1,4 +1,4 @@
-#include "serial_interface.hpp"
+#include "hardware/serial_interface.hpp"
 #include <iostream>
 
 extern "C" {

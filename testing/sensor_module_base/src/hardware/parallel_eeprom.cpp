@@ -1,4 +1,4 @@
-#include "parallel_eeprom.hpp"
+#include "hardware/parallel_eeprom.hpp"
 #include <iostream>
 #include <bitset>
 
