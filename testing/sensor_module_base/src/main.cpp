@@ -7,13 +7,16 @@ extern "C" {
 }
 
 #include "networking/wifi.hpp"
+#include "networking/sockets.hpp"
 #include "hardware/serial_interface.hpp"
 #include "hardware/parallel_eeprom.hpp"
 
+// Various operational flags
 #define WIFI_RECONNECT_TRIES 2
 #define CREDS_ADDR 0x0000
 #define BUFSIZE 1024*5
 
+// LWIP Stuffs
 #define TCP_SOCKET_BUFSIZE 2048
 char recvBuf[TCP_SOCKET_BUFSIZE];
 char connBuf[TCP_SOCKET_BUFSIZE];

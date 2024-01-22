@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 
 if (NOT DEFINED ENV{PICO_SDK_PATH})
-    if(WIN32)
+    if(WIN32 OR MSVC)
         set(ENV{PICO_SDK_PATH} "/Users/peter/Documents/pico-dev/pico-sdk")
     elseif(UNIX)
         set(ENV{PICO_SDK_PATH} "/home/invisa/Documents/code_stuffs/pico_stuff/pico-sdk")
@@ -36,6 +36,7 @@ add_executable(main
     src/hardware/serial_interface.cpp
 
     src/networking/wifi.cpp
+    src/networking/sockets.cpp
 )
 
 # custom include
