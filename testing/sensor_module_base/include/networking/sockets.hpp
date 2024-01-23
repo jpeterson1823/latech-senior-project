@@ -1,31 +1,40 @@
 #pragma once
 
+#ifndef TCP_SOCKET_BUFSIZE
+    #define TCP_SOCKET_BUFSIZE 8192
+#endif
+
 extern "C" {
     #include <lwip/tcp.h>    
 }
 
-// Simple struct to store various c-api callback fn's
-typedef struct __socket_tcp_callback_struct {
-    tcp_connected_fn connCallback;
-    tcp_sent_fn      sentCallback;
-    tcp_recv_fn      recvCallback;
-    tcp_err_fn        errCallback;
-    tcp_poll_fn      pollCallback;
-} TCPCallbacks;
+class Packet {
+private:
+    char data[TCP_SOCKET_BUFSIZE];
+    char buff[TCP_SOCKET_BUFSIZE];
+    size_t datalen;
+    size_t bufflen;
+public:
+    Packet();
+    Packet(const char* data, size_t datalen);
 
+    char* getDataPtr();
+    char* getBuffPtr();
+};
 
 class SocketTCP {
 private:
-    TCPCallbacks* callbacks;
-    ip_addr_t rAddr;
-    uint16_t rPort;
+    ip_addr_t* raddr;
+    uint16_t rport;
+public:
+    static Packet* __activePacket;
+    struct tcp_pcb* pcb;
 
 public:
-    SocketTCP(ip_addr_t remoteAddr, uint16_t remotePort);
-    SocketTCP(ip_addr_t remoteAddr, uint16_t remotePort, TCPCallbacks* callbacks);
+    SocketTCP(ip_addr_t* remoteAddr, uint16_t remotePort);
 
-    err_t connect();
-    err_t send();
-    err_t close();
-    void setCallbacks(TCPCallbacks* callbacks);
+    err_t send(Packet* packet);
+
+    static err_t __connCallback(void* arg, struct tcp_pcb* pcb, err_t err);
+    static err_t __recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err);
 };
