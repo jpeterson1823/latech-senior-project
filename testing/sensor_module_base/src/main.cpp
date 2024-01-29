@@ -89,6 +89,10 @@ int main() {
     std::cout << "TCP connection attempt finished" << std::endl;
     std::cout << err << std::endl;
 
+    // get pointer to __activePacket buffer and print packet to console
+    char* data = socket.recv();
+    std::cout << data << std::endl;
+
     // control loop
     while(true) {
         sleep_ms(100);

@@ -37,6 +37,7 @@ add_executable(main
 
     src/networking/wifi.cpp
     src/networking/sockets.cpp
+    src/networking/uplink.cpp
 )
 
 # custom include

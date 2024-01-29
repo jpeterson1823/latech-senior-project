@@ -34,6 +34,7 @@ public:
     SocketTCP(ip_addr_t* remoteAddr, uint16_t remotePort);
 
     err_t send(Packet* packet);
+    char* recv();
 
     static err_t __connCallback(void* arg, struct tcp_pcb* pcb, err_t err);
     static err_t __recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err);

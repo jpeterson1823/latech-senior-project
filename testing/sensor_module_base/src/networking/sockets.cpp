@@ -60,6 +60,7 @@ err_t SocketTCP::send(Packet* packet) {
 }
 
 
+// Recieve callback. Copys recieved packet into __activePacket
 err_t SocketTCP::__recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err) {
     std::cout << "RECEIVED: " << p << std::endl;
     if (p != NULL) {
@@ -69,7 +70,7 @@ err_t SocketTCP::__recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, 
             if (!pbuf_copy_partial(p, SocketTCP::__activePacket->getBuffPtr(), p->tot_len, 0))
                 std::cout << "No data in pbuf" << std::endl;
             SocketTCP::__activePacket->getBuffPtr()[p->tot_len] = 0;
-            std::cout << "Buffer=" << SocketTCP::__activePacket->getBuffPtr() << std::endl;
+            //std::cout << "Buffer=" << SocketTCP::__activePacket->getBuffPtr() << std::endl;
             tcp_recved(pcb, p->tot_len);
         }
         pbuf_free(p);
