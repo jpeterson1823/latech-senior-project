@@ -4,6 +4,8 @@
     #define TCP_SOCKET_BUFSIZE 8192
 #endif
 
+#include <vector>
+#include <string>
 extern "C" {
     #include <lwip/tcp.h>    
 }
@@ -22,18 +24,26 @@ public:
     char* getBuffPtr();
 };
 
+// #################### IMPORTANT ######################
+// CAN ONLY HAVE ONE SOCKET PER MODULE!!!!!!!
 class SocketTCP {
 private:
     ip_addr_t* raddr;
     uint16_t rport;
+
 public:
+    static std::vector<std::string> RecvBuf;
     static Packet* __activePacket;
     struct tcp_pcb* pcb;
 
 public:
     SocketTCP(ip_addr_t* remoteAddr, uint16_t remotePort);
 
+    uint8_t getState();
+
+    ip_addr_t* getRemote();
     err_t send(Packet* packet);
+    err_t sendStr(std::string& data);
     char* recv();
 
     static err_t __connCallback(void* arg, struct tcp_pcb* pcb, err_t err);

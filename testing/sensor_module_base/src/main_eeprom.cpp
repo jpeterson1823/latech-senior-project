@@ -10,7 +10,9 @@ extern "C" {
 #include "networking/sockets.hpp"
 #include "networking/uplink.hpp"
 #include "hardware/serial_interface.hpp"
-#include "hardware/parallel_eeprom.hpp"
+#include "hardware/flashmem.hpp"
+//#include "hardware/serial_interface.hpp"
+include "hardware/parallel_eeprom.hpp"
 
 // Various operational flags
 #define WIFI_RECONNECT_TRIES 2
@@ -18,8 +20,7 @@ extern "C" {
 #define BUFSIZE 1024*5
 
 // LWIP Stuffs
-//std::string testHeader = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n";
-std::string testHeader = "GET /pair HTTP/1.1\r\nHost: 192.168.43.238\r\n\r\n";
+std::string testHeader = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n";
 
 // Hardware Abstraction Layer struct to aid in passing variables
 struct ModuleHAL {
@@ -75,35 +76,30 @@ int main() {
     std::cout << "TCP connection attempt finished" << std::endl;
     std::cout << err << std::endl;*/
 
-    sleep_ms(1000);
-
     // Create TCP Packet
     Packet packet(testHeader.c_str(), testHeader.length());
 
     // create IP object for example.com
     ip_addr_t ip;
     IP4_ADDR(&ip, 93, 184, 216, 34);
-    //IP4_ADDR(&ip,192,168,43,238);
 
     // create socket object
-    //SocketTCP socket(&ip, 80);
-    SocketTCP socket(&ip, 2312);
+    SocketTCP socket(&ip, 80);
 
-    
+    // attempt to make a get request to HTTP server
+    std::cout << "Attempting tcp connection...\n";
+    err_t err = socket.send(&packet);
+    std::cout << "TCP connection attempt finished" << std::endl;
+    std::cout << err << std::endl;
 
-    //ip4_addr_t linkip;
-    //IP4_ADDR(&linkip,192,168,43,238);
-    //Uplink link(&linkip);
-    //while(true)
-    //link.pair();
+    // get pointer to __activePacket buffer and print packet to console
+    std::string data;
+    socket.recv(data);
+    std::cout << data << std::endl;
 
-    while (true) {
-        // attempt to make a get request to HTTP server
-        std::cout << "Attempting tcp connection...\n";
-        err_t err = socket.send(&packet);
-        std::cout << "TCP connection attempt finished" << std::endl;
-        std::cout << err << std::endl;
-        sleep_ms(1000);
+    // control loop
+    while(true) {
+        sleep_ms(100);
     }
 
     return 0;

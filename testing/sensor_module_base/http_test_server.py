@@ -2,7 +2,6 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from io import BytesIO
 
 class SimpleHTTPRequestHandler (BaseHTTPRequestHandler):
-
     def sendResponse(self, cmd):
         content_length = int(self.headers['Content-Length'])
         body = self.rfile.read(content_length)
@@ -36,5 +35,5 @@ class SimpleHTTPRequestHandler (BaseHTTPRequestHandler):
         self.sendResponse("PATCH")
 
 if __name__ == "__main__":
-    httpd = HTTPServer(("", 8080), SimpleHTTPRequestHandler)
+    httpd = HTTPServer(("", 2312), SimpleHTTPRequestHandler)
     httpd.serve_forever()

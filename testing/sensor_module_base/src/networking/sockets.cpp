@@ -25,12 +25,12 @@ Packet::Packet(const char* data, size_t datalen) {
 char* Packet::getDataPtr() { return this->data; }
 char* Packet::getBuffPtr() { return this->buff; }
 
-
 //#########################
 //# SocketTCP Definitions #
 //#########################
 
 Packet* SocketTCP::__activePacket = nullptr;
+std::vector<std::string> SocketTCP::RecvBuf(0);
 
 SocketTCP::SocketTCP(ip_addr_t* remoteAddr, uint16_t remotePort) {
     this->raddr = remoteAddr;
@@ -59,23 +59,33 @@ err_t SocketTCP::send(Packet* packet) {
     return err;
 }
 
+err_t SocketTCP::sendStr(std::string& data) {
+    Packet p(data.c_str(), data.length());
+    return send(&p);
+}
 
-// Recieve callback. Copys recieved packet into __activePacket
+// Receive callback. Copys received packet into __activePacket
 err_t SocketTCP::__recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err) {
     std::cout << "RECEIVED: " << p << std::endl;
+
     if (p != NULL) {
         std::cout << "Pbuf is not null" << std::endl;
         std::cout << "recv total " << p->tot_len << "  this buffer " << p->len << " next " << p->next << "  err " << err << std::endl;
+
         if (p->tot_len > 2) {
+            // copy pbuf to static global active packet
             if (!pbuf_copy_partial(p, SocketTCP::__activePacket->getBuffPtr(), p->tot_len, 0))
                 std::cout << "No data in pbuf" << std::endl;
             SocketTCP::__activePacket->getBuffPtr()[p->tot_len] = 0;
-            //std::cout << "Buffer=" << SocketTCP::__activePacket->getBuffPtr() << std::endl;
+
+            // push recv'd data to recvBuf
+            RecvBuf.push_back(std::string(__activePacket->getBuffPtr()));
+
+            std::cout << "Buffer=" << SocketTCP::__activePacket->getBuffPtr() << std::endl;
             tcp_recved(pcb, p->tot_len);
         }
         pbuf_free(p);
-    }
-    else {
+    } else {
         std::cout << "TCP Connection Closed\n";
         err = tcp_close(pcb);
     }
@@ -99,3 +109,5 @@ err_t SocketTCP::__connCallback(void* arg, struct tcp_pcb* pcb, err_t err) {
 
     return err;
 }
+
+ip_addr_t* SocketTCP::getRemote() { return this->raddr; };
