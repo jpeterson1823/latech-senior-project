@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+</head>
+<body>
+    <div>
+        <button id="setup" onclick="getToDb('setup');removeSetup()">Setup DB</button>
+        <h1>DATABASE: <span>
+            <button onclick="getToDb('update')">Update Post Data</button>
+            <button onclick="getToDb('reset')">Reset DB</button>
+        </span>
+        </h1>
+        <ul id="list-post"></ul>
+        <ul id="list"></ul>
+    <div>
+    <script>
+        getToDb = (request) => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("list-post").innerHTML = this.responseText;
+                }
+            };
+            xmlhttp.open("GET", "../php/getdemo.php?request="+request, true);
+            xmlhttp.send();
+        }
+        removeSetup = () => {
+            document.getElementById('setup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

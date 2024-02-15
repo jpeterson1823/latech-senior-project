@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentr3</title>
+    <title>Prism</title>
 </head>
 <body>
 <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
@@ -65,6 +65,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 
+//temp here
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (isset($_POST['REQ']) && isset($_POST['DATA'])) {
+    $REQ = test_input($_POST["REQ"]);
+    $DATA = test_input($_POST["DATA"]);
+    $sql = "INSERT INTO MacAddr (MAC, DATA) VALUES ('$REQ', '$DATA');";
+    if ($conn->query($sql) == TRUE) {
+      echo "Database Demo Successfule <br>";
+    } else {
+      echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+  }
+}
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
+// temp stops here
+
+
 $sql = "SELECT * FROM names";
 
 $result = $conn->query($sql);
@@ -77,6 +102,24 @@ if ($result->num_rows > 0) {
 } else {
   echo "0 results";
 }
+
+echo "<br>";
+
+// more temp here
+$sql = "SELECT * FROM MacAddr";
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+  // output data of each row
+  while($row = $result->fetch_assoc()) {
+    echo "MAC: " . $row["MAC"] . "<br>";
+    echo "DATA: " . $row["DATA"] . "<br>";
+  }
+} else {
+  echo "0 results";
+}
+// end more temp here
 
 $conn->close();
 ?>

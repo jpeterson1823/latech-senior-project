@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Prism</title>
+</head>
+<body class="is-transitioned">
+    <div class="example-page">
+        <header>
+            <nav>
+                <a href="index.html">
+                    <div class="group2">
+                        <img src="../assets/blue-spark-logo.png" alt="Diamond logo for PRISM">
+                        <p></p>
+                    </div>
+                </a>
+                <div class="links">
+                    <a href="javascript:void(0);" class="quick-settings">quick settings</a>
+                    <a href="demo.html" class="basic-settings">Demo</a>
+                    <a href="third.php" class="advanced-settings">Database Testing</a>
+                </div>
+                <div class="links" id="myLinks">
+                    <a href="javascript:void(0);" class="quick-settings">quick settings</a>
+                    <a href="demo.html" class="basic-settings">Demo</a>
+                    <a href="third.php" class="advanced-settings">Database Testing</a>
+                </div>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <img src="./assets/icons8-menu-50.png" alt="hamburger menu icon">
+                </a>
+            </nav>
+        </header>
+        <div class="container1">
+            <div class="frame2">
+                <button class="btn" id="wire">wireless settings</button>
+                <button class="btn" id="comm">communication settings</button>
+                <button class="btn" id="app">application settings</button>
+                <button class="btn" id="gui">gui settings</button>
+                <button class="btn" id="pers">personal settings</button>
+            </div>
+            <div class="frame3">
+                <div class="wire setting" for="open">
+                    <p>change stuff here1</p>
+                    <p>change stuff here</p>
+                    <p>change stuff here</p>
+                </div>
+                <div class="comm setting" for="close">
+                    <p>change stuff here2</p>
+                    <p>change stuff here</p>
+                    <p>change stuff here</p>
+                </div>
+                <div class="app setting" for="close">
+                    <p>change stuff here3</p>
+                    <p>change stuff here</p>
+                    <p>change stuff here</p>
+                </div>
+                <div class="gui setting" for="close">
+                    <p>change stuff here4</p>
+                    <p>change stuff here</p>
+                    <p>change stuff here</p>
+                </div>
+                <div class="pers setting" for="close">
+                    <p>change stuff here5</p>
+                    <p>change stuff here</p>
+                    <p>change stuff here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        myFunction = () => {
+          var x = document.getElementById("myLinks");
+          if (x.style.display === "block") {
+            x.style.display = "none";
+          } else {
+            x.style.display = "block";
+          }
+        }
+        toggleButtons = (id) => {
+            var old = document.querySelector("[for='open']")
+            var update = document.querySelector(`.${id}`)
+            old.setAttribute("for", "close")
+            update.setAttribute("for", "open")
+
+        }
+        const btn = document.querySelectorAll(".btn")
+        btn.forEach((button) => {
+            button.addEventListener('click', (event) => toggleButtons(event.target.id))
+        });
+    </script>
+</body>
+</html>

@@ -110,7 +110,7 @@ body {
 }
 
 .settings-btn::before {
-    content: "settings";
+    content: "Settings";
 }
 
 /* styling second.html here */
@@ -215,19 +215,19 @@ a.icon {
     border-radius: 30px 0 0 30px;
     background-color: #E2E2E2;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-
-.frame2 > p {
+/* 
+.frame2 > button {
     margin-left: 3rem;
 }
 
-.frame2 > p:not(:last-child) {
+.frame2 > button:not(:last-child) {
     margin-bottom: 3rem;
-}
-
-.frame2 > p::before {
-    content: "setting";
-}
+} */
 
 .frame3 {
     display: inline-block;
@@ -238,17 +238,35 @@ a.icon {
     overflow-y: auto;
 }
 
-.frame3 > p {
+.setting > p {
     margin-left: 5rem;
     font-size: 20px;
 }
 
-.frame3 > p:not(:last-child) {
+.setting > p:not(:last-child) {
     margin-bottom: 20rem;
 }
 
-.frame3 > p::before {
-    content: "change stuff here";
+.setting[for="close"] {
+    display: none;
+}
+
+.setting[for="open"] {
+    display: block;
+}
+
+.btn {
+    border: none;
+    background-color: #E2E2E2;
+    margin-top: 5rem;
+    font-size: 16px;
+    display: block;
+    margin-bottom: 3rem;
+    width: fit-content;
+}
+
+.btn:hover {
+    cursor: pointer;
 }
 
 /* for mobile & tablet here */
