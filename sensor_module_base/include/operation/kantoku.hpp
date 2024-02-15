@@ -3,10 +3,15 @@
 #include "hardware/serial_interface.hpp"
 #include "hardware/parallel_eeprom.hpp"
 
+extern "C" {
+    #include <lwip/tcp.h>
+}
+
 #define NOBLE6 2312
 #define KANTOKU_ROM_START           0x03
 #define KANTOKU_EEPROM_FORMATTED    0x00
 #define KANTOKU_CREDS_SAVED         0x01
+#define KANTOKU_PAIRED              0x02
 
 /*
 Kantoku: Director of comms
@@ -19,6 +24,7 @@ private:
     enum Action {
         SerialSetup,
         NetworkPair,
+        EstablishUplink,
         NoAction
     };
 
@@ -26,12 +32,15 @@ private:
 private:
     EEPROM prom;
     Action action;
+    std::string controllerAddrStr;
+    ip4_addr_t controllerAddr;
 
 // member fn
 private:
     Action determineAction();
     void formatEEPROM();
     void serialSetup();
+    void networkConn();
     void networkPair();
 
 public:

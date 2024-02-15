@@ -15,13 +15,16 @@ def main():
     req = s.readline()
     print(f"Request: {req}")
 
-    if (req == "kenchiki.hajime\n"):
+    if (req == b"kenchiki.hajime\r\n"):
         s.write(b"bingus;FizzBuzz23!\n")
         print("Response Sent!")
 
     else:
         s.write(b"ack\n")
         print(f"Serial Received: {s.readline()}")
+    
+    while(True):
+        print(s.readline())
 
 
 if __name__ == "__main__":
