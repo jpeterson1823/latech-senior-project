@@ -1,2 +1,8 @@
 .vscode/
 .dockerfile
+.php/
+.pages/
+.assets/
+.scripts/
+.styles/
+.index.html

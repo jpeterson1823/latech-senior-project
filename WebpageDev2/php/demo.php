@@ -14,7 +14,7 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    echo "Connected successfully <br>";
+    echo "Connected successfully\n";
 
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -27,10 +27,9 @@
             $DATA = test_input($_POST["DATA"]);
             $sql = "INSERT INTO MacAddr (MAC, DATA) VALUES ('$REQ', '$DATA');";
             if ($conn->query($sql) == TRUE) {
-            echo "Database Demo Successful <br>";
-            $bool = true;
+                echo "client ip: " . $_SERVER['REMOTE_ADDR'];
             } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+                echo "Error: " . $sql . "\n" . $conn->error;
             }
         }
     }
@@ -41,10 +40,9 @@
             $DATA = test_input($_GET["DATA"]);
             $sql = "INSERT INTO MacAddr (MAC, DATA) VALUES ('$REQ', '$DATA');";
             if ($conn->query($sql) == TRUE) {
-            echo "Database Demo Successful <br>";
-            $bool = true;
+                echo "client ip: " . $_SERVER['REMOTE_ADDR'];
             } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+                echo "Error: " . $sql . "<br>" . $conn->error;
             }
         }
     }

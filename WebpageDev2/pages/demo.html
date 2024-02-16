@@ -7,9 +7,8 @@
 </head>
 <body>
     <div>
-        <button id="setup" onclick="getToDb('setup');removeSetup()">Setup DB</button>
         <h1>DATABASE: <span>
-            <button onclick="getToDb('update')">Update Post Data</button>
+            <button onclick="getToDb('update')">Update Data from DB</button>
             <button onclick="getToDb('reset')">Reset DB</button>
         </span>
         </h1>
@@ -26,9 +25,6 @@
             };
             xmlhttp.open("GET", "../php/getdemo.php?request="+request, true);
             xmlhttp.send();
-        }
-        removeSetup = () => {
-            document.getElementById('setup').style.display = 'none';
         }
     </script>
 </body>
