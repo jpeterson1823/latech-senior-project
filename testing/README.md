@@ -1,1 +1,0 @@
-# latech-senior-project
