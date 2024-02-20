@@ -2,6 +2,7 @@
 #include "hardware/serial_interface.hpp"
 #include "networking/wifi.hpp"
 #include "networking/sockets.hpp"
+#include "networking/httpreqs.hpp"
 
 #include <string>
 #include <iostream>
@@ -10,7 +11,7 @@
 Kantoku::Kantoku() {
     // controller ip set here. should always be the same
     //this->controllerAddrStr = "192.168.1.1";
-    this->controllerAddrStr = "93.184.216.34";
+    this->controllerAddrStr = "192.168.218.228";
     ip4addr_aton(controllerAddrStr.data(), &controllerAddr);
 
     //first, must determine what state kantoku should be in
@@ -25,14 +26,17 @@ Kantoku::Kantoku() {
 
 // formats eeprom
 void Kantoku::formatEEPROM() {
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+
     // zero entire eeprom
-    for (uint32_t i = 0; i <= 2048; i++)
+    for (uint32_t i = 0; i <= 512; i++)
         prom.writeByte(0x00, i);
 
     // first two bytes need to be noble-6 (HI:LO)
     prom.writeByte(0x09, 0x0000);
     prom.writeByte(0x08, 0x0001);
     // flag byte already at KANTOKU_EEPROM_FORMATTED, so no action needed there
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
 }
 
 // determines which action should be taken given current situation
@@ -88,10 +92,10 @@ void Kantoku::serialSetup() {
     // parse creds info
     uint16_t delim_index = sbuf.find(';');
     std::cout << "SBUF: '" << sbuf << '\'' << std::endl;
-    std::string ssid = sbuf.substr(0, delim_index+1);
-    std::cout << "SSID OBTAINED" << std::endl;
-    std::string pswd = sbuf.substr(delim_index, sbuf.find('\n') - delim_index + 1);
-    std::cout << "PSWD OBTAINED" << std::endl;
+    std::string ssid = sbuf.substr(0, delim_index);
+    std::cout << "SSID OBTAINED: " << ssid << std::endl;
+    std::string pswd = sbuf.substr(delim_index+1, sbuf.find('\n') - delim_index);
+    std::cout << "PSWD OBTAINED: " << pswd << std::endl;
 
     // write creds to eeprom, making sure to write a \x00 at end of creds string
     std::string creds = ssid + ';' + pswd;
@@ -111,8 +115,11 @@ void Kantoku::networkConn() {
     char ssid[1024];
     char pswd[1024];
     uint16_t delimAddr = prom.readUntil(KANTOKU_ROM_START, ';', ssid, 1024);
-    prom.readUntil(KANTOKU_ROM_START + delimAddr, '\0', pswd, 1024);
+    prom.readUntil(delimAddr+1, '\0', pswd, 1024);
     sleep_ms(500);
+
+    std::cout << "Attempting to connect to network with following creds:\n";
+    std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;
 
     // setup and connect to wifi, 2 retry attempts
     int status = Wifi::Connect(ssid, pswd);
@@ -139,13 +146,33 @@ void Kantoku::networkPair() {
     networkConn();
     sleep_ms(1000);
 
-    // create http req string
-    //std::string pairReq = "POST / HTTP/1.1\r\nHost: " + controllerAddrStr + "\r\n\r\n";
-    std::string pairReq = "GET / HTTP/1.1\r\nHost: example.com\r\n\r\n";
+    // get mac addr
+    uint8_t mac[6];
+    cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, mac);
+
+    // old test http request; leaving for reference
+    //std::string pairReq = "GET /php/demo.php?REQ=GATES_DEMO&DATA=THIS_IS_WHERE_THE_DATA_WILL_BE HTTP/1.1\r\nHost: " + controllerAddrStr + "\r\n\r\n";
+
+    // get mac addr
+    std::string macAddr;
+    Wifi::GetMacString(macAddr);
+
+    // create uri and params string
+    std::string uri = "/php/demo.php";
+    std::string params = "REQ=PAIR&DATA=" + macAddr;
+
+    // create pair HTTP request
+    std::string httpReq;
+    Http::GetReq req (
+        controllerAddrStr,
+        uri,
+        params
+    );
+    req.genString(httpReq);
 
     // open socket w/controller and send req
     SocketTCP socket(&controllerAddr, 80);
-    socket.sendStr(pairReq);
+    socket.sendStr(httpReq);
 
     while(true) { sleep_ms(1000); }
 }

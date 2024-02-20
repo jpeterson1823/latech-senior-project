@@ -154,10 +154,10 @@ void EEPROM::writeByte(uint8_t data, uint16_t address) {
 void EEPROM::writeString(const char* str, uint16_t address) {
     for(uint16_t i = 0;;i++) {
         writeByte(*(str+i), address+i);
-        std::cout << *(str+i) << " @ ";
-        std::cout.width(4);
-        std::cout.fill('0');
-        std::cout << std::hex << address + i << std::endl;
+        //std::cout << *(str+i) << " @ ";
+        //std::cout.width(4);
+        //std::cout.fill('0');
+        //std::cout << std::hex << address + i << std::endl;
         if (*(str+i) == '\0')
             break;
     }

@@ -79,3 +79,18 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
 int Wifi::Connect(const char* ssid, const char* pass, const char* hostname) {
     return Wifi::Setup(CYW43_COUNTRY_USA, ssid, pass, CYW43_AUTH_WPA2_MIXED_PSK, hostname, NULL, NULL, NULL);
 }
+
+void Wifi::GetMacString(std::string& buf) {
+    // get mac addr
+    uint8_t mac[6];
+    cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, mac);
+
+    // convert mac addr to str and store in data
+    buf = "";
+    buf += std::to_string(mac[0]);
+    buf += std::to_string(mac[1]);
+    buf += std::to_string(mac[2]);
+    buf += std::to_string(mac[3]);
+    buf += std::to_string(mac[4]);
+    buf += std::to_string(mac[5]);
+}

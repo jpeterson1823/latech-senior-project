@@ -39,6 +39,7 @@ add_executable(main
     src/networking/wifi.cpp
     src/networking/sockets.cpp
     src/networking/uplink.cpp
+    src/networking/httpreqs.cpp
 
     src/operation/kantoku.cpp
 )
