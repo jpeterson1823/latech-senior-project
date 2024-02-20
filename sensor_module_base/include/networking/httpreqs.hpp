@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 namespace Http {
 
@@ -10,7 +11,8 @@ namespace Http {
     };
 
     class Request {
-    private:
+    friend class socket;
+    protected:
         ReqType type;
         std::string rhost;
         std::string uri;
@@ -35,6 +37,7 @@ namespace Http {
 
 
     class GetReq : public Request {
+    friend class socket;
     public:
         GetReq(
             std::string rhost,
@@ -44,6 +47,7 @@ namespace Http {
     };
 
     class PostReq : public Request {
+    friend class socket;
     public:
         PostReq(
             std::string rhost,

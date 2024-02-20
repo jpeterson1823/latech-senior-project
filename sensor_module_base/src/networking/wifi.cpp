@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include "networking/wifi.hpp"
 
 extern "C" {
@@ -85,12 +87,22 @@ void Wifi::GetMacString(std::string& buf) {
     uint8_t mac[6];
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, mac);
 
+    std::stringstream macStream;
+    macStream << std::hex << std::setfill('0') << std::setw(2);
+
     // convert mac addr to str and store in data
-    buf = "";
-    buf += std::to_string(mac[0]);
-    buf += std::to_string(mac[1]);
-    buf += std::to_string(mac[2]);
-    buf += std::to_string(mac[3]);
-    buf += std::to_string(mac[4]);
-    buf += std::to_string(mac[5]);
+    macStream << std::to_string(mac[0]);
+    macStream << std::dec << ':' << std::hex;
+    macStream << std::to_string(mac[1]);
+    macStream << std::dec << ':' << std::hex;
+    macStream << std::to_string(mac[2]);
+    macStream << std::dec << ':' << std::hex;
+    macStream << std::to_string(mac[3]);
+    macStream << std::dec << ':' << std::hex;
+    macStream << std::to_string(mac[4]);
+    macStream << std::dec << ':' << std::hex;
+    macStream << std::to_string(mac[5]);
+
+    // convert stream to string
+    buf = macStream.str();
 }

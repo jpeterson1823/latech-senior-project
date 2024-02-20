@@ -38,12 +38,8 @@ add_executable(main
 
     src/networking/wifi.cpp
     src/networking/sockets.cpp
-    src/networking/uplink.cpp
     src/networking/httpreqs.cpp
-
-    src/networking/neosocket/globals.cpp
-    src/networking/neosocket/socket.cpp
-    src/networking/neosocket/callbacks.cpp
+    src/networking/neosocket.cpp
 
     src/operation/kantoku.cpp
 )

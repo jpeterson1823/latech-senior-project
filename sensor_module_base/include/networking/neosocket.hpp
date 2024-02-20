@@ -1,37 +1,33 @@
 #pragma once
 
+#include "networking/neosocket.hpp"
 #include "networking/httpreqs.hpp"
 extern "C" {
     #include <lwip/tcp.h>
 }
-#include <vector>
+#include <string>
+#include <queue>
 
 #define NEOSOCKET_BUFSIZE 2048
 #define NEOSOCKET_RECVQ_SIZE 15
 
-namespace socket {
-    namespace buffers {
-        static uint8_t* tmp;
-        static std::vector<std::string> recvq;
+typedef struct __state_struct {
+    ip_addr_t*  rhost;
+    uint16_t    rport;
+    uint8_t*    data;
+    struct tcp_pcb* pcb;
 
-        static void pushRecv();
-    };
+    uint8_t* tmp;
+    std::queue<std::string> recvq;
 
-    namespace flags {
-        static bool initialized;
-        static bool recving;
-    };
+    bool initialized;
+    bool connected;
+    bool recving;
+    bool recvd;
+} state_struct;
 
-    typedef struct state_struct{
-        ip_addr_t*  rhost;
-        uint16_t    rport;
-        uint8_t*    data;
-        struct tcp_pcb* pcb;
-        bool connected;
-        bool recvd;
-    };
-    
-
+class socket {
+public:
     // keeps track of all important data
     static state_struct state;
 
@@ -39,10 +35,13 @@ namespace socket {
     static void initialize(ip_addr_t* remoteAddr, uint16_t remotePort);
 
     // tcp functions
-    err_t send(Http::Request req);
+    static err_t send(Http::Request req);
 
-    // wait until timeout reached
-    void wait();
+    // various fn's
+    static void wait();
+    static void pushRecv();
+    static bool dataAvailable();
+    static std::string popRecvq();
 
     // callbacks
     static err_t recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t err);

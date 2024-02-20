@@ -23,6 +23,7 @@ private:
     // create Action enum to keep track of possible/current action
     enum Action {
         SerialSetup,
+        NetworkConnect,
         NetworkPair,
         EstablishUplink,
         NoAction
@@ -41,8 +42,8 @@ private:
     void formatEEPROM();
     void serialSetup();
     void networkConn();
-    void networkPair();
 
 public:
     Kantoku();
+    bool attemptPair();
 };

@@ -1,22 +1,23 @@
 #include "operation/kantoku.hpp"
 #include "hardware/serial_interface.hpp"
 #include "networking/wifi.hpp"
-//#include "networking/sockets.hpp"
-#include "networking/neosocket.hpp"
+#include "networking/sockets.hpp"
 #include "networking/httpreqs.hpp"
+#include "networking/neosocket.hpp"
 
 extern "C" {
-    #include <pico_w.h>
+    #include <pico/stdlib.h>
 }
 
 #include <string>
+
 #include <iostream>
 
 // sets up kantoku
 Kantoku::Kantoku() {
     // controller ip set here. should always be the same
     //this->controllerAddrStr = "192.168.1.1";
-    this->controllerAddrStr = "192.168.218.228";
+    this->controllerAddrStr = "192.168.21.228";
     ip4addr_aton(controllerAddrStr.data(), &controllerAddr);
 
     //first, must determine what state kantoku should be in
@@ -24,8 +25,8 @@ Kantoku::Kantoku() {
 
     if (this->action == Action::SerialSetup)
         serialSetup();
-    if (this->action == Action::NetworkPair)
-        networkPair();
+    if (this->action == Action::NetworkConnect)
+        networkConn();
 
 };
 
@@ -68,7 +69,7 @@ Kantoku::Action Kantoku::determineAction() {
     if (flags == KANTOKU_EEPROM_FORMATTED)
         this->action = Action::SerialSetup;
     else if (flags == KANTOKU_CREDS_SAVED)
-        this->action = Action::NetworkPair;
+        this->action = Action::NetworkConnect;
     else if (flags == KANTOKU_PAIRED)
         this->action = Action::EstablishUplink;
     else
@@ -146,34 +147,26 @@ void Kantoku::networkConn() {
     }
 };
 
-void Kantoku::networkPair() {
-    // connect to network
-    networkConn();
-    sleep_ms(1000);
-
-    // old test http request; leaving for reference
-    //std::string pairReq = "GET /php/demo.php?REQ=GATES_DEMO&DATA=THIS_IS_WHERE_THE_DATA_WILL_BE HTTP/1.1\r\nHost: " + controllerAddrStr + "\r\n\r\n";
-    //SocketTCP socket(&controllerAddr, 80);
-    //socket.sendStr(pairReq);
-
+bool Kantoku::attemptPair() {
     // get mac addr
     std::string macAddr;
     Wifi::GetMacString(macAddr);
 
     // create uri and params string
     std::string uri = "/php/demo.php";
-    std::string params = "REQ=PAIR&DATA=" + macAddr;
+    std::string data = "REQ=PAIR&DATA=" + macAddr;
 
     // create pair HTTP request
-    Http::GetReq req (
+    Http::PostReq req (
         controllerAddrStr,
         uri,
-        params
+        data
     );
 
     // open socket and send http req
     socket::initialize(&controllerAddr, 80);
     socket::send(req);
+    socket::wait();
 
-    while(true) { sleep_ms(1000); }
+    return socket::dataAvailable();
 }
