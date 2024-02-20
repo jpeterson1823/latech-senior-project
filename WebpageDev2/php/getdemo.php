@@ -29,7 +29,7 @@
         // output data of each row
         while($row = $result->fetch_assoc()) {
             echo "<li>Mac: " . $row["MAC"] . "</li>";
-            echo "<ul><li>Data: " . $row["DATA"] . "</li></ul>";
+            echo "<ul><li>Data: " . $row["IP"] . "</li></ul>";
         }
     } else {
         echo "0 results";

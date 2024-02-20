@@ -1,6 +1,7 @@
-<html>
-<body>
 <?php
+
+    header("Content-Type: 'raw'");
+
     $servername = "mysql";
     $username = "apache-server";
     $password = "PRISM3";
@@ -14,23 +15,27 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    echo "Connected successfully <br>";
+    // echo "Connected successfully <br>"
 
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
-    //echo var_dump($_POST);
+    // echo var_dump($_POST);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['REQ']) && isset($_POST['DATA'])) {
             $REQ = test_input($_POST["REQ"]);
             $DATA = test_input($_POST["DATA"]);
-            $sql = "INSERT INTO MacAddr (MAC, DATA) VALUES ('$REQ', '$DATA');";
-            if ($conn->query($sql) == TRUE) {
-            echo "Database Demo Successful <br>";
-            $bool = true;
+            $sql = "SELECT IP FROM MacAddr WHERE MAC='$DATA';";
+            $check = $conn->query($sql);
+            if ($check->num_rows == 0) {
+                $ipAddr = long2ip(rand(0, 4294967295));
+                $sql = "INSERT INTO MacAddr (MAC, IP) VALUES ('$DATA', '$ipAddr');";
+                $conn->query($sql);
+                echo "$ipAddr";
             } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+                $row = $check->fetch_assoc();
+                echo $row['IP'];
             }
         }
     }
@@ -39,12 +44,16 @@
         if (isset($_GET['REQ']) && isset($_GET['DATA'])) {
             $REQ = test_input($_GET["REQ"]);
             $DATA = test_input($_GET["DATA"]);
-            $sql = "INSERT INTO MacAddr (MAC, DATA) VALUES ('$REQ', '$DATA');";
-            if ($conn->query($sql) == TRUE) {
-            echo "Database Demo Successful <br>";
-            $bool = true;
+            $sql = "SELECT IP FROM MacAddr WHERE MAC='$DATA';";
+            $check = $conn->query($sql);
+            if ($check->num_rows == 0) {
+                $ipAddr = long2ip(rand(0, 4294967295));
+                $sql = "INSERT INTO MacAddr (MAC, IP) VALUES ('$DATA', '$ipAddr');";
+                $conn->query($sql);
+                echo "$ipAddr";
             } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+                $row = $check->fetch_assoc();
+                echo $row['IP'];
             }
         }
     }
@@ -57,5 +66,3 @@
         return $data;
     }
 ?>
-<body>
-<html>
