@@ -21,8 +21,8 @@ Below are steps to get docker environment set up for testing purposes:
 ### To Pull from Docker Hub Repo on CLI (Linux):
 1. `docker login -u chh02`
 2. (when prompted) enter access token from above
-3. `docker pull chh02/capstone-latech-prism:mysql-image`
-4. `docker pull chh02/capstone-latech-prism:apach-image`
+3. `docker pull chh02/capstone-latech-prism:mysql-Ver3`
+4. `docker pull chh02/capstone-latech-prism:apache-Ver3`
 
 ## Step 4: Deploy Docker Environment
 ### Run The Following (Linux):
