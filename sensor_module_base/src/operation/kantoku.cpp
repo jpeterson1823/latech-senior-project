@@ -1,8 +1,13 @@
 #include "operation/kantoku.hpp"
 #include "hardware/serial_interface.hpp"
 #include "networking/wifi.hpp"
-#include "networking/sockets.hpp"
+//#include "networking/sockets.hpp"
+#include "networking/neosocket.hpp"
 #include "networking/httpreqs.hpp"
+
+extern "C" {
+    #include <pico_w.h>
+}
 
 #include <string>
 #include <iostream>
@@ -146,12 +151,10 @@ void Kantoku::networkPair() {
     networkConn();
     sleep_ms(1000);
 
-    // get mac addr
-    uint8_t mac[6];
-    cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, mac);
-
     // old test http request; leaving for reference
     //std::string pairReq = "GET /php/demo.php?REQ=GATES_DEMO&DATA=THIS_IS_WHERE_THE_DATA_WILL_BE HTTP/1.1\r\nHost: " + controllerAddrStr + "\r\n\r\n";
+    //SocketTCP socket(&controllerAddr, 80);
+    //socket.sendStr(pairReq);
 
     // get mac addr
     std::string macAddr;
@@ -162,17 +165,15 @@ void Kantoku::networkPair() {
     std::string params = "REQ=PAIR&DATA=" + macAddr;
 
     // create pair HTTP request
-    std::string httpReq;
     Http::GetReq req (
         controllerAddrStr,
         uri,
         params
     );
-    req.genString(httpReq);
 
-    // open socket w/controller and send req
-    SocketTCP socket(&controllerAddr, 80);
-    socket.sendStr(httpReq);
+    // open socket and send http req
+    socket::initialize(&controllerAddr, 80);
+    socket::send(req);
 
     while(true) { sleep_ms(1000); }
 }
