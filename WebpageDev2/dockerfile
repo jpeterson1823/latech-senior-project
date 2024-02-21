@@ -1,3 +1,0 @@
-FROM chh02/capstone-latech-prism:apach-image
-
-COPY . /var/www/html/.
