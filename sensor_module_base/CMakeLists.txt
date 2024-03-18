@@ -35,6 +35,7 @@ add_executable(main
     src/testing.cpp
     src/hardware/parallel_eeprom.cpp
     src/hardware/serial_interface.cpp
+    src/hardware/pwmctrl.cpp
 
     src/networking/wifi.cpp
     src/networking/sockets.cpp
@@ -42,6 +43,7 @@ add_executable(main
     src/networking/neosocket.cpp
 
     src/operation/kantoku.cpp
+    src/operation/sensors/upa.cpp
 )
 
 # custom include
@@ -52,8 +54,10 @@ target_include_directories(main PRIVATE
 target_link_libraries( main
     pico_stdlib
     pico_cyw43_arch_lwip_threadsafe_background
+    pico_time
     hardware_gpio
     hardware_pwm
+    hardware_adc
 )
 
 # enable usb output, disable uart output

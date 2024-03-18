@@ -2,7 +2,7 @@ import serial
 
 def main():
     #port = "/dev/ttyACM0"
-    port = "COM6"
+    port = "COM3"
     baud = 115200
 
     s = serial.Serial(port, baud)

@@ -10,7 +10,7 @@ extern "C" {
 #include "networking/sockets.hpp"
 #include "networking/uplink.hpp"
 #include "hardware/serial_interface.hpp"
-#include "hardware/flashmem.hpp"
+//#include "hardware/flashmem.hpp"
 //#include "hardware/serial_interface.hpp"
 include "hardware/parallel_eeprom.hpp"
 
@@ -28,6 +28,7 @@ struct ModuleHAL {
 };
 
 int main() {
+    cyw43_arch_init();
     stdio_init_all();
     serial_clear();
 

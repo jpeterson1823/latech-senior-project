@@ -143,9 +143,9 @@ void EEPROM::writeByte(uint8_t data, uint16_t address) {
     // initiate write condition: OE unset, WE pulse
     gpio_put(oe, 0);
     gpio_put(we, 1);
-    sleep_ms(10);
+    sleep_us(100);
     gpio_put(we, 0);
-    sleep_ms(10);
+    sleep_us(100);
 
     // unset data lines
     gpio_put_masked(IO_MASK, 0x0000);
