@@ -35,7 +35,6 @@ add_executable(main
     src/testing.cpp
     src/hardware/parallel_eeprom.cpp
     src/hardware/serial_interface.cpp
-    src/hardware/pwmctrl.cpp
 
     src/networking/wifi.cpp
     src/networking/sockets.cpp
