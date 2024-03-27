@@ -7,51 +7,42 @@ extern "C" {
     #include <hardware/adc.h>
 }
 
+// init gpio pins and set up pwm
+void UPASensor::gpioSetup() {
+    // analog pin setup
+    adc_gpio_init(rx);   
+
+    // set up each pwm pin and save each slice in asc order
+    this->slices[0] = pwm_gpio_to_slice_num(UPA_TPIN_LL);
+    this->slices[1] = pwm_gpio_to_slice_num(UPA_TPIN_LM);
+    this->slices[2] = pwm_gpio_to_slice_num(UPA_TPIN_MR);
+    this->slices[3] = pwm_gpio_to_slice_num(UPA_TPIN_RR);
+
+    // get channels temporarily to set freq
+    uint channels[4];
+    channels[0] = pwm_gpio_to_channel(UPA_TPIN_LL);
+    channels[1] = pwm_gpio_to_channel(UPA_TPIN_LM);
+    channels[2] = pwm_gpio_to_channel(UPA_TPIN_MR);
+    channels[3] = pwm_gpio_to_channel(UPA_TPIN_RR);
+
+    // set pwm freq and specifics and yadda yadda
+    int pinIndex;
+    for (int upaPin = UPA_TPIN_LL; upaPin <= UPA_TPIN_RR; upaPin++) {
+        pinIndex = upaPin - UPA_TPIN_LL;
+        gpio_set_function(upaPin, GPIO_FUNC_PWM);
+        pwm_set_phase_correct(slices[pinIndex], false);
+        pwm_set_wrap(slices[pinIndex], 125'000'000 / 40'000);
+        pwm_set_chan_level(slices[pinIndex], channels[pinIndex], 125'000'000 / 40'000 / 2);
+    }
+}
+
 UPASensor::UPASensor() {
     this->pwmActive = false;
     this->rx = 2; // GP28
-    this->tctrl_lbit_pin = 14;
-    this->tctrl_hbit_pin = 15;
-    this->pwm_pin = 16;
+    this->pulseLength = 100; // 100us
 
-    // gpio setup
-    gpio_init(this->tctrl_lbit_pin);
-    gpio_init(this->tctrl_hbit_pin);
-    gpio_init(this->pwm_pin);
-
-    // analog pin setup
-    adc_gpio_init(rx);
-
-    // get pwm pin slice and channel
-    this->slice = pwm_gpio_to_slice_num(pwm_pin);
-    uint channel = pwm_gpio_to_channel(pwm_pin);
-
-    // set up pwm
-    gpio_set_function(pwm_pin, GPIO_FUNC_PWM);
-    pwm_set_phase_correct(slice, false);
-    pwm_set_wrap(slice, 125000000 / 40000);
-    pwm_set_chan_level(slice, channel, 125000000 / 40000 / 2);
-}
-
-// starts PWM signal generation
-void UPASensor::pwmOn() {
-    if (!this->pwmActive) {
-        this->pwmActive = true;
-        pwm_set_enabled(slice, true);
-    }
-}
-
-// stops PWM signal generation
-void UPASensor::pwmOff() {
-    if (this->pwmActive) {
-        this->pwmActive = false;
-        pwm_set_enabled(slice, false);
-    }
-}
-
-// return active PWM state
-bool UPASensor::pwmState() {
-    return this->pwmActive;
+    // run GPIO setup
+    gpioSetup();
 }
 
 // call this before readRecv()
@@ -64,10 +55,47 @@ uint16_t UPASensor::readRecv() {
     return adc_read();
 }
 
-void UPASensor::pulse(uint phaseDelay) {
-    pwmOn();
+void UPASensor::pulseLR(uint phaseDelay) {
+    pwm_set_enabled(slices[0], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[1], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[2], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[3], true);
+
+    sleep_us(pulseLength);
+
+    pwm_set_enabled(slices[3], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[2], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[1], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[0], true);
 }
 
+void UPASensor::pulseRL(uint phaseDelay) {
+    pwm_set_enabled(slices[3], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[2], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[1], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[0], true);
+
+    sleep_us(pulseLength);
+
+    pwm_set_enabled(slices[0], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[1], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[2], true);
+    sleep_us(phaseDelay);
+    pwm_set_enabled(slices[3], true);
+}
+
+/*
 // poll ultrasonic receiver and return read value
 uint UPASensor::poll(float angle) {
     // select receiver as adc input
@@ -93,3 +121,4 @@ uint UPASensor::poll(float angle) {
 
     return adc_get_selected_input();
 }
+*/

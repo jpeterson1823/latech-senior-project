@@ -2205,6 +2205,10 @@
 		(uuid "332c05c3-8bd1-40e3-b008-f326110624f8")
 	)
 	(no_connect
+		(at 114.3 124.46)
+		(uuid "3d0c3238-a756-4d7e-910f-958a5a647c9b")
+	)
+	(no_connect
 		(at 107.95 93.98)
 		(uuid "55c36688-d9e5-40b3-b345-ab9891f70f21")
 	)
@@ -3396,7 +3400,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_IDC:IDC-Header_2x08_P2.54mm_Vertical"
 			(at 106.68 119.38 0)
 			(effects
 				(font
@@ -3508,7 +3512,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
 			(at 207.391 107.95 0)
 			(effects
 				(font
@@ -3875,7 +3879,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
 			(at 207.391 120.65 0)
 			(effects
 				(font
@@ -3945,7 +3949,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
 			(at 191.77 72.898 90)
 			(effects
 				(font
@@ -4119,7 +4123,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
 			(at 207.391 82.55 0)
 			(effects
 				(font
@@ -4189,7 +4193,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
 			(at 207.391 95.25 0)
 			(effects
 				(font

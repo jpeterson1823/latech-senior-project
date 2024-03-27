@@ -538,7 +538,7 @@
 			(uuid "c3dcfdd0-4796-47d3-b8c0-aa20ae9b2658")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 1.27 8.89 270)
+			(at 1.27 8.89 -90)
 			(layer "F.Fab")
 			(uuid "b83f9131-d12e-4b0c-aee0-7724b07894d9")
 			(effects
@@ -742,7 +742,7 @@
 		(uuid "649d5aff-5bcc-4f63-8952-addbdd0de322")
 		(at 59.70625 33.7)
 		(property "Reference" "U1"
-			(at -5.72125 -16.5 360)
+			(at -5.72125 -16.5 0)
 			(layer "F.SilkS")
 			(uuid "e4e1cb1a-e1bb-419e-a3d9-28e6ee16b6d9")
 			(effects
@@ -753,7 +753,7 @@
 			)
 		)
 		(property "Value" "AT28C64B-15PU"
-			(at 0.27875 -3 360)
+			(at 0.27875 -3 0)
 			(layer "F.Fab")
 			(uuid "14269039-3e2f-4088-ae55-e879c1b94ca5")
 			(effects
@@ -1424,6 +1424,17 @@
 			(solder_mask_margin 0.102)
 			(uuid "80955778-4135-49c3-a95f-4c7eb31c8784")
 		)
+		(model "G:/KiCAD/snapeda/AT28C64B-15PU/AT28C64B-15PU.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 90)
+			)
+		)
 	)
 	(footprint "Package_DIP:DIP-14_W7.62mm"
 		(layer "F.Cu")
@@ -1432,7 +1443,7 @@
 		(descr "14-lead though-hole mounted DIP package, row spacing 7.62 mm (300 mils)")
 		(tags "THT DIP DIL PDIP 2.54mm 7.62mm 300mil")
 		(property "Reference" "U2"
-			(at 3.8 1.125 270)
+			(at 3.8 1.125 -90)
 			(layer "F.SilkS")
 			(uuid "ac54fa7b-1108-4048-8b21-f8a9e5a5ebcf")
 			(effects
@@ -1646,7 +1657,7 @@
 			(uuid "b095ffe9-9b12-472a-bcf5-f7dfcffe3c6d")
 		)
 		(fp_text user "${REFERENCE}"
-			(at 3.8 2.625 270)
+			(at 3.8 2.625 -90)
 			(layer "F.Fab")
 			(uuid "abc739b1-098d-4a46-9bb7-8051f1df1a72")
 			(effects
@@ -2616,7 +2627,7 @@
 			(pintype "free")
 			(uuid "921d9b63-cb72-46fb-8df6-2842837427b0")
 		)
-		(model "${KICAD6_3DMODEL_USER_DIR}/RPi Pico W w_headers.step"
+		(model "G:/KiCAD/snapeda/Raspberry_Pi_Pico_W_Kicad_Files-main/RPi Pico W w_headers.step"
 			(offset
 				(xyz -10.5 -25.5 10)
 			)
@@ -2633,7 +2644,7 @@
 		(uuid "15a2c1f4-f8a5-4bad-af50-43b80b881c64")
 		(at 59.985 46.2)
 		(property "Reference" "U4"
-			(at -1.425 10.835 360)
+			(at -1.425 10.835 0)
 			(layer "B.SilkS")
 			(uuid "5940060d-04d2-4d17-ac0c-de76c52923fb")
 			(effects
@@ -3125,13 +3136,24 @@
 			(solder_mask_margin 0.102)
 			(uuid "d10ea10b-f27a-4129-b933-324c96d42e7f")
 		)
+		(model "G:/KiCAD/snapeda/SN74HC595N/SN74HC595N.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 0)
+			)
+		)
 	)
 	(footprint "SN74HC595N:DIP794W45P254L1969H508Q16"
 		(layer "B.Cu")
 		(uuid "b23a0efd-674b-481c-b83f-f093a59e1dc9")
 		(at 59.985 25.7)
 		(property "Reference" "U3"
-			(at 2 11.5 360)
+			(at 2 11.5 0)
 			(layer "B.SilkS")
 			(uuid "b06b06b9-be0e-49ba-9ff5-16ef01ffa05b")
 			(effects
@@ -3622,6 +3644,17 @@
 			(pintype "power_in")
 			(solder_mask_margin 0.102)
 			(uuid "d3c554d0-1d00-46d1-b0e9-094a1c43a79f")
+		)
+		(model "G:/KiCAD/snapeda/SN74HC595N/SN74HC595N.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 0)
+			)
 		)
 	)
 	(gr_line

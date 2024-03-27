@@ -6159,46 +6159,46 @@
 			)
 		)
 		(pin "10"
-			(uuid "9f7708da-47aa-458c-bc8a-107b37c79610")
+			(uuid "9f7708da-47aa-458c-bc8a-107b37c79611")
 		)
 		(pin "8"
-			(uuid "d50e9dc2-2ac0-4b35-b29b-827e4eb7ecb7")
+			(uuid "d50e9dc2-2ac0-4b35-b29b-827e4eb7ecb8")
 		)
 		(pin "9"
-			(uuid "764c413b-6989-4d22-84a0-f1df6eb79974")
+			(uuid "764c413b-6989-4d22-84a0-f1df6eb79975")
 		)
 		(pin "6"
-			(uuid "f9e23aa3-8687-444b-9b65-e6ace42cb87c")
+			(uuid "f9e23aa3-8687-444b-9b65-e6ace42cb87d")
 		)
 		(pin "4"
-			(uuid "cfee1dae-47b5-4679-9898-67e0490db165")
+			(uuid "cfee1dae-47b5-4679-9898-67e0490db166")
 		)
 		(pin "13"
-			(uuid "8b44a719-8001-40cd-a656-bc2b1e09f670")
+			(uuid "8b44a719-8001-40cd-a656-bc2b1e09f671")
 		)
 		(pin "7"
-			(uuid "015c4300-d916-460d-bf7b-c1a00feebd86")
+			(uuid "015c4300-d916-460d-bf7b-c1a00feebd87")
 		)
 		(pin "5"
-			(uuid "abf37ffd-491d-4092-9465-2c3737ac7812")
+			(uuid "abf37ffd-491d-4092-9465-2c3737ac7813")
 		)
 		(pin "1"
-			(uuid "968bbfb4-57ed-4a8d-b746-279c346061b9")
+			(uuid "968bbfb4-57ed-4a8d-b746-279c346061ba")
 		)
 		(pin "2"
-			(uuid "72051459-7a57-4c40-9867-a4b410b2dd0f")
+			(uuid "72051459-7a57-4c40-9867-a4b410b2dd10")
 		)
 		(pin "12"
-			(uuid "db8aab91-28bf-4446-8d39-1ccdfffd71d8")
+			(uuid "db8aab91-28bf-4446-8d39-1ccdfffd71d9")
 		)
 		(pin "14"
-			(uuid "0ff7552a-d5f6-44b4-bffd-883e321095fd")
+			(uuid "0ff7552a-d5f6-44b4-bffd-883e321095fe")
 		)
 		(pin "11"
-			(uuid "416bdfbe-36c8-4f24-bb78-bf8ebccb65fb")
+			(uuid "416bdfbe-36c8-4f24-bb78-bf8ebccb65fc")
 		)
 		(pin "3"
-			(uuid "18f9805b-be0c-44d0-b8ce-539739748e35")
+			(uuid "18f9805b-be0c-44d0-b8ce-539739748e36")
 		)
 		(instances
 			(project "SensorModuleBase"
@@ -6748,46 +6748,46 @@
 			)
 		)
 		(pin "10"
-			(uuid "9f7708da-47aa-458c-bc8a-107b37c79610")
+			(uuid "9f7708da-47aa-458c-bc8a-107b37c79612")
 		)
 		(pin "8"
-			(uuid "d50e9dc2-2ac0-4b35-b29b-827e4eb7ecb7")
+			(uuid "d50e9dc2-2ac0-4b35-b29b-827e4eb7ecb9")
 		)
 		(pin "9"
-			(uuid "764c413b-6989-4d22-84a0-f1df6eb79974")
+			(uuid "764c413b-6989-4d22-84a0-f1df6eb79976")
 		)
 		(pin "6"
-			(uuid "f9e23aa3-8687-444b-9b65-e6ace42cb87c")
+			(uuid "f9e23aa3-8687-444b-9b65-e6ace42cb87e")
 		)
 		(pin "4"
-			(uuid "cfee1dae-47b5-4679-9898-67e0490db165")
+			(uuid "cfee1dae-47b5-4679-9898-67e0490db167")
 		)
 		(pin "13"
-			(uuid "8b44a719-8001-40cd-a656-bc2b1e09f670")
+			(uuid "8b44a719-8001-40cd-a656-bc2b1e09f672")
 		)
 		(pin "7"
-			(uuid "015c4300-d916-460d-bf7b-c1a00feebd86")
+			(uuid "015c4300-d916-460d-bf7b-c1a00feebd88")
 		)
 		(pin "5"
-			(uuid "abf37ffd-491d-4092-9465-2c3737ac7812")
+			(uuid "abf37ffd-491d-4092-9465-2c3737ac7814")
 		)
 		(pin "1"
-			(uuid "968bbfb4-57ed-4a8d-b746-279c346061b9")
+			(uuid "968bbfb4-57ed-4a8d-b746-279c346061bb")
 		)
 		(pin "2"
-			(uuid "72051459-7a57-4c40-9867-a4b410b2dd0f")
+			(uuid "72051459-7a57-4c40-9867-a4b410b2dd11")
 		)
 		(pin "12"
-			(uuid "db8aab91-28bf-4446-8d39-1ccdfffd71d8")
+			(uuid "db8aab91-28bf-4446-8d39-1ccdfffd71da")
 		)
 		(pin "14"
-			(uuid "0ff7552a-d5f6-44b4-bffd-883e321095fd")
+			(uuid "0ff7552a-d5f6-44b4-bffd-883e321095ff")
 		)
 		(pin "11"
-			(uuid "416bdfbe-36c8-4f24-bb78-bf8ebccb65fb")
+			(uuid "416bdfbe-36c8-4f24-bb78-bf8ebccb65fd")
 		)
 		(pin "3"
-			(uuid "18f9805b-be0c-44d0-b8ce-539739748e35")
+			(uuid "18f9805b-be0c-44d0-b8ce-539739748e37")
 		)
 		(instances
 			(project "SensorModuleBase"
