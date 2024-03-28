@@ -7,8 +7,7 @@ extern "C" {
 }
 
 #include "operation/kantoku.hpp"
-#include "networking/neosocket.hpp"
-#include "hardware/pwmctrl.hpp"
+#include "operation/sensors/upa.hpp"
 
 #define BUFSIZE 1024
 
@@ -17,12 +16,12 @@ int main() {
     cyw43_arch_init();
     stdio_init_all();
     adc_init();
-    sleep_ms(2000);
 
     /*
     // create kantoku for setup, network, and pairing
     // constructor handles serial setup, network connection, pairing, and uplink creation
     Kantoku kan;
+    sleep_ms(2000);
     
     // make sure module paired to controller
     if (!kan.attemptPair()) {
@@ -33,7 +32,6 @@ int main() {
     std::cout << socket::popRecvq() << std::endl;*/
 
     UPASensor upa;
-
 
     std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;

@@ -1,7 +1,7 @@
 import serial
 
 def main():
-    port = "/dev/ttyACM0"
+    port = "/dev/ttyACM1"
     #port = "COM6"
     baud = 115200
 

@@ -6,6 +6,8 @@ extern "C" {
     #include <hardware/pwm.h>
     #include <hardware/adc.h>
 }
+#include <cmath>
+
 
 // init gpio pins and set up pwm
 void UPASensor::gpioSetup() {
@@ -39,20 +41,9 @@ void UPASensor::gpioSetup() {
 UPASensor::UPASensor() {
     this->pwmActive = false;
     this->rx = 2; // GP28
-    this->pulseLength = 100; // 100us
 
     // run GPIO setup
     gpioSetup();
-}
-
-// call this before readRecv()
-void UPASensor::prepRecv() {
-    // prep receiver by selecting ADC pin
-    adc_select_input(this->rx);
-}
-
-uint16_t UPASensor::readRecv() {
-    return adc_read();
 }
 
 void UPASensor::pulseLR(uint phaseDelay) {
@@ -95,30 +86,85 @@ void UPASensor::pulseRL(uint phaseDelay) {
     pwm_set_enabled(slices[3], true);
 }
 
-/*
-// poll ultrasonic receiver and return read value
-uint UPASensor::poll(float angle) {
+void UPASensor::pulseCC() {
+    pwm_set_enabled(slices[3], true);
+    pwm_set_enabled(slices[0], true);
+    pwm_set_enabled(slices[1], true);
+    pwm_set_enabled(slices[2], true);
+
+    sleep_us(pulseLength);
+
+    pwm_set_enabled(slices[3], false);
+    pwm_set_enabled(slices[0], false);
+    pwm_set_enabled(slices[1], false);
+    pwm_set_enabled(slices[2], false);
+}
+
+float UPASensor::calcPhaseDelay(float angle) {
+    angle = validateAngle(angle);
+    return (tan(angle * RAD_TO_DEG) - (2000 * pulseLength)) / v_sound;
+}
+
+// return ceil'd/floor'd value for provided angle
+float UPASensor::validateAngle(float angle) {
+    if (angle < -UPA_ANGLE_LIMIT)
+        return -UPA_ANGLE_LIMIT;
+    else if (angle > UPA_ANGLE_LIMIT)
+        return UPA_ANGLE_LIMIT;
+    else
+        return angle;
+}
+
+// poll ultrasonic receiver and return distance of ping
+uint64_t UPASensor::poll(float angle) {
+    // force angle into bounds
+    angle = validateAngle(angle);
+
     // select receiver as adc input
     adc_select_input(rx);
 
-    // send 1 ms pulse
-    this->pulse(1000);
+    // send pulse
+    if (angle != 0) {
+        // if negative: fire LR
+        if (angle < 0)
+            this->pulseLR(calcPhaseDelay(-angle));
+        // otherwise, it's positive: fire RL
+        else
+            this->pulseRL(calcPhaseDelay(angle));
+    }
+    // if direction angle is 0, fire center
+    else this->pulseCC();
 
     // start timer
     absolute_time_t start = get_absolute_time();
 
     // listen for response and wait until generated voltage is above baseline
     uint16_t adc_raw;
+    absolute_time_t now;
     while (true) {
+        now = get_absolute_time();
         adc_raw = adc_read();
+
         // if voltage goes above baseline, exit loop
-        if (adc_raw * UPA_CONVERSION_FACTOR > 0.5)
+        if (adc_raw * UPA_CONVERSION_FACTOR > UPA_ADC_BASE_VOLTAGE)
+            break;
+
+        // if timeout reached before adc_raw goes above baseline, then nothing in range
+        else if (absolute_time_diff_us(start, now) >= pollTimeout)
             break;
     }
 
-    // get number of microseconds taken for pulse to reach receiver
-    int64_t diff = absolute_time_diff_us(start, get_absolute_time());
-
-    return adc_get_selected_input();
+    // return distance of echo in mm/us
+    return (absolute_time_diff_us(start, now) / 2) * (v_sound / 1'000'000);
 }
-*/
+
+std::vector<struct upa_result> UPASensor::rangeSweep(float startAngle, float endAngle) {
+    startAngle = validateAngle(startAngle);
+    endAngle = validateAngle(endAngle);
+
+    // todo
+}
+
+std::vector<struct upa_result> UPASensor::fullSweep() {
+    return rangeSweep(-UPA_ANGLE_LIMIT, UPA_ANGLE_LIMIT);
+}
