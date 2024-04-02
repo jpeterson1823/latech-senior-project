@@ -17,7 +17,7 @@ extern "C" {
 #define UPA_ANGLE_LIMIT 45
 // change sweep resolution if you want more upa_results per sweep.
 // value represents a degree step
-#define UPA_SWEEP_RESOLUTION 1
+#define UPA_SWEEP_RESOLUTION 0.5f
 
 struct upa_result {
     float angle;
@@ -42,18 +42,16 @@ private:
     void pulseCC();
     void pulseRL(uint phaseDelay);
     void pulseLR(uint phaseDelay);
+    std::size_t calcUpaResultVecLen(float startAngle, float endAngle);
 
+    float poll(float angle);
     float validateAngle(float angle);
     float calcPhaseDelay(float angle);
-    uint64_t poll(float angle);
 
 public:
     UPASensor();
     
     // transducer & receiver control
-    std::vector<struct upa_result> fullSweep();
+    std::vector<struct upa_result> sweepScan();
     std::vector<struct upa_result> rangeSweep(float startAngle, float endAngle);
-
-    // high-level control
-    float scan();
 };

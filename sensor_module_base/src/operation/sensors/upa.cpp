@@ -9,7 +9,10 @@ extern "C" {
 #include <cmath>
 
 
-// init gpio pins and set up pwm
+/**
+ * @brief Initialize gpio pins and set up pwm for UPASensor
+ * 
+ */
 void UPASensor::gpioSetup() {
     // analog pin setup
     adc_gpio_init(rx);   
@@ -38,6 +41,10 @@ void UPASensor::gpioSetup() {
     }
 }
 
+/**
+ * @brief Construct a new UPASensor::UPASensor object
+ * 
+ */
 UPASensor::UPASensor() {
     this->pwmActive = false;
     this->rx = 2; // GP28
@@ -46,6 +53,11 @@ UPASensor::UPASensor() {
     gpioSetup();
 }
 
+/**
+ * @brief Pulse transceivers from left to right, pausing inbetween for specified phase delay.
+ * 
+ * @param phaseDelay how long (in microseconds) to delay before firing the next transceiver
+ */
 void UPASensor::pulseLR(uint phaseDelay) {
     pwm_set_enabled(slices[0], true);
     sleep_us(phaseDelay);
@@ -66,6 +78,11 @@ void UPASensor::pulseLR(uint phaseDelay) {
     pwm_set_enabled(slices[0], true);
 }
 
+/**
+ * @brief Pulse transceivers from right to left, pausing inbetween for specified phase delay.
+ * 
+ * @param phaseDelay how long (in microseconds) to delay before firing the next transceiver
+ */
 void UPASensor::pulseRL(uint phaseDelay) {
     pwm_set_enabled(slices[3], true);
     sleep_us(phaseDelay);
@@ -86,6 +103,9 @@ void UPASensor::pulseRL(uint phaseDelay) {
     pwm_set_enabled(slices[3], true);
 }
 
+/**
+ * @brief Pulse transceivers at the same time (no phase delay).
+ */
 void UPASensor::pulseCC() {
     pwm_set_enabled(slices[3], true);
     pwm_set_enabled(slices[0], true);
@@ -100,12 +120,23 @@ void UPASensor::pulseCC() {
     pwm_set_enabled(slices[2], false);
 }
 
+/**
+ * @brief Calculates delay for triggering transceivers to form beam at specified angle
+ * 
+ * @param angle     target angle
+ * @return          delay time (in microseconds)
+ */
 float UPASensor::calcPhaseDelay(float angle) {
     angle = validateAngle(angle);
     return (tan(angle * RAD_TO_DEG) - (2000 * pulseLength)) / v_sound;
 }
 
-// return ceil'd/floor'd value for provided angle
+/**
+ * @brief Return ceil'd/floor'd value for provided angle
+ * 
+ * @param angle     angle to validate
+ * @return float    valid angle that's within FoV
+ */
 float UPASensor::validateAngle(float angle) {
     if (angle < -UPA_ANGLE_LIMIT)
         return -UPA_ANGLE_LIMIT;
@@ -115,8 +146,13 @@ float UPASensor::validateAngle(float angle) {
         return angle;
 }
 
-// poll ultrasonic receiver and return distance of ping
-uint64_t UPASensor::poll(float angle) {
+/**
+ * @brief Poll ultrasonic receiver and return distance of received ping
+ * 
+ * @param angle specific angle to poll
+ * @return      distance measurement calculated from echo timing
+ */
+float UPASensor::poll(float angle) {
     // force angle into bounds
     angle = validateAngle(angle);
 
@@ -154,17 +190,51 @@ uint64_t UPASensor::poll(float angle) {
             break;
     }
 
-    // return distance of echo in mm/us
-    return (absolute_time_diff_us(start, now) / 2) * (v_sound / 1'000'000);
+    // return distance of echo in mm
+    return (absolute_time_diff_us(start, now) / 2) * (v_sound / 1000.0f);
 }
 
+/**
+ * @brief Calculates length of vector to be created for a given angle range at the current sweep resolution
+ * 
+ * @param startAngle    starting angle for range
+ * @param endAngle      ending angle for range
+ * @return              length of resulting upa_result vector
+ */
+std::size_t UPASensor::calcUpaResultVecLen(float startAngle, float endAngle) {
+    return abs(startAngle - endAngle) * UPA_SWEEP_RESOLUTION;
+}
+
+/**
+ * @brief Polls a specified range within the FoV of the sensor
+ * 
+ * @param startAngle starting angle for range
+ * @param endAngle   ending angle for range
+ * @return           vector of poll results
+ */
 std::vector<struct upa_result> UPASensor::rangeSweep(float startAngle, float endAngle) {
+    // make sure angles are valid and ceil/floor if not
     startAngle = validateAngle(startAngle);
     endAngle = validateAngle(endAngle);
 
-    // todo
+    // create vector for sweep results
+    std::vector<struct upa_result> sweepResult(calcUpaResultVecLen(startAngle, endAngle));
+
+    // poll angles and increment by sweep resolution
+    std::size_t resultIndex = 0;
+    for (float angle = startAngle; angle <= endAngle; angle += UPA_SWEEP_RESOLUTION) {
+        // poll and save results for specific angle
+        sweepResult[resultIndex++] = {
+            angle:      angle,
+            distance:   poll(angle)
+        };
+    }
+
+    // return sweep results
+    return sweepResult;
 }
 
-std::vector<struct upa_result> UPASensor::fullSweep() {
+// poll entire FoV of sensor
+std::vector<struct upa_result> UPASensor::sweepScan() {
     return rangeSweep(-UPA_ANGLE_LIMIT, UPA_ANGLE_LIMIT);
 }
