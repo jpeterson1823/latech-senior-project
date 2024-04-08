@@ -1,9 +1,10 @@
-#include "operation/kantoku.hpp"
-#include "hardware/serial_interface.hpp"
-#include "networking/wifi.hpp"
-#include "networking/sockets.hpp"
-#include "networking/httpreqs.hpp"
-#include "networking/neosocket.hpp"
+#include <operation/kantoku.hpp>
+//#include "hardware/serial_interface.hpp"
+#include <operation/serial/session.hpp>
+#include <networking/wifi.hpp>
+#include <networking/sockets.hpp>
+#include <networking/httpreqs.hpp>
+#include <networking/neosocket.hpp>
 
 extern "C" {
     #include <pico/stdlib.h>
@@ -11,7 +12,6 @@ extern "C" {
 }
 
 #include <string>
-
 #include <iostream>
 
 // sets up kantoku
@@ -82,6 +82,42 @@ Kantoku::Action Kantoku::determineAction() {
 
 // negotiates creds with controller
 void Kantoku::serialSetup() {
+    // open serial session
+    SerialSession s;
+    s.open();
+
+    // loop until successful pair
+    while (true) {
+        // wait for available packet
+        while(!s.packetAvailable()) {}
+
+        // receive packet once one is available
+        SerialPacket packet;
+        s.recv(packet);
+
+        // handle packet
+        switch(packet.getType()) {
+            // IDENT if requested
+            case PacketType::IDENT:
+                SerialPacket ident(PacketType::IDENT, nullptr, 0);
+                s.send(ident);
+                break;
+
+            // state intent if requested
+            case PacketType::INTENT_Q:
+                // create data array
+                //TODO
+                break;
+            
+            // record response and pair info
+            case PacketType::RESPONSE:
+                //TODO
+                break;
+        }
+    }
+}
+/* old method here
+void Kantoku::serialSetup() {
     // begin connection by waiting for controller to send --dont care-- data
     std::string sbuf;
     serial_recv(sbuf);
@@ -114,7 +150,7 @@ void Kantoku::serialSetup() {
 
     // set action to network pair
     this->action = Action::NetworkPair;
-}
+}*/
 
 // Connect to network using saved creds
 void Kantoku::networkConn() {

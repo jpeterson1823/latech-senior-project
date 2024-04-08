@@ -2,3 +2,4 @@
 docker/**
 *.o
 **.pyc
+**/.venv/**

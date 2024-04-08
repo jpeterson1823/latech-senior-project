@@ -43,6 +43,9 @@ add_executable(main
 
     src/operation/kantoku.cpp
     src/operation/sensors/upa.cpp
+
+    src/operation/serial/session.cpp
+    src/operation/serial/packet.cpp
 )
 
 # custom include
@@ -51,9 +54,10 @@ target_include_directories(main PRIVATE
 )
 
 target_link_libraries( main
-    pico_stdlib
-    pico_cyw43_arch_lwip_threadsafe_background
     pico_time
+    pico_stdlib
+    pico_multicore
+    pico_cyw43_arch_lwip_threadsafe_background
     hardware_gpio
     hardware_pwm
     hardware_adc

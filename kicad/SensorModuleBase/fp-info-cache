@@ -1,4 +1,11 @@
-23046292800737030
+23049714668790034
+2N2222
+TO127P584H533-3
+
+
+0
+3
+3
 AT28C64B-15PU
 DIP1555W45P254L3733H482Q28
 
@@ -93631,6 +93638,13 @@ igbt diode module
 0
 25
 25
+UltrasonicTransducerReceiver
+Ultrasonic Transducer-Receiver
+
+
+0
+2
+2
 Valve
 Valve_ECC-83-1
 Valve ECC-83-1 round pins

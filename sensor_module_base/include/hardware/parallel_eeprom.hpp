@@ -16,13 +16,15 @@ extern "C" {
 class EEPROM {
 private:
     // IO Mask covers GPIO 0-7
-    const uint32_t IO_MASK = 0b00000000'00000000'00111111'11000000;
+    const uint32_t IO_MASK = 0b00000000'00000000'00000000'01111111;
+    // old io mask below
+    //const uint32_t IO_MASK = 0b00000000'00000000'00111111'11000000;
     const uint8_t rclk  = 8;
     const uint8_t srclk = 9;
-    const uint8_t we = 4;
-    const uint8_t oe = 11;
-    const uint8_t ser   = 12;
-    bool ioDirection = false;
+    const uint8_t ser   = 10;
+    const uint8_t oe    = 11;
+    const uint8_t we    = 12;
+    bool ioDirection    = false;
 
 private:
     void pulseSCLK();
