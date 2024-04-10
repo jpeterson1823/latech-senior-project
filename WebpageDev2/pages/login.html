@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/login-style.css">
+    <title>PRISM | Login</title>
+</head>
+<body>
+    <div class="Container1">
+        <div class="Frame1">
+            <div class="Group-Content">
+                <div class="Group-Logo"></div>
+                <form name="login-form" class="Username-Password" action="/php/login.php" target="_self" method="post" id="login-form">
+                    <div class="Group-Username">
+                        <label for="uname">Username:</label><br>
+                        <input type="text" name="uname" id="uname" required autofocus>
+                    </div>
+                    <div class="Group-Password">
+                        <label for="pass">Password:</label><br>
+                        <input type="password" name="pass" id="pass"
+                        required>
+                    </div>
+                    <div class="Login-Btn">
+                        <input type="submit" value="Log in">
+                    </div>
+                </form>
+                <div class="Group-SignUp" id="SignUp">
+                    <p>Don't Have An Account? <a href="signup.html">Sign Up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
