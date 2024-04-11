@@ -7,6 +7,7 @@ extern "C" {
     #include "pico/cyw43_arch.h"
 }
 
+
 class Wifi {
 private:
     static bool SetupComplete;

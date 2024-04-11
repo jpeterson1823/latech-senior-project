@@ -6,8 +6,8 @@ extern "C" {
     #include <hardware/adc.h>
 }
 
-#include "operation/kantoku.hpp"
-#include "operation/sensors/upa.hpp"
+#include <operation/kantoku.hpp>
+#include <operation/sensors/upa.hpp>
 
 #define BUFSIZE 1024
 
@@ -17,10 +17,9 @@ int main() {
     stdio_init_all();
     adc_init();
 
-    /*
     // create kantoku for setup, network, and pairing
     // constructor handles serial setup, network connection, pairing, and uplink creation
-    Kantoku kan;
+    Kantoku kan(ModuleType::NONE);
     sleep_ms(2000);
     
     // make sure module paired to controller
@@ -29,9 +28,7 @@ int main() {
         exit(1);
     }
 
-    std::cout << socket::popRecvq() << std::endl;*/
-
-    UPASensor upa;
+    //UPASensor upa;
 
     std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;

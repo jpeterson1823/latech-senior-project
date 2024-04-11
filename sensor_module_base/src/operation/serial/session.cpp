@@ -3,6 +3,7 @@
 
 extern "C" {
     #include <pico/multicore.h>
+    #include <pico/stdlib.h>
 }
 
 void SerialSession::__SerialSessionCore1Entry() {
@@ -39,13 +40,14 @@ void SerialSession::__SerialSessionCore1Entry() {
                 while (std::cin.rdbuf()->in_avail() < psize && *sessionOpen) {}
 
                 // load packet into pbuf
-                while(std::cin.rdbuf()->in_avail() && *sessionOpen)
+                while(std::cin.rdbuf()->in_avail() && *sessionOpen) {
                     pbuf[pbufs] = std::cin.rdbuf()->sbumpc();
                     // make sure no buffer overflow
                     if (pbufs < SERPAC_DBUF_SIZE && pbufs < psize)
                         pbufs++;
                     else
                         break;
+                }
                 // clear std::cin once there are no further chars to read
                 std::cin.clear();
                 // reset control vars
@@ -98,8 +100,8 @@ bool SerialSession::send(SerialPacket& packet) {
         return false;
 
     // get data pointer and length
-    uint8_t* data = packet.getData();
-    uint8_t datalen = packet.getDataLen();
+    uint8_t* data = packet.getPayloadBytes();
+    uint8_t datalen = packet.getPayloadSize();
 
     // send header, type, and data length in raw bytes
     std::cout << (char)packet.header[0] << (char)packet.header[1];
@@ -107,9 +109,8 @@ bool SerialSession::send(SerialPacket& packet) {
     std::cout << (char)datalen;
 
     // print every data byte out
-    for (uint8_t i = 0; i < datalen; i++) {
+    for (uint8_t i = 0; i < datalen; i++)
         std::cout << (char)data[i];
-    }
 
     return true;
 }

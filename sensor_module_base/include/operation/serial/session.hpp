@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-
 #include <operation/serial/packet.hpp>
 
 class SerialSession {

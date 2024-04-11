@@ -53,8 +53,8 @@ def pair(port: str, db: Database):
         #db.query(entry)
 
         # generate response packet; data is in following order: SSID;PASSWD;IPADDR
-        data = bytearray("bingus;FizzBuzz23!;")
-        data += leasedIP.rawBytes
+        data = leasedIP.rawBytes
+        data += bytearray("bingus;FizzBuzz23!")
         leasePacket = SerialPacket(PacketType.RESPONSE, data)
 
         # send pairing packet to module and close connection

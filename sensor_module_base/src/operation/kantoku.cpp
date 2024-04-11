@@ -1,5 +1,5 @@
 #include <operation/kantoku.hpp>
-//#include "hardware/serial_interface.hpp"
+#include <operation/serial/packet.hpp>
 #include <operation/serial/session.hpp>
 #include <networking/wifi.hpp>
 #include <networking/sockets.hpp>
@@ -15,15 +15,18 @@ extern "C" {
 #include <iostream>
 
 // sets up kantoku
-Kantoku::Kantoku() {
-    // controller ip set here. should always be the same
-    //this->controllerAddrStr = "192.168.1.1";
-    this->controllerAddrStr = "192.168.21.228";
-    ip4addr_aton(controllerAddrStr.data(), &controllerAddr);
+Kantoku::Kantoku(ModuleType moduleType) {
+    // set module type
+    this->moduleType = moduleType;
+    // set controller IP
+    IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
+    // get and store mac address
+    cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
 
     //first, must determine what state kantoku should be in
     determineAction();
 
+    // go through managerial actions
     if (this->action == Action::SerialSetup)
         serialSetup();
     if (this->action == Action::NetworkConnect)
@@ -87,7 +90,8 @@ void Kantoku::serialSetup() {
     s.open();
 
     // loop until successful pair
-    while (true) {
+    bool shouldLoop = true;
+    while (shouldLoop) {
         // wait for available packet
         while(!s.packetAvailable()) {}
 
@@ -99,65 +103,87 @@ void Kantoku::serialSetup() {
         switch(packet.getType()) {
             // IDENT if requested
             case PacketType::IDENT:
+            {
                 SerialPacket ident(PacketType::IDENT, nullptr, 0);
                 s.send(ident);
                 break;
+            }
 
             // state intent if requested
             case PacketType::INTENT_Q:
-                // create data array
-                //TODO
+            {
+                /*
+                Create pair request packet. Data Order:
+                BYTE    |   VALUE
+                0x00    |   0x23
+                0x01    |   0x12
+                0x02    |   PacketType::PAIR_REQ
+                0x03    |   Payload Length
+                0x04... |   Payload
+
+                Payload Structure
+                0x00-0x06 = Mac Addr
+                     0x07 = SensorType
+                */
+
+                // create pair request packet
+                SerialPacket pr(PacketType::PAIR_REQ);
+
+                // load mac into payload
+                pr.loadIntoPayload(netinfo.mac, 6);
+                pr.setPayloadByte(0x07, ModuleType::NONE);
+                // send packet
+                s.send(pr);
                 break;
+            }
             
             // record response and pair info
             case PacketType::RESPONSE:
-                //TODO
+            {
+                // extract leased IP and store in netinfo
+                IP_ADDR4(
+                    &netinfo.ip,
+                    packet.getPayloadByte(0),
+                    packet.getPayloadByte(1),
+                    packet.getPayloadByte(2),
+                    packet.getPayloadByte(3)
+                );
+
+                // remaining data is string in format "SSID;PSWD"
+                std::string wifiInfo;
+                for (uint8_t i = 4; i < packet.getPayloadSize() && i-4 < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
+                    wifiInfo += char(packet.getPayloadByte(i));
+               
+                // write this creds string to eeprom
+                prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
+                 // append nullchar to end of WiFi info and at KANTOKU_CREDS_BLOCK_NULL_B
+                prom.writeByte(wifiInfo.size() + KANTOKU_WIFI_CREDS_ADDR, '\0');
+                prom.writeByte(KANTOKU_CREDS_BLOCK_NULL_B, '\0');
+
+                // write leased ip to eeprom
+                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 0), KANTOKU_IP_ADDR);
+                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 1), KANTOKU_IP_ADDR + 1);
+                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 2), KANTOKU_IP_ADDR + 2);
+                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 3), KANTOKU_IP_ADDR + 3);
+
+                // write module type to eeprom
+                prom.writeByte(moduleType, KANTOKU_SENSTYPE_ADDR);
+
+                // halt loop as pairing is complete
+                shouldLoop = false;
                 break;
+            }
         }
     }
+    s.close();
 }
-/* old method here
-void Kantoku::serialSetup() {
-    // begin connection by waiting for controller to send --dont care-- data
-    std::string sbuf;
-    serial_recv(sbuf);
-    sbuf.clear();
-
-    // send init req and start creds exchange
-    serial_send("kenchiki.hajime");
-    serial_recv(sbuf);
-
-    // send ack to close connection
-    serial_ack();
-
-    sleep_ms(1000);
-
-    // parse creds info
-    uint16_t delim_index = sbuf.find(';');
-    std::cout << "SBUF: '" << sbuf << '\'' << std::endl;
-    std::string ssid = sbuf.substr(0, delim_index);
-    std::cout << "SSID OBTAINED: " << ssid << std::endl;
-    std::string pswd = sbuf.substr(delim_index+1, sbuf.find('\n') - delim_index);
-    std::cout << "PSWD OBTAINED: " << pswd << std::endl;
-
-    // write creds to eeprom, making sure to write a \x00 at end of creds string
-    std::string creds = ssid + ';' + pswd;
-    prom.writeString(creds.c_str(), KANTOKU_ROM_START);
-    prom.writeByte(0x00, KANTOKU_ROM_START + creds.length());
-
-    // update flag on eeprom
-    prom.writeByte(KANTOKU_CREDS_SAVED, 0x0002);
-
-    // set action to network pair
-    this->action = Action::NetworkPair;
-}*/
 
 // Connect to network using saved creds
 void Kantoku::networkConn() {
     // retrieve creds from EEPROM
-    char ssid[1024];
-    char pswd[1024];
-    uint16_t delimAddr = prom.readUntil(KANTOKU_ROM_START, ';', ssid, 1024);
+    char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
     prom.readUntil(delimAddr+1, '\0', pswd, 1024);
     sleep_ms(500);
 
@@ -189,19 +215,22 @@ bool Kantoku::attemptPair() {
     std::string macAddr;
     Wifi::GetMacString(macAddr);
 
+    // get controller ip string
+    std::string ctrlipstr(ip4addr_ntoa(&netinfo.ctrlip));
+
     // create uri and params string
     std::string uri = "/php/demo.php";
     std::string data = "REQ=PAIR&DATA=" + macAddr;
 
     // create pair HTTP request
     Http::PostReq req (
-        controllerAddrStr,
+        ctrlipstr,
         uri,
         data
     );
 
     // open socket and send http req
-    socket::initialize(&controllerAddr, 80);
+    socket::initialize(&netinfo.ctrlip, 80);
     socket::send(req);
     socket::wait();
 
