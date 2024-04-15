@@ -7,6 +7,7 @@ from datetime import datetime
 import sys
 import os
 import torch.nn.functional as F
+import time
 
 
 
@@ -62,7 +63,9 @@ if __name__ == "__main__":
     optimizer = torch.optim.AdamW(my_model.parameters(), lr=0.0001)
 
     if (action == "train"):   
+        training_start = time.time()
         for epoch in range(EPOCHS):
+            start_time = time.time()
             running_loss = 0
             correct_predictions = 0
             total_samples = 0
@@ -108,7 +111,15 @@ if __name__ == "__main__":
             
             # Print epoch statistics
             print(f'Epoch [{epoch+1}/{EPOCHS}], Loss: {avg_loss:.4f}, Accuracy: {accuracy:.4f}')
+            end_time = time.time()
+            time_elapsed = end_time - start_time
+            print(f"Epoch: {epoch} took {time_elapsed}s")
+        training_end = time.time()
+        training_elapsed = training_end - training_start
+        training_elapsed /= 60
+        print("Total Training Time: ", training_elapsed, " minutes")
         torch.save(my_model, "VoiceRecognitionModel")
+            
 
 
 

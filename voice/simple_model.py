@@ -8,16 +8,19 @@ class SimpleModel(torch.nn.Module):
     def __init__(self):
         super(SimpleModel, self).__init__()
         # First convolutional neural network
-        self.conv1 = nn.Conv2d(1, 256, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1)
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, padding=1)
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=3, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+
         
         # Second convolutional neural network
-        self.conv3 = nn.Conv2d(512, 1024, kernel_size=3, stride=1, padding=1)
+        self.conv5 = nn.Conv2d(256, 512, kernel_size=3, padding=1)
         
         # Fully connected layers
-        self.fc1 = nn.Linear(12288, 1024)
-        self.fc2 = nn.Linear(1024, 2)  # Output layer with 2 neurons for binary classification
+        self.fc1 = nn.Linear(6144, 512)
+        self.fc2 = nn.Linear(512, 2)  # Output layer with 2 neurons for binary classification
         self.dropout1 = nn.Dropout(p=0.5)
         
     def forward(self, speaker_data, comparison_data):
@@ -27,6 +30,8 @@ class SimpleModel(torch.nn.Module):
         x1 = F.relu(self.conv2(x1))
         x1 = self.pool(x1)
         x1 = F.relu(self.conv3(x1))
+        x1 = F.relu(self.conv4(x1))
+        x1 = F.relu(self.conv5(x1))
         x1 = self.pool(x1)
         x1 = x1.view(x1.size(0), -1)  # Flatten
         x1 = F.relu(self.fc1(x1))
@@ -38,6 +43,8 @@ class SimpleModel(torch.nn.Module):
         x2 = F.relu(self.conv2(x2))
         x2 = self.pool(x2)
         x2 = F.relu(self.conv3(x2))
+        x2 = F.relu(self.conv4(x2))
+        x2 = F.relu(self.conv5(x2))
         x2 = self.pool(x2)
         x2 = x2.view(x2.size(0), -1)  # Flatten
         x2 = F.relu(self.fc1(x2))
