@@ -11,7 +11,7 @@ import sys
 import requests
 from urllib.parse import urlencode
 
-OPENWEATHERMAP_API_KEY = 'c87115192e57199814dc7d7edfdd4d17'
+OPENWEATHERMAP_API_KEY = ''
 
 def from_ts_to_time_of_day(ts):
     dt = datetime.fromtimestamp(ts)
