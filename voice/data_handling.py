@@ -62,43 +62,18 @@ def create_test_group(speaker: list, list_of_speakers, speaker_index, max_length
     return group
 
 
-def extract_mfcc(audio_file_path, max_length, num_mfcc=13):
-    audio_data, sample_rate = librosa.load(audio_file_path, sr=None)
-    mfccs = librosa.feature.mfcc(y=audio_data, sr=sample_rate, n_mfcc=num_mfcc)
+def extract_mfcc(audio_file_path, max_length, num_mfcc=40):
+    X, sample_rate = librosa.load(audio_file_path, res_type='kaiser_fast')
 
+    mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=num_mfcc).T, axis=0).astype('float32')
+    stft = np.abs(librosa.stft(X, n_fft=512)).astype('float32')
+    chroma = np.mean(librosa.feature.chroma_stft(S=stft, sr=sample_rate, n_fft=512).T, axis=0).astype('float32')
+    mel = np.mean(librosa.feature.melspectrogram(y=X, sr=sample_rate).T, axis=0).astype('float32')
+    contrast = np.mean(librosa.feature.spectral_contrast(S=stft, sr=sample_rate, n_fft=512).T, axis=0).astype('float32')
+    tonnetz = np.mean(librosa.feature.tonnetz(y=librosa.effects.harmonic(X), sr=sample_rate).T, axis=0).astype('float32')
 
-    if (mfccs.shape[1] < max_length):
-        mfccs = np.pad(mfccs, ((0, 0), (0, max_length - mfccs.shape[1])), mode='constant')
-    elif (mfccs.shape[1] > max_length):
-        mfccs = mfccs[:, :max_length]
+    processed_data = np.concatenate((mfccs, chroma, mel, contrast, tonnetz), axis=0).astype('float32')
+    for i in range(len(processed_data)):
+        processed_data[i] = processed_data[i].astype('float32')
 
-    # Define the desired min-max range (e.g., 0 to 1)
-    min_value = 0
-    max_value = 1
-
-    # Calculate min and max values along the feature axis
-    min_val = np.min(mfccs, axis=0)
-    max_val = np.max(mfccs, axis=0)
-    # Handle zero division and NaN/Infinity values
-    max_val[max_val == min_val] = min_val[max_val == min_val] + 1.0  # Ensure max and min values are different
-    min_val[np.isnan(min_val)] = 0.0  # Replace NaN values with 0
-    min_val[np.isinf(min_val)] = 0.0  # Replace Infinity values with 0
-
-    # Perform min-max scaling
-    mfcc_data_scaled = min_value + (max_value - min_value) * (mfccs - min_val) / (max_val - min_val)
-    """
-    mean = np.mean(mfccs, axis=0)
-    std = np.std(mfccs, axis=0)
-    std[std == 0] = 1.0  # Set standard deviation to 1 if it's zero
-    std[np.isnan(std)] = 1.0  # Replace NaN values with 1
-    std[np.isinf(std)] = 1.0  # Replace Infinity values with 1
-
-
-    # Perform standardization
-    mfcc_data_standardized = (mfccs - mean) / std
-    """
-
-    return mfcc_data_scaled
-
-
-
+    return processed_data
