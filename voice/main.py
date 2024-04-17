@@ -18,6 +18,15 @@ if __name__ == "__main__":
 
     try:
         action = sys.argv[1]
+        if (len(sys.argv) == 3):
+            if (sys.argv[2].lower() == "debug"):
+                DEBUG = True
+            else:
+                DEBUG = False
+            
+        else:
+            DEBUG = False
+
     except IndexError:
         print("Usage: python3 main1.py <train_or_validate>")
         exit()
@@ -48,9 +57,9 @@ if __name__ == "__main__":
 
         same_speaker = folder.split('_')
         if (same_speaker[-1] == "True"):
-            same_speaker = [0.0, 1.0]
+            same_speaker = 1.0
         else:
-            same_speaker = [1.0, 0.0]
+            same_speaker = 0.0
         labels.append(same_speaker)
     
 
@@ -60,11 +69,11 @@ if __name__ == "__main__":
     preprocess_end = time.time()
     print(f"Preprocessing time: {preprocess_end - preprocess_start}")
     my_model = model.LinearModel()
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = nn.BCELoss()
 
     epoch_number = 0
-    EPOCHS = 64
-    optimizer = torch.optim.Adam(my_model.parameters(), lr=0.0001)
+    EPOCHS = 100
+    optimizer = torch.optim.Adam(my_model.parameters(), lr=0.001)
 
     if (action == "train"):   
         training_start = time.time()
@@ -81,12 +90,14 @@ if __name__ == "__main__":
                 comparison_data_tensor = torch.tensor(comparison_data)
                 
                 temp_label = label
-                label = torch.tensor(label)
+                label = torch.tensor([label])
 
                 outputs = my_model.forward(speaker_data_tensor, comparison_data_tensor)
-                predicted = outputs[1]
-                if (predicted >= 0.8):
+                predicted = outputs
+                if (predicted >= 0.6):
                     predicted = 1.0
+                else:
+                    predicted = 0.0
                 # Calculate loss
                 loss = loss_fn(outputs, label)
                 
@@ -99,7 +110,7 @@ if __name__ == "__main__":
                 running_loss += loss.item()
                 
                 # Calculate accuracy
-                answer = label[1]
+                answer = label
                 total_samples += 1
                 
                 correct_predictions += int((predicted == answer))
@@ -141,7 +152,7 @@ if __name__ == "__main__":
                 comparison_data_tensor = torch.tensor(comparison_data)
                 
                 temp_label = label
-                label = torch.tensor(label)
+                label = torch.tensor([label])
 
                 outputs = my_model.forward(speaker_data_tensor, comparison_data_tensor)
 
@@ -157,10 +168,12 @@ if __name__ == "__main__":
                 running_loss += loss.item()
                 
                 # Calculate accuracy
-                predicted = outputs[1]
-                if (predicted >= 0.8):
+                predicted = outputs
+                if (predicted >= 0.6):
                     predicted = 1.0
-                answer = label[1]
+                else:
+                    predicted = 0.0
+                answer = label
                 total_samples += 1
                 
                 correct_predictions += int((predicted == answer))
@@ -201,9 +214,10 @@ if __name__ == "__main__":
                 comparison_data_tensor = torch.tensor(comparison_data)
                 
                 temp_label = label
-                label = torch.tensor(label)
+                label = torch.tensor([label])
 
                 outputs = my_model.forward(speaker_data_tensor, comparison_data_tensor)
+                print(outputs)
 
                 # Calculate loss
                 loss = loss_fn(outputs, label)
@@ -217,13 +231,18 @@ if __name__ == "__main__":
                 running_loss += loss.item()
                 
                 # Calculate accuracy
-                predicted = outputs[1]
-                if (predicted >= 0.8):
+                predicted = outputs
+                if (predicted >= 0.6):
                     predicted = 1.0
-                answer = label[1]
+                else:
+                    predicted = 0.0
+                
+                answer = label
                 total_samples += 1
                 
-                correct_predictions += int((predicted != answer))
+                correct_predictions += int((predicted == answer))
+                if (DEBUG):
+                    print("Predicted:", predicted, " Correct Answer:", label)
             
             # Calculate average loss and accuracy for the epoch
             avg_loss = running_loss / len(labels)
@@ -233,6 +252,6 @@ if __name__ == "__main__":
             writer = SummaryWriter('logs')
             writer.add_scalar('training_loss', avg_loss)
             writer.add_scalar('training_accuracy', accuracy)
-        
+             
             # Print epoch statistics
             print(f'Loss: {avg_loss:.4f}, Accuracy: {accuracy:.4f}')
