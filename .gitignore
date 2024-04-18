@@ -1,6 +1,5 @@
 voice/training/**
 voice/validation/**
-voice/bin/**
 voice/logs/**
 voice/lib64/**
 voice/lib/**

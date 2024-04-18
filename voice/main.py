@@ -217,7 +217,6 @@ if __name__ == "__main__":
                 label = torch.tensor([label])
 
                 outputs = my_model.forward(speaker_data_tensor, comparison_data_tensor)
-                print(outputs)
 
                 # Calculate loss
                 loss = loss_fn(outputs, label)
@@ -242,6 +241,7 @@ if __name__ == "__main__":
                 
                 correct_predictions += int((predicted == answer))
                 if (DEBUG):
+                    print(outputs)
                     print("Predicted:", predicted, " Correct Answer:", label)
             
             # Calculate average loss and accuracy for the epoch
