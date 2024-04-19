@@ -1746,6 +1746,16 @@
 	)
 	(wire
 		(pts
+			(xy 77.47 124.46) (xy 59.69 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60ff155f-c4ca-404e-9697-d3f72b134161")
+	)
+	(wire
+		(pts
 			(xy 88.9 104.14) (xy 88.9 138.43)
 		)
 		(stroke
@@ -1906,7 +1916,7 @@
 	)
 	(wire
 		(pts
-			(xy 95.25 124.46) (xy 59.69 124.46)
+			(xy 95.25 124.46) (xy 85.09 124.46)
 		)
 		(stroke
 			(width 0)
@@ -2095,6 +2105,73 @@
 			(justify left bottom)
 		)
 		(uuid "9d3ee4f3-4efb-4168-bab2-1529e6666d89")
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 81.28 124.46 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "024998ed-80be-42ba-9a09-aa82f56bd3a0")
+		(property "Reference" "R4"
+			(at 81.28 126.746 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10Ω"
+			(at 81.28 129.286 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 81.534 123.444 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 81.28 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 81.28 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "356bda05-9460-4d82-836a-42db95356961")
+		)
+		(pin "1"
+			(uuid "1b878b4a-29ab-45ad-b9de-a73dc5f99ae9")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x08_Top_Bottom")
