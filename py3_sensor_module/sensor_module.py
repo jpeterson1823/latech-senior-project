@@ -24,6 +24,7 @@ def listUsbDevices():
 def pair(port: str, db: Database):
     # open serial session
     session = SerialSession(port, 115200)
+    session.open()
 
     # send IDENT packet and confirm device is a module
     ident = SerialPacket(PacketType.IDENT, None)
@@ -64,5 +65,5 @@ def pair(port: str, db: Database):
         print("Request type not yet implemented")
 
 if __name__ == "__main__":
-    db = Database("localhost", "usr", "123")
-    pair("COM3", db)
+    #db = Database("localhost", "usr", "123")
+    pair("COM3", None)

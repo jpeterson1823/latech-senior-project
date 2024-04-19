@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hardware/parallel_eeprom.hpp"
+#include <hardware/parallel_eeprom.hpp>
 #include <operation/serial/session.hpp>
 
 extern "C" {

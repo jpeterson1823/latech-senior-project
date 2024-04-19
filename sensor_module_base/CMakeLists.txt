@@ -61,6 +61,7 @@ target_link_libraries( main
     hardware_gpio
     hardware_pwm
     hardware_adc
+    hardware_dma
 )
 
 # enable usb output, disable uart output

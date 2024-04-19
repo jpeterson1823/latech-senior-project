@@ -1,4 +1,4 @@
-from addressing import MacAddr, IPv4Addr
+from networking.addressing import MacAddr, IPv4Addr
 from uuid import getnode as get_mac
 
 class DHCPMan:

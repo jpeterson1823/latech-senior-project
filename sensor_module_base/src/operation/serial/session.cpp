@@ -4,6 +4,7 @@
 extern "C" {
     #include <pico/multicore.h>
     #include <pico/stdlib.h>
+    #include <pico/cyw43_arch.h>
 }
 
 void SerialSession::__SerialSessionCore1Entry() {
@@ -74,15 +75,16 @@ bool SerialSession::open() {
         return false;
 
     // reset and launch core1
-    multicore_reset_core1();
     multicore_launch_core1(__SerialSessionCore1Entry);
 
     // set session to active
     sessionActive = true;
+
     // push pbuf and sessionActive pointers to multicore_fifo
-    multicore_fifo_push_blocking((uint32_t)&sessionActive);
-    multicore_fifo_push_blocking((uint32_t)&packetReady);
-    multicore_fifo_push_blocking((uint32_t)pbuf);
+    multicore_fifo_push_blocking((uint32_t)(&sessionActive));
+    multicore_fifo_push_blocking((uint32_t)(&packetReady));
+    multicore_fifo_push_blocking((uint32_t)(&pbuf));
+
     return true;
 }
 
@@ -123,7 +125,12 @@ bool SerialSession::packetAvailable() {
 
 void SerialSession::recv(SerialPacket& packet) {
     // wait until packet is ready
-    while (!packetReady) {}
+    while (!packetReady) {
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+        sleep_ms(250);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+        sleep_ms(250);
+    }
 
     // load data into SerialPacket and unset packetReady
     packet.fromRaw(this->pbuf);

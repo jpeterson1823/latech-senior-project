@@ -21,7 +21,7 @@ class SerialPacket:
         self._ptype = packetType
 
         if self._ptype == PacketType.IDENT:
-            self._data = None
+            self._data = []
         else:
             self._data  = self._header
             self._data += bytes(self.ptype.value) 
@@ -30,9 +30,6 @@ class SerialPacket:
     
     @classmethod
     def fromBytes(cls, data: bytes):
-        if not data or data[0:2] != cls._header:
-            return None
-        
         packetType = data[2]
         datalen = data[3]
         
@@ -52,12 +49,20 @@ class SerialPacket:
     def __str__(self) -> str:
         return f"SerialPacket[header={self._data[0]:02x}{self._data[1]:02x}, pident={self._data[2]:02x}, len={self._data[3]}, data={str(self._data[4:])}]"
 
+
+
+
 class SerialSession:
     def __init__(self, port: str, baud: int):
         self._port = port
         self._baud = baud
         self._session = None
         self._timeout = 5.0 # timeout in seconds
+
+        self._buf = bytearray([])
+
+    def _resetPacketBuf(self):
+        self._buf = bytearray([])
     
     def setTimeout(self, timeout: float):
         self._timeout = timeout
@@ -72,11 +77,31 @@ class SerialSession:
             self._session = None
     
     def send(self, packet: SerialPacket) -> bool:
+        print("SENDING PACKET... ", end='')
         if self._session:
-            return not self._session.write(packet.raw(), timeout=self._timeout)
+            v = self._session.write(packet.raw())
+            print(f"DONE with v={v}")
+            return v
         print("[WARN] Cannot write data to closed serial session!")
         return False
     
     def recv(self) -> SerialPacket:
-        if self._session:
-            return SerialPacket.fromBytes(self._session.read_until(None, size=0xFF, timeout=self._timeout))
+        print("RECVIGN PACKET... ", end='')
+        if not self._session:
+            print("[WARN::SerialSession] recv() called on closed session!")
+            return None
+        
+        # reset buf
+        self._buf = []
+        # receive first bit of packet until length is received
+        for i in range(4):
+            print(f"reading byte {i+1}")
+            self._buf += self._session.read(1)
+
+        # read remaining payload
+        payload_len = int(self._buf[3])
+        self._buf += self._session.read(payload_len)
+
+        # return serial packet
+        print("DONE")
+        return SerialPacket.fromBytes(self._buf)

@@ -1,21 +1,77 @@
-#include "operation/sensors/upa.hpp"
+#include <operation/sensors/upa.hpp>
+#include <iostream>
 
 extern "C" {
     #include <pico/stdlib.h>
     #include <pico/time.h>
+    #include <pico/cyw43_arch.h>
     #include <hardware/pwm.h>
     #include <hardware/adc.h>
+    #include <hardware/dma.h>
 }
 #include <cmath>
 
+/**
+ * @brief Construct a new UPASensor::UPASensor object
+ * 
+ */
+UPASensor::UPASensor() {
+    this->pwmActive = false;
+    this->rx = 1; // GP28
+
+    // run GPIO and ADC setup
+    gpioSetup();
+    adcSetup();
+
+    // dma setup
+}
+
+void UPASensor::dmaSetup() {
+    this->dmaChannel = dma_claim_unused_channel(true);
+    this->dmacfg = dma_channel_get_default_config(dmaChannel);
+
+    // write bytes to address
+    channel_config_set_transfer_data_size(&dmacfg, DMA_SIZE_16);
+    // reading from constant address
+    channel_config_set_read_increment(&dmacfg, false);
+    // writing to incrementing address
+    channel_config_set_write_increment(&dmacfg, true);
+    // pace transfers based on availability of adc samples
+    channel_config_set_dreq(&dmacfg, DREQ_ADC);
+
+    // configure DMA channel and **don't** start immediately.
+    dma_channel_configure(dmaChannel, &dmacfg,
+        this->adcCaptureBuf,    // memory to write to
+        &adc_hw->fifo,          // address of adc fifo
+        UPA_ADC_CAPTURE_DEPTH,  // number of transfers
+        false                   // don't start immediately
+    );
+}
+
+void UPASensor::adcSetup() {
+    // analog pin setup
+    adc_gpio_init(26 + rx);
+    adc_select_input(rx);
+    adc_fifo_setup(
+        true,   // write to fifo
+        true,   // enable dma data request
+        1,      // dreq and irq asserted when >= 1 sample presetn
+        false,  // disable error bit
+        false    // shift data to 8 bits when pushing to fifo
+    );
+    // run full throttle
+    adc_set_clkdiv(0);
+}
 
 /**
  * @brief Initialize gpio pins and set up pwm for UPASensor
  * 
  */
 void UPASensor::gpioSetup() {
-    // analog pin setup
-    adc_gpio_init(rx);   
+    gpio_init(UPA_TPIN_LL);
+    gpio_init(UPA_TPIN_LM);
+    gpio_init(UPA_TPIN_MR);
+    gpio_init(UPA_TPIN_RR);
 
     // set up each pwm pin and save each slice in asc order
     this->slices[0] = pwm_gpio_to_slice_num(UPA_TPIN_LL);
@@ -41,17 +97,6 @@ void UPASensor::gpioSetup() {
     }
 }
 
-/**
- * @brief Construct a new UPASensor::UPASensor object
- * 
- */
-UPASensor::UPASensor() {
-    this->pwmActive = false;
-    this->rx = 2; // GP28
-
-    // run GPIO setup
-    gpioSetup();
-}
 
 /**
  * @brief Pulse transceivers from left to right, pausing inbetween for specified phase delay.
@@ -128,7 +173,7 @@ void UPASensor::pulseCC() {
  */
 float UPASensor::calcPhaseDelay(float angle) {
     angle = validateAngle(angle);
-    return (tan(angle * RAD_TO_DEG) - (2000 * pulseLength)) / v_sound;
+    return (tan(angle * RAD_TO_DEG) - phaseScalar);
 }
 
 /**
@@ -156,9 +201,6 @@ float UPASensor::poll(float angle) {
     // force angle into bounds
     angle = validateAngle(angle);
 
-    // select receiver as adc input
-    adc_select_input(rx);
-
     // send pulse
     if (angle != 0) {
         // if negative: fire LR
@@ -171,27 +213,38 @@ float UPASensor::poll(float angle) {
     // if direction angle is 0, fire center
     else this->pulseCC();
 
-    // start timer
-    absolute_time_t start = get_absolute_time();
+    // select receiver as adc input
+    adc_select_input(rx);
+    // start dma and adc
+    dma_channel_start(dmaChannel);
+    adc_run(true);
 
-    // listen for response and wait until generated voltage is above baseline
-    uint16_t adc_raw;
-    absolute_time_t now;
-    while (true) {
-        now = get_absolute_time();
-        adc_raw = adc_read();
+    // wait for dma to finish
+    dma_channel_wait_for_finish_blocking(dmaChannel);
 
-        // if voltage goes above baseline, exit loop
-        if (adc_raw * UPA_CONVERSION_FACTOR > UPA_ADC_BASE_VOLTAGE)
-            break;
+    // stop adc sampling and clean adc fifo
+    adc_run(false);
+    adc_fifo_drain();
 
-        // if timeout reached before adc_raw goes above baseline, then nothing in range
-        else if (absolute_time_diff_us(start, now) >= pollTimeout)
-            break;
-    }
+    // look through all samples and grab the index of largest echo measurement
+    uint16_t index = 0;
+    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++)
+        if (adcCaptureBuf[index] < adcCaptureBuf[i]){
+            std::cout << adcCaptureBuf[index] << std::endl;
+            index = i;
+        }
+    
+    std::cout << "Largest ADC: " << (int)adcCaptureBuf[index] << std::endl;
+    
+    // ADC DMA runs at 500Ksps, meaning each sample takes about 2us.
+    // (2us * index) = total travel time
+    // ttt / 2 = one-way echo
+    // ==> index = one-way echo in us
+    // index / (0.343 mm/us) = distance in mm
+    // ==> index / 0.343 = distance in mm
 
-    // return distance of echo in mm
-    return (absolute_time_diff_us(start, now) / 2) * (v_sound / 1000.0f);
+    // calculate and return distance to echo
+    return index / 0.343f;
 }
 
 /**

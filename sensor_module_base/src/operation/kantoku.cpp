@@ -36,8 +36,6 @@ Kantoku::Kantoku(ModuleType moduleType) {
 
 // formats eeprom
 void Kantoku::formatEEPROM() {
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
-
     // zero entire eeprom
     for (uint32_t i = 0; i <= 512; i++)
         prom.writeByte(0x00, i);
@@ -46,7 +44,6 @@ void Kantoku::formatEEPROM() {
     prom.writeByte(0x09, 0x0000);
     prom.writeByte(0x08, 0x0001);
     // flag byte already at KANTOKU_EEPROM_FORMATTED, so no action needed there
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
 }
 
 // determines which action should be taken given current situation
@@ -93,7 +90,12 @@ void Kantoku::serialSetup() {
     bool shouldLoop = true;
     while (shouldLoop) {
         // wait for available packet
-        while(!s.packetAvailable()) {}
+        while(!s.packetAvailable()) {
+            //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+            //sleep_ms(250);
+            //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+            //sleep_ms(250);
+        }
 
         // receive packet once one is available
         SerialPacket packet;
