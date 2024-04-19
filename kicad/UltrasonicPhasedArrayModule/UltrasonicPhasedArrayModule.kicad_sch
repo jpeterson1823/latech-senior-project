@@ -10,388 +10,50 @@
 		(comment 1 "Created by John Peterson")
 	)
 	(lib_symbols
-		(symbol "2N2222:2N2222"
+		(symbol "Amplifier_Audio:LM386"
 			(pin_names
-				(offset 1.016)
+				(offset 0.127)
 			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "Q"
-				(at -10.16 7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Value" "2N2222"
-				(at -10.16 -7.62 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Footprint" "2N2222:TO127P584H533-3"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "MF" "ON Semiconductor"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "MAXIMUM_PACKAGE_HEIGHT" "5.33 mm"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Package" "TO-18 Texas Instruments"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Price" "None"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Check_prices" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=eda"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "STANDARD" "IPC 7351B"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "PARTREV" "R2"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "SnapEDA_Link" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=snap"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "MP" "2N2222"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Description_1" "\nBipolar (BJT) Transistor NPN 50V 800mA 300mW Surface Mount Ceramic SMD\n"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "Availability" "In Stock"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(property "MANUFACTURER" "Micross"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify bottom)
-					(hide yes)
-				)
-			)
-			(symbol "2N2222_0_0"
-				(rectangle
-					(start -0.254 -2.54)
-					(end 0.508 2.54)
-					(stroke
-						(width 0.1)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -2.54) (xy 1.778 -1.524)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.524 -2.413) (xy 2.286 -2.413)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.524 -2.286) (xy 1.905 -2.286)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.54 -2.04) (xy 0.308 -1.424)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.778 -1.778) (xy 1.524 -2.286)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.778 -1.524) (xy 2.54 -2.54)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.905 -2.286) (xy 1.778 -2.032)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.286 -2.413) (xy 1.778 -1.778)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -2.54) (xy 1.27 -2.54)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 0.508 1.524)
-					)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at 2.54 -5.08 90)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -2.54 0 0)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "~"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
-			)
-		)
-		(symbol "74xx:74HC04"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at 0 1.27 0)
+				(at 1.27 7.62 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "74HC04"
-				(at 0 -1.27 0)
+			(property "Value" "LM386"
+				(at 1.27 5.08 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Footprint" ""
+				(at 2.54 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm386.pdf"
+				(at 5.08 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Low Voltage Audio Power Amplifier, DIP-8/SOIC-8/SSOP-8"
 				(at 0 0 0)
 				(effects
 					(font
@@ -400,7 +62,7 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
+			(property "ki_keywords" "single Power opamp"
 				(at 0 0 0)
 				(effects
 					(font
@@ -409,7 +71,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Hex Inverter"
+			(property "ki_fp_filters" "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm* MSSOP*P0.65mm* TSSOP*3x3mm*P0.5mm*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -418,36 +80,10 @@
 					(hide yes)
 				)
 			)
-			(property "ki_locked" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "HCMOS not inv"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "DIP*W7.62mm* SSOP?14* TSSOP?14*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "74HC04_1_0"
+			(symbol "LM386_0_1"
 				(polyline
 					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
+						(xy 5.08 0) (xy -5.08 5.08) (xy -5.08 -5.08) (xy 5.08 0)
 					)
 					(stroke
 						(width 0.254)
@@ -457,13 +93,15 @@
 						(type background)
 					)
 				)
+			)
+			(symbol "LM386_1_1"
 				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
-					(name "~"
+					(at 0 -7.62 90)
+					(length 5.08)
+					(name "GAIN"
 						(effects
 							(font
-								(size 1.27 1.27)
+								(size 0.508 0.508)
 							)
 						)
 					)
@@ -475,10 +113,10 @@
 						)
 					)
 				)
-				(pin output inverted
-					(at 7.62 0 180)
-					(length 3.81)
-					(name "~"
+				(pin input line
+					(at -7.62 -2.54 0)
+					(length 2.54)
+					(name "-"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -493,24 +131,10 @@
 						)
 					)
 				)
-			)
-			(symbol "74HC04_2_0"
-				(polyline
-					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
 				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
-					(name "~"
+					(at -7.62 2.54 0)
+					(length 2.54)
+					(name "+"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -525,10 +149,10 @@
 						)
 					)
 				)
-				(pin output inverted
-					(at 7.62 0 180)
+				(pin power_in line
+					(at -2.54 -7.62 90)
 					(length 3.81)
-					(name "~"
+					(name "GND"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -543,23 +167,9 @@
 						)
 					)
 				)
-			)
-			(symbol "74HC04_3_0"
-				(polyline
-					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
+				(pin output line
+					(at 7.62 0 180)
+					(length 2.54)
 					(name "~"
 						(effects
 							(font
@@ -575,10 +185,10 @@
 						)
 					)
 				)
-				(pin output inverted
-					(at 7.62 0 180)
+				(pin power_in line
+					(at -2.54 7.62 270)
 					(length 3.81)
-					(name "~"
+					(name "V+"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -593,183 +203,13 @@
 						)
 					)
 				)
-			)
-			(symbol "74HC04_4_0"
-				(polyline
-					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin output inverted
-					(at 7.62 0 180)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "74HC04_5_0"
-				(polyline
-					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin output inverted
-					(at 7.62 0 180)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "74HC04_6_0"
-				(polyline
-					(pts
-						(xy -3.81 3.81) (xy -3.81 -3.81) (xy 3.81 0) (xy -3.81 3.81)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(pin output inverted
-					(at 7.62 0 180)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -7.62 0 0)
-					(length 3.81)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "74HC04_7_0"
-				(pin power_in line
-					(at 0 12.7 270)
+					(at 0 7.62 270)
 					(length 5.08)
-					(name "VCC"
+					(name "BYPASS"
 						(effects
 							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -12.7 90)
-					(length 5.08)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
+								(size 0.508 0.508)
 							)
 						)
 					)
@@ -781,383 +221,17 @@
 						)
 					)
 				)
-			)
-			(symbol "74HC04_7_1"
-				(rectangle
-					(start -5.08 7.62)
-					(end 5.08 -7.62)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-		)
-		(symbol "74xx:74HC138"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "U"
-				(at -7.62 13.97 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left bottom)
-				)
-			)
-			(property "Value" "74HC138"
-				(at 2.54 -11.43 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left top)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "http://www.ti.com/lit/ds/symlink/cd74hc238.pdf"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "3-to-8 line decoder/multiplexer inverting, DIP-16/SOIC-16/SSOP-16"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "demux"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "DIP*W7.62mm* SOIC*3.9x9.9mm*P1.27mm* SSOP*5.3x6.2mm*P0.65mm*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "74HC138_0_1"
-				(rectangle
-					(start -7.62 12.7)
-					(end 7.62 -10.16)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "74HC138_1_1"
 				(pin input line
-					(at -10.16 10.16 0)
-					(length 2.54)
-					(name "A0"
+					(at 2.54 -7.62 90)
+					(length 6.35)
+					(name "GAIN"
 						(effects
 							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 -2.54 180)
-					(length 2.54)
-					(name "~{Y5}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 0 180)
-					(length 2.54)
-					(name "~{Y4}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 2.54 180)
-					(length 2.54)
-					(name "~{Y3}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 5.08 180)
-					(length 2.54)
-					(name "~{Y2}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 7.62 180)
-					(length 2.54)
-					(name "~{Y1}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 10.16 180)
-					(length 2.54)
-					(name "~{Y0}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 15.24 270)
-					(length 2.54)
-					(name "VCC"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -10.16 7.62 0)
-					(length 2.54)
-					(name "A1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -10.16 5.08 0)
-					(length 2.54)
-					(name "A2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -10.16 -2.54 0)
-					(length 2.54)
-					(name "~{E0}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -10.16 -5.08 0)
-					(length 2.54)
-					(name "~{E1}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -10.16 -7.62 0)
-					(length 2.54)
-					(name "E2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 -7.62 180)
-					(length 2.54)
-					(name "~{Y7}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "7"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 0 -12.7 90)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
+								(size 0.508 0.508)
 							)
 						)
 					)
 					(number "8"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin output line
-					(at 10.16 -5.08 180)
-					(length 2.54)
-					(name "~{Y6}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "9"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1712,6 +786,164 @@
 				)
 			)
 		)
+		(symbol "Device:C_Polarized"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:Microphone_Ultrasound"
 			(pin_names
 				(offset 0.0254) hide)
@@ -1920,6 +1152,176 @@
 				)
 			)
 		)
+		(symbol "Device:R_US"
+			(pin_numbers hide)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R_US"
+				(at -2.54 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 1.016 -0.254 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor, US symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_US_0_1"
+				(polyline
+					(pts
+						(xy 0 -2.286) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.286) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -0.762) (xy 1.016 -1.143) (xy 0 -1.524) (xy -1.016 -1.905) (xy 0 -2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0.762) (xy 1.016 0.381) (xy 0 0) (xy -1.016 -0.381) (xy 0 -0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.286) (xy 1.016 1.905) (xy 0 1.524) (xy -1.016 1.143) (xy 0 0.762)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_US_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:Speaker_Ultrasound"
 			(pin_names
 				(offset 0) hide)
@@ -2105,1295 +1507,615 @@
 		)
 	)
 	(junction
-		(at 190.5 96.52)
+		(at 88.9 138.43)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "1bb63fda-8080-41d3-b8af-f653cc5fcab5")
+		(uuid "0b938d93-9ff6-4f20-bfd7-8db4d6583f45")
 	)
 	(junction
-		(at 127 71.12)
+		(at 90.17 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "26787b4c-a244-489c-8e6d-45ac5ded770c")
+		(uuid "0d9ac32d-4f14-4cb3-ac89-ff24601a91cb")
 	)
 	(junction
-		(at 125.73 127)
+		(at 59.69 96.52)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "2a1f8259-1424-4580-8846-48d597568e31")
+		(uuid "0e60997f-4d21-42cb-9aa8-33a0975f0653")
 	)
 	(junction
-		(at 190.5 83.82)
+		(at 59.69 83.82)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "3c28ade3-7af2-4e5c-bac5-fec9151f9cf4")
+		(uuid "3c5cd8b9-281c-4231-827a-cf6862190167")
 	)
 	(junction
-		(at 157.48 109.22)
+		(at 109.22 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "42a43521-6ae2-4573-91d3-0780a58a30be")
+		(uuid "874a24b7-f78f-4229-b3d4-55b9d31d38da")
 	)
 	(junction
-		(at 157.48 96.52)
+		(at 95.25 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "4f8f175a-93c9-4934-84b8-afa7527b2386")
+		(uuid "9419eda7-9b7f-42f9-b122-c8ec7c4ff4cd")
 	)
 	(junction
-		(at 127 104.14)
+		(at 59.69 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "78683b8d-b9bd-4d9b-bbb7-397877ea05f9")
+		(uuid "c6dffb9a-9ce2-4b1d-9143-ea9564b56d2c")
 	)
 	(junction
-		(at 97.79 102.87)
+		(at 59.69 71.12)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "85a8770f-570a-49ad-b9b8-0b1af2559e50")
+		(uuid "e90e82ca-ea39-4058-a549-2cefedaabfe8")
 	)
 	(junction
-		(at 76.2 91.44)
+		(at 59.69 124.46)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "889a7116-144e-4780-86cd-2f3b02aa6bb0")
-	)
-	(junction
-		(at 157.48 83.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "93e4bcb8-6e7a-4c61-b3cc-208ead4ebc0d")
-	)
-	(junction
-		(at 76.2 93.98)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "9582acd2-76a2-44d3-9ab9-634841aa01b6")
-	)
-	(junction
-		(at 76.2 83.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a364d002-aabf-42f0-96d4-dc9d0246ad8a")
-	)
-	(junction
-		(at 190.5 121.92)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b4c2d4bb-1927-4648-b3af-32ca59dde7af")
-	)
-	(junction
-		(at 190.5 109.22)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c007347f-7817-4ff9-ba26-2078d9dea709")
+		(uuid "fa4e6804-e7b0-4447-a5a0-a1a51eb30c73")
 	)
 	(no_connect
-		(at 101.6 127)
-		(uuid "038aeb8a-b62e-42bc-a8f6-0151df999222")
+		(at 97.79 143.51)
+		(uuid "b44d0651-e56b-4fa1-9e6e-6313c8429362")
 	)
-	(no_connect
-		(at 107.95 91.44)
-		(uuid "1214b850-c3e3-4a13-a5d2-716953ab26dd")
-	)
-	(no_connect
-		(at 114.3 111.76)
-		(uuid "2e753934-f915-420a-a4e1-f0ad89cd1a51")
-	)
-	(no_connect
-		(at 101.6 119.38)
-		(uuid "332c05c3-8bd1-40e3-b008-f326110624f8")
-	)
-	(no_connect
-		(at 114.3 124.46)
-		(uuid "3d0c3238-a756-4d7e-910f-958a5a647c9b")
-	)
-	(no_connect
-		(at 107.95 93.98)
-		(uuid "55c36688-d9e5-40b3-b345-ab9891f70f21")
-	)
-	(no_connect
-		(at 101.6 124.46)
-		(uuid "929cffad-ddfb-45b2-973b-57cdf5981dab")
-	)
-	(no_connect
-		(at 107.95 96.52)
-		(uuid "9b9e2ff0-6cfd-48f9-a7a0-1bedfe38d21e")
-	)
-	(no_connect
-		(at 107.95 88.9)
-		(uuid "a3650380-78f0-4c0b-bbb1-f881dd196845")
-	)
-	(no_connect
-		(at 114.3 114.3)
-		(uuid "c15b0505-5015-4084-996d-a1be8d157416")
-	)
-	(no_connect
-		(at 101.6 129.54)
-		(uuid "c187967a-5690-4b15-9d90-68c5220eb0d9")
-	)
-	(no_connect
-		(at 114.3 116.84)
-		(uuid "cf800076-3e2c-465a-b85a-46dd7aa9f3d2")
-	)
-	(no_connect
-		(at 101.6 121.92)
-		(uuid "dbea6931-beb5-4470-a479-6a3e3b0a93f6")
-	)
-	(no_connect
-		(at 114.3 119.38)
-		(uuid "f6cfb3e4-2cee-4b5e-9b94-b1c1fd5cac61")
-	)
-	(wire
-		(pts
-			(xy 125.73 127) (xy 190.5 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "056bf147-aca8-44de-a6d0-35f51d2a07e8")
-	)
-	(wire
-		(pts
-			(xy 160.02 63.5) (xy 160.02 57.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "06aae02f-7da1-40fd-b535-27aa37a79026")
-	)
-	(wire
-		(pts
-			(xy 190.5 76.2) (xy 190.5 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0ee6b316-5015-48fd-b69a-ae75992961e1")
-	)
-	(wire
-		(pts
-			(xy 86.36 111.76) (xy 86.36 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0f1a16d6-8bf2-42be-b037-2e884abf8f14")
-	)
-	(wire
-		(pts
-			(xy 157.48 83.82) (xy 157.48 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "134b9291-a653-4e6f-8823-398b99f603c7")
-	)
-	(wire
-		(pts
-			(xy 165.1 93.98) (xy 203.2 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "16ac686f-5382-48c6-8b70-ddcd89bb794c")
-	)
-	(wire
-		(pts
-			(xy 127 57.15) (xy 127 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1817f3d7-b5dd-49dd-a7d1-304a9b413b1a")
-	)
-	(wire
-		(pts
-			(xy 97.79 73.66) (xy 97.79 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ec3c69b-bf79-478e-a699-cd38711be8c5")
-	)
-	(wire
-		(pts
-			(xy 157.48 71.12) (xy 165.1 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2743292d-a83a-4a04-b235-902d131e6a49")
-	)
-	(wire
-		(pts
-			(xy 76.2 63.5) (xy 134.62 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "28177568-daaa-423c-aec1-b25503c12ebd")
-	)
-	(wire
-		(pts
-			(xy 190.5 121.92) (xy 190.5 127)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2bd84707-42ee-45ee-9477-2dd015aaa048")
-	)
-	(wire
-		(pts
-			(xy 190.5 109.22) (xy 203.2 109.22)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2f254f21-e659-46e4-b3a3-3670b72bb78f")
-	)
-	(wire
-		(pts
-			(xy 134.62 101.6) (xy 135.89 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "30a91724-9257-413e-8586-7fe88a34aa20")
-	)
-	(wire
-		(pts
-			(xy 107.95 78.74) (xy 135.89 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "418475b0-3ea6-4aec-82ab-d3dcc6edfa51")
-	)
-	(wire
-		(pts
-			(xy 190.5 96.52) (xy 203.2 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "43787772-88c9-4412-ae7f-d053c846704a")
-	)
-	(wire
-		(pts
-			(xy 101.6 111.76) (xy 86.36 111.76)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "46cb62bc-d59c-40a6-80b8-8e1d44ce11f1")
-	)
-	(wire
-		(pts
-			(xy 76.2 93.98) (xy 87.63 93.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48737f3b-279c-47c2-b9db-77ec5805b9d3")
-	)
-	(wire
-		(pts
-			(xy 107.95 83.82) (xy 134.62 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4b496a5e-ab31-4457-bd59-9cba4901574a")
-	)
-	(wire
-		(pts
-			(xy 88.9 116.84) (xy 88.9 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4f1a6f42-1c29-406f-82f8-05b58c88aae8")
-	)
-	(wire
-		(pts
-			(xy 185.42 121.92) (xy 114.3 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5616d597-a5b8-445f-a62d-f2689093650c")
-	)
 	(wire
 		(pts
-			(xy 76.2 91.44) (xy 76.2 83.82)
+			(xy 59.69 124.46) (xy 59.69 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "58fe43cc-b586-44b4-a87b-4ca47b2d216b")
+		(uuid "0be3e31f-937e-4bff-bbb5-83956df8aaf2")
 	)
 	(wire
 		(pts
-			(xy 151.13 101.6) (xy 160.02 101.6)
+			(xy 38.1 111.76) (xy 27.94 111.76)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6245a8d9-66ce-48c4-ba23-670695b463a5")
+		(uuid "0c1b75f6-7f22-4912-9628-645a29d71360")
 	)
 	(wire
 		(pts
-			(xy 85.09 81.28) (xy 87.63 81.28)
+			(xy 88.9 138.43) (xy 90.17 138.43)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "64e6ade8-8f6e-4cf4-b31b-b56f0b191b62")
+		(uuid "117048b1-d3ea-45ae-bdfc-debb04bf632c")
 	)
 	(wire
 		(pts
-			(xy 190.5 83.82) (xy 203.2 83.82)
+			(xy 125.73 135.89) (xy 125.73 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "66483736-2266-4ecf-8f8c-7c444005c3b6")
+		(uuid "145448d1-5af8-4c9f-974c-6ac9d3d74c9b")
 	)
 	(wire
 		(pts
-			(xy 87.63 104.14) (xy 127 104.14)
+			(xy 111.76 128.27) (xy 111.76 146.05)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "68076404-c567-42e6-9400-7a1de709df9e")
+		(uuid "20866f3d-664e-45ac-b78d-eeb4abb81acf")
 	)
 	(wire
 		(pts
-			(xy 157.48 138.43) (xy 157.48 109.22)
+			(xy 106.68 146.05) (xy 106.68 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6a4bbc6e-8f12-4f43-8a1c-e59b2c68ad01")
+		(uuid "21f2c382-a3fd-4b17-ace2-b80eb0fe7e52")
 	)
 	(wire
 		(pts
-			(xy 190.5 96.52) (xy 190.5 83.82)
+			(xy 25.4 116.84) (xy 25.4 93.98)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6c00e594-ba55-4672-9249-d692ccbb9f6c")
+		(uuid "283fc478-68fe-408f-b4d3-3a8da6d58db0")
 	)
 	(wire
 		(pts
-			(xy 160.02 57.15) (xy 127 57.15)
+			(xy 106.68 153.67) (xy 111.76 153.67)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6f78bdb5-7cf4-429f-9905-ea9aa46959fd")
+		(uuid "2ac98f1f-2a99-4423-9732-ac97832cb449")
 	)
 	(wire
 		(pts
-			(xy 135.89 78.74) (xy 135.89 76.2)
+			(xy 26.67 114.3) (xy 38.1 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "6f8e9023-cd3c-4415-98af-084712543bdb")
+		(uuid "3423be48-1976-4eaf-9bbf-3d4521d77d8e")
 	)
 	(wire
 		(pts
-			(xy 135.89 114.3) (xy 133.35 114.3)
+			(xy 59.69 71.12) (xy 100.33 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "773a5fd8-30b0-493c-ba5e-098dc781a78c")
+		(uuid "37d84fcc-ee6e-4713-8095-1dd933cab811")
 	)
 	(wire
 		(pts
-			(xy 114.3 127) (xy 125.73 127)
+			(xy 63.5 138.43) (xy 59.69 138.43)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "784165aa-ff0b-4945-b848-c5b374b7f47a")
+		(uuid "4604c620-93a5-4a4d-9b93-67ea0749989d")
 	)
 	(wire
 		(pts
-			(xy 157.48 96.52) (xy 165.1 96.52)
+			(xy 105.41 135.89) (xy 109.22 135.89)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7af7dc69-8918-4b87-b8ab-83a9eed7270d")
+		(uuid "4676e33c-fdd8-4abc-b339-41068877985f")
 	)
 	(wire
 		(pts
-			(xy 76.2 102.87) (xy 76.2 93.98)
+			(xy 63.5 133.35) (xy 59.69 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7b51283c-12a1-4d9f-b46f-10bdf5cb9444")
+		(uuid "46916b55-ee32-4296-8b52-0cda93bfa5cd")
 	)
 	(wire
 		(pts
-			(xy 125.73 127) (xy 125.73 102.87)
+			(xy 102.87 104.14) (xy 88.9 104.14)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7c29ab55-d96d-4a4f-83c5-1f71ff102775")
+		(uuid "47de6097-f04b-4e9a-b16e-8593643d588f")
 	)
 	(wire
 		(pts
-			(xy 76.2 83.82) (xy 76.2 63.5)
+			(xy 109.22 124.46) (xy 109.22 135.89)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7c3b86a3-f1cc-4798-bb5d-97234b3cb14d")
+		(uuid "4baa50e1-9c6b-4459-8ae9-c3f62c48be40")
 	)
 	(wire
 		(pts
-			(xy 157.48 96.52) (xy 157.48 83.82)
+			(xy 38.1 116.84) (xy 25.4 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7c74b810-9893-472c-83d1-41ed270e7443")
+		(uuid "4d941784-ce4d-4c2f-b7ea-280f4ad2cb95")
 	)
 	(wire
 		(pts
-			(xy 165.1 81.28) (xy 203.2 81.28)
+			(xy 58.42 147.32) (xy 95.25 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "88ed0364-22ac-41ca-9ebe-c9fed439a491")
+		(uuid "5dce7337-e8da-4d1b-8d54-26c18f6df6a8")
 	)
 	(wire
 		(pts
-			(xy 97.79 102.87) (xy 76.2 102.87)
+			(xy 71.12 133.35) (xy 90.17 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "8b4f840f-3764-46a5-94c0-a6df6e8ebe85")
+		(uuid "5e23c872-365a-462c-86bd-f207d27ba0cb")
 	)
 	(wire
 		(pts
-			(xy 88.9 138.43) (xy 157.48 138.43)
+			(xy 88.9 104.14) (xy 88.9 138.43)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "97eb3c31-152b-4dc0-bbf9-a80cd0a1d58a")
+		(uuid "64a7acc7-815f-4369-8b19-6bd198faa6f2")
 	)
 	(wire
 		(pts
-			(xy 107.95 81.28) (xy 135.89 81.28)
+			(xy 59.69 96.52) (xy 100.33 96.52)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "9842f486-019d-4ed5-876a-ef5783d4eeae")
+		(uuid "6b1b2ec5-3ce2-4f91-b5f5-08251b510ab0")
 	)
 	(wire
 		(pts
-			(xy 151.13 114.3) (xy 160.02 114.3)
+			(xy 29.21 109.22) (xy 29.21 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a16b138b-e379-4118-aefd-8ff6b5a3f751")
+		(uuid "6c659ca4-a6cb-4c15-8993-ba5aa92112fc")
 	)
 	(wire
 		(pts
-			(xy 190.5 109.22) (xy 190.5 96.52)
+			(xy 59.69 71.12) (xy 59.69 58.42)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a28d2220-15b5-40c9-8e41-2dcf4735270b")
+		(uuid "6ebfb9d1-1627-4aff-b67b-e4793113c976")
 	)
 	(wire
 		(pts
-			(xy 101.6 114.3) (xy 85.09 114.3)
+			(xy 90.17 114.3) (xy 90.17 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "a6283934-039c-4f1a-b59a-9118c30202a3")
+		(uuid "782b546c-3317-491e-81c3-2114e6ba2479")
 	)
 	(wire
 		(pts
-			(xy 127 71.12) (xy 127 104.14)
+			(xy 100.33 81.28) (xy 26.67 81.28)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ad8e5373-d9c7-427c-aba4-d93be43a9fcd")
+		(uuid "78df0e61-280a-48ab-886b-efe176d00981")
 	)
 	(wire
 		(pts
-			(xy 135.89 81.28) (xy 135.89 88.9)
+			(xy 95.25 128.27) (xy 95.25 124.46)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ae8513c7-8d6e-4728-8b9c-0054c563a529")
+		(uuid "7bf913ff-87d5-45a9-a928-bf4f90627778")
 	)
 	(wire
 		(pts
-			(xy 85.09 114.3) (xy 85.09 81.28)
+			(xy 95.25 124.46) (xy 101.6 124.46)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b0282b00-118c-4f36-9d67-7be85592f217")
+		(uuid "83807504-bafb-4bc5-899e-d8021e17d771")
 	)
 	(wire
 		(pts
-			(xy 114.3 129.54) (xy 127 129.54)
+			(xy 29.21 109.22) (xy 38.1 109.22)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c0e6e8e3-7da1-4750-8888-17e473f52b73")
+		(uuid "83b4f425-96d3-4230-b53e-8681e9defb2a")
 	)
 	(wire
 		(pts
-			(xy 157.48 83.82) (xy 165.1 83.82)
+			(xy 97.79 127) (xy 97.79 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c75c6d5d-f434-455f-a92a-71e7108da843")
+		(uuid "8498b276-fe66-4b3b-a913-706b51e82b94")
 	)
 	(wire
 		(pts
-			(xy 76.2 83.82) (xy 87.63 83.82)
+			(xy 59.69 58.42) (xy 100.33 58.42)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c78c2240-d2ba-4623-8d0e-6e8b6f9d5253")
+		(uuid "89a205d4-01a6-42a2-81f2-9ae0d2dc8eb6")
 	)
 	(wire
 		(pts
-			(xy 203.2 121.92) (xy 190.5 121.92)
+			(xy 95.25 147.32) (xy 95.25 143.51)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ca386223-6989-43ed-b3bb-dd08c76a615f")
+		(uuid "8a043a9a-ea53-4f09-a5ff-d0387de608a8")
 	)
 	(wire
 		(pts
-			(xy 76.2 93.98) (xy 76.2 91.44)
+			(xy 27.94 68.58) (xy 100.33 68.58)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cab2745b-8790-4d3e-80fc-31ebd8de2b4a")
+		(uuid "8a314469-da82-43d5-8785-437513da1cfc")
 	)
 	(wire
 		(pts
-			(xy 101.6 116.84) (xy 88.9 116.84)
+			(xy 59.69 96.52) (xy 59.69 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cbadf729-8da1-4840-a2a3-871696c2916b")
+		(uuid "8b2278fc-2781-4981-b561-9c000fb9a90b")
 	)
 	(wire
 		(pts
-			(xy 165.1 106.68) (xy 203.2 106.68)
+			(xy 59.69 138.43) (xy 59.69 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cdd949b0-3e68-4daf-978d-2239fffdb2b0")
+		(uuid "8cce8760-4450-46c5-a3d0-3adf029ace49")
 	)
 	(wire
 		(pts
-			(xy 165.1 119.38) (xy 203.2 119.38)
+			(xy 125.73 119.38) (xy 50.8 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ce44da12-dcc6-4de1-9d46-b84ddc616de5")
+		(uuid "8dfda165-ca39-405c-addf-d230ea6bc0f0")
 	)
 	(wire
 		(pts
-			(xy 151.13 88.9) (xy 160.02 88.9)
+			(xy 95.25 124.46) (xy 59.69 124.46)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cec538d2-786e-4870-bd77-bc4c0dea45c7")
+		(uuid "8e70d537-8c62-4bb9-a3bb-a0d75b5af94a")
 	)
 	(wire
 		(pts
-			(xy 76.2 91.44) (xy 87.63 91.44)
+			(xy 27.94 111.76) (xy 27.94 68.58)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "cee26252-38ea-4b39-a92b-7a925da2721e")
+		(uuid "8fb3a6d6-1f27-43ae-a702-81b269b6ceda")
 	)
 	(wire
 		(pts
-			(xy 190.5 66.04) (xy 185.42 66.04)
+			(xy 100.33 128.27) (xy 111.76 128.27)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d0c4fb4a-21fc-4501-b39e-eaca69215580")
+		(uuid "91dc8c43-df22-47f7-95f8-43c90c78a664")
 	)
 	(wire
 		(pts
-			(xy 151.13 76.2) (xy 160.02 76.2)
+			(xy 25.4 93.98) (xy 100.33 93.98)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d22a74de-adf3-4624-9004-3f6cb6bb8884")
+		(uuid "981f2ad7-1a05-4da0-b9af-bfa5df584c44")
 	)
 	(wire
 		(pts
-			(xy 97.79 71.12) (xy 127 71.12)
+			(xy 59.69 83.82) (xy 100.33 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d5aaf44d-c75d-447e-976e-fa0d6e4bcbf7")
+		(uuid "a22bf2c9-f03c-40a1-8dd6-5cf2fbb1a1f4")
 	)
 	(wire
 		(pts
-			(xy 87.63 96.52) (xy 87.63 104.14)
+			(xy 50.8 124.46) (xy 59.69 124.46)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "da6013bd-edff-42d5-a335-cebeca82b8ab")
+		(uuid "a49c4cd4-d194-48e3-81e7-37194868e680")
 	)
 	(wire
 		(pts
-			(xy 125.73 102.87) (xy 97.79 102.87)
+			(xy 29.21 55.88) (xy 100.33 55.88)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e0063155-b6e4-4acb-bcf7-f0ed1a725c22")
+		(uuid "a8a42cb2-7d3d-46ec-88c9-503371ab4a20")
 	)
 	(wire
 		(pts
-			(xy 185.42 66.04) (xy 185.42 121.92)
+			(xy 59.69 133.35) (xy 59.69 124.46)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e0fad39f-e3c7-493b-a69d-14d642dfca84")
+		(uuid "b1b4582e-7556-4a5a-87ee-6bec6bc4efbf")
 	)
 	(wire
 		(pts
-			(xy 134.62 83.82) (xy 134.62 101.6)
+			(xy 102.87 114.3) (xy 90.17 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e194a931-3500-4db8-a100-a977b51939fe")
+		(uuid "b583ebad-dfef-453e-8460-d9f2341cb287")
 	)
 	(wire
 		(pts
-			(xy 157.48 109.22) (xy 157.48 96.52)
+			(xy 120.65 135.89) (xy 125.73 135.89)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "eb741ac1-51c5-4404-99b0-181625fb606f")
+		(uuid "cecadb5a-42cf-4b33-afd2-30898dce4b8b")
 	)
 	(wire
 		(pts
-			(xy 133.35 114.3) (xy 133.35 86.36)
+			(xy 26.67 81.28) (xy 26.67 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ed0fa677-64f2-40ec-abe1-1c6e149e7974")
+		(uuid "cfac8f69-2972-45ef-b28f-30ae39d6366e")
 	)
 	(wire
 		(pts
-			(xy 133.35 86.36) (xy 107.95 86.36)
+			(xy 109.22 135.89) (xy 113.03 135.89)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "eed895ab-9a73-4ddc-b406-6b60e693c657")
+		(uuid "d73b80c1-f961-46f1-a955-f26c32bfb35d")
 	)
 	(wire
 		(pts
-			(xy 97.79 102.87) (xy 97.79 101.6)
+			(xy 58.42 127) (xy 58.42 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "ef08aeaf-16e8-499a-9fe2-a10fbe769543")
+		(uuid "e9acf52d-819f-4d26-b655-4445da9b1a7f")
 	)
 	(wire
 		(pts
-			(xy 165.1 109.22) (xy 157.48 109.22)
+			(xy 59.69 83.82) (xy 59.69 71.12)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f926b77b-0603-45e3-afd3-55ed59f896a7")
+		(uuid "ed23c400-3b89-4e77-80d3-c1d01f5b575a")
 	)
 	(wire
 		(pts
-			(xy 190.5 121.92) (xy 190.5 109.22)
+			(xy 71.12 138.43) (xy 88.9 138.43)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "f92e25ca-f92e-40ec-99b2-d4c8e7c98e5e")
+		(uuid "ed66f50b-b0a8-4a0d-b6af-317a27707aca")
 	)
 	(wire
 		(pts
-			(xy 86.36 78.74) (xy 87.63 78.74)
+			(xy 58.42 127) (xy 50.8 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "fd5fb1c3-37c9-46c5-b046-58eaa7aba292")
+		(uuid "f9839c0c-d753-48bf-84bf-dde831653d48")
 	)
 	(wire
 		(pts
-			(xy 127 104.14) (xy 127 129.54)
+			(xy 106.68 127) (xy 97.79 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "fffc12c5-b982-42bb-9b52-f9005b78830a")
+		(uuid "fdc4ea43-0039-4621-80df-49c0363dc9a3")
 	)
-	(symbol
-		(lib_id "74xx:74HC138")
-		(at 97.79 88.9 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "1de53ee9-bda1-4ae3-a4ab-361e193964b0")
-		(property "Reference" "U1"
-			(at 92.202 86.106 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
+	(label "Vsys"
+		(at 50.8 127 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "74HC138"
-			(at 92.202 88.646 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-16_W7.62mm"
-			(at 97.79 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/cd74hc238.pdf"
-			(at 97.79 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "3-to-8 line decoder/multiplexer inverting, DIP-16/SOIC-16/SSOP-16"
-			(at 97.79 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "094499ec-b760-49b5-837f-f2e716c5a296")
-		)
-		(pin "2"
-			(uuid "ba5a7836-4fa0-41a2-b367-693d42dfb50e")
-		)
-		(pin "14"
-			(uuid "608106b5-bed1-4120-9187-bb13fe140643")
-		)
-		(pin "16"
-			(uuid "ec780e75-43da-4aed-8afb-755906899f39")
-		)
-		(pin "15"
-			(uuid "494698f2-11be-4dea-bcad-2d0f20f30b2b")
-		)
-		(pin "13"
-			(uuid "e47800c5-564e-4d9a-b424-6a92c4939e6b")
-		)
-		(pin "9"
-			(uuid "eb46feba-1435-4d90-bce6-c594c9b2c0bd")
-		)
-		(pin "12"
-			(uuid "424c448a-febc-4fc7-970c-c58fc5d0b9b5")
-		)
-		(pin "6"
-			(uuid "8b0d47d0-aa11-47f2-af0a-62e405ecd3dd")
-		)
-		(pin "5"
-			(uuid "3e5c12fa-9261-4a98-93e5-f3b0ab2c8587")
-		)
-		(pin "8"
-			(uuid "10aa6e24-2894-40da-96e6-e7857977b70f")
-		)
-		(pin "7"
-			(uuid "4ddb41bb-a0ce-42b5-ae34-550768b647f5")
-		)
-		(pin "10"
-			(uuid "bd857311-f956-4f94-8905-5328231022f4")
-		)
-		(pin "11"
-			(uuid "b622a49d-fe22-489b-8d9e-a7d38c7c3f83")
-		)
-		(pin "4"
-			(uuid "c86b0a0b-6251-4668-ba84-19aa072aaee8")
-		)
-		(pin "1"
-			(uuid "acd72d4e-d04b-429a-a3f7-0f8c352464d4")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U1")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "0f608d3b-f156-4334-b1a1-8e66091b7006")
 	)
-	(symbol
-		(lib_id "74xx:74HC04")
-		(at 143.51 114.3 0)
-		(unit 4)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "236b4fa9-a33d-47fb-81ac-d134b14fc558")
-		(property "Reference" "U2"
-			(at 148.082 108.966 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(label "GND"
+		(at 50.8 124.46 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify left bottom)
 		)
-		(property "Value" "74HC04"
-			(at 148.082 111.506 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 143.51 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 143.51 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Hex Inverter"
-			(at 143.51 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "2213d005-0c77-4644-9b22-542960415d96")
-		)
-		(pin "11"
-			(uuid "7b25340b-f886-4aaa-9b09-cc44b37fe90c")
-		)
-		(pin "2"
-			(uuid "7292e751-007f-4344-8fed-2dba40ce1bf7")
-		)
-		(pin "1"
-			(uuid "794a27ce-55e5-45e7-a54e-80a4d7feb127")
-		)
-		(pin "8"
-			(uuid "b0b688d5-5c86-42bc-b6f7-2a61ffabbefd")
-		)
-		(pin "10"
-			(uuid "ddedc416-2af9-4675-a629-048fb70d061c")
-		)
-		(pin "14"
-			(uuid "1306d9cb-395e-4e5c-8784-bf53744842e6")
-		)
-		(pin "4"
-			(uuid "0ad04db5-6541-40ef-93f4-b3114d4c1d0e")
-		)
-		(pin "5"
-			(uuid "74aafc9b-d7b7-431e-b5b2-ece7dc6dad81")
-		)
-		(pin "12"
-			(uuid "885af824-bf86-4a97-87de-0f733f08a8ae")
-		)
-		(pin "7"
-			(uuid "a690e1f8-91a8-404c-9568-a2a24171dddf")
-		)
-		(pin "6"
-			(uuid "c504ad6d-8b2a-4294-97e9-6d70e45723f0")
-		)
-		(pin "9"
-			(uuid "63702e7a-97ff-4d3b-80a1-b959ad279251")
-		)
-		(pin "13"
-			(uuid "0d4c0f35-a170-4d14-8fa6-6956301354f3")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U2")
-					(unit 4)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "74xx:74HC04")
-		(at 147.32 63.5 270)
-		(unit 7)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "31e62ce6-2cad-47a0-ab09-1b2f814fb093")
-		(property "Reference" "U2"
-			(at 147.32 60.96 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "74HC04"
-			(at 147.066 66.802 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 147.32 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 147.32 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Hex Inverter"
-			(at 147.32 63.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "2213d005-0c77-4644-9b22-542960415d97")
-		)
-		(pin "11"
-			(uuid "7b25340b-f886-4aaa-9b09-cc44b37fe90d")
-		)
-		(pin "2"
-			(uuid "7292e751-007f-4344-8fed-2dba40ce1bf8")
-		)
-		(pin "1"
-			(uuid "794a27ce-55e5-45e7-a54e-80a4d7feb128")
-		)
-		(pin "8"
-			(uuid "b0b688d5-5c86-42bc-b6f7-2a61ffabbefe")
-		)
-		(pin "10"
-			(uuid "ddedc416-2af9-4675-a629-048fb70d061d")
-		)
-		(pin "14"
-			(uuid "1306d9cb-395e-4e5c-8784-bf53744842e7")
-		)
-		(pin "4"
-			(uuid "0ad04db5-6541-40ef-93f4-b3114d4c1d0f")
-		)
-		(pin "5"
-			(uuid "74aafc9b-d7b7-431e-b5b2-ece7dc6dad82")
-		)
-		(pin "12"
-			(uuid "885af824-bf86-4a97-87de-0f733f08a8af")
-		)
-		(pin "7"
-			(uuid "a690e1f8-91a8-404c-9568-a2a24171dde0")
-		)
-		(pin "6"
-			(uuid "c504ad6d-8b2a-4294-97e9-6d70e45723f1")
-		)
-		(pin "9"
-			(uuid "63702e7a-97ff-4d3b-80a1-b959ad279252")
-		)
-		(pin "13"
-			(uuid "0d4c0f35-a170-4d14-8fa6-6956301354f4")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U2")
-					(unit 7)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "74xx:74HC04")
-		(at 143.51 101.6 0)
-		(unit 3)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "45c75711-e418-414d-b16a-cc07756bda3f")
-		(property "Reference" "U2"
-			(at 147.828 96.012 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "74HC04"
-			(at 147.828 98.552 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 143.51 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 143.51 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Hex Inverter"
-			(at 143.51 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "2213d005-0c77-4644-9b22-542960415d98")
-		)
-		(pin "11"
-			(uuid "7b25340b-f886-4aaa-9b09-cc44b37fe90e")
-		)
-		(pin "2"
-			(uuid "7292e751-007f-4344-8fed-2dba40ce1bf9")
-		)
-		(pin "1"
-			(uuid "794a27ce-55e5-45e7-a54e-80a4d7feb129")
-		)
-		(pin "8"
-			(uuid "b0b688d5-5c86-42bc-b6f7-2a61ffabbeff")
-		)
-		(pin "10"
-			(uuid "ddedc416-2af9-4675-a629-048fb70d061e")
-		)
-		(pin "14"
-			(uuid "1306d9cb-395e-4e5c-8784-bf53744842e8")
-		)
-		(pin "4"
-			(uuid "0ad04db5-6541-40ef-93f4-b3114d4c1d10")
-		)
-		(pin "5"
-			(uuid "74aafc9b-d7b7-431e-b5b2-ece7dc6dad83")
-		)
-		(pin "12"
-			(uuid "885af824-bf86-4a97-87de-0f733f08a8b0")
-		)
-		(pin "7"
-			(uuid "a690e1f8-91a8-404c-9568-a2a24171dde1")
-		)
-		(pin "6"
-			(uuid "c504ad6d-8b2a-4294-97e9-6d70e45723f2")
-		)
-		(pin "9"
-			(uuid "63702e7a-97ff-4d3b-80a1-b959ad279253")
-		)
-		(pin "13"
-			(uuid "0d4c0f35-a170-4d14-8fa6-6956301354f5")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U2")
-					(unit 3)
-				)
-			)
-		)
+		(uuid "9d3ee4f3-4efb-4168-bab2-1529e6666d89")
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_02x08_Top_Bottom")
-		(at 106.68 119.38 0)
+		(at 43.18 116.84 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "4e0c5f52-f3e5-4ced-933e-844c9c01a765")
+		(uuid "0eb81913-cbc3-4197-88ec-ffda08d451fe")
 		(property "Reference" "J1"
-			(at 107.95 105.41 0)
+			(at 44.45 102.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "Conn_02x08_Top_Bottom"
-			(at 107.95 107.95 0)
+		(property "Value" "IDC Connector (02x08 T->B)"
+			(at 44.45 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3401,7 +2123,7 @@
 			)
 		)
 		(property "Footprint" "Connector_IDC:IDC-Header_2x08_P2.54mm_Vertical"
-			(at 106.68 119.38 0)
+			(at 43.18 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3410,7 +2132,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 106.68 119.38 0)
+			(at 43.18 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3419,7 +2141,7 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x08, top/bottom pin numbering scheme (row 1: 1...pins_per_row, row2: pins_per_row+1 ... num_pins), script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 106.68 119.38 0)
+			(at 43.18 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3427,53 +2149,53 @@
 				(hide yes)
 			)
 		)
-		(pin "13"
-			(uuid "9b1d873b-60cc-47c4-8c61-2ae4ca362a42")
-		)
-		(pin "4"
-			(uuid "5b2bf8f0-16ec-46e4-9bb6-8289efe1961e")
-		)
-		(pin "2"
-			(uuid "0d7a6c2e-ded2-4643-884c-e02721cad05c")
-		)
-		(pin "14"
-			(uuid "728095af-adaf-452f-87ef-b2981c562365")
-		)
-		(pin "10"
-			(uuid "40f561cc-9ec8-427f-9d97-67a02549c71d")
-		)
-		(pin "3"
-			(uuid "5c08b076-74f2-4c1e-8353-377777f66d26")
-		)
 		(pin "16"
-			(uuid "340e74e3-01e5-44a2-bded-02624c26b6d1")
-		)
-		(pin "15"
-			(uuid "48ff777a-f33a-4f9a-882c-b102b8d80964")
-		)
-		(pin "12"
-			(uuid "7c08cd7b-5cfc-491c-9402-1d2ef8cb7e4b")
-		)
-		(pin "6"
-			(uuid "63a77fae-7a78-4622-b24c-2e04f9e7f95e")
-		)
-		(pin "11"
-			(uuid "0f046e2f-572c-47be-a0ec-c64ef0b53ccb")
+			(uuid "9ec95a6b-1294-4bd2-a1cd-47379911ee07")
 		)
 		(pin "7"
-			(uuid "9270726c-44d4-4a43-ba1a-1ca44471dc6b")
+			(uuid "b074c84b-c264-40aa-992a-e08aa0809ad5")
+		)
+		(pin "4"
+			(uuid "e0c067b5-9a99-484a-9df2-8984a043740d")
 		)
 		(pin "8"
-			(uuid "5a8b92a5-105b-4480-b6bd-d88ed0dc749d")
+			(uuid "7275bb65-3585-4bbd-a087-fbb09ec25e69")
 		)
 		(pin "9"
-			(uuid "f2a675a1-2bff-47d5-9603-383b74b91683")
+			(uuid "484c009e-c9bc-4305-b7ac-fee254c8a8b8")
+		)
+		(pin "3"
+			(uuid "471eff83-e5b1-453b-8966-fad824328b11")
+		)
+		(pin "2"
+			(uuid "992cc1d3-35d0-49fc-b4e6-fa8fe15a4215")
+		)
+		(pin "6"
+			(uuid "3412b412-bb91-41f5-9c6c-ca8ec3298bfc")
+		)
+		(pin "14"
+			(uuid "6ac1fe1e-2d33-4bae-8ffb-170849e94ec0")
+		)
+		(pin "13"
+			(uuid "8756ddb5-36bb-48bf-90e8-d4b3a9d94bd4")
+		)
+		(pin "12"
+			(uuid "13a4f3d6-6c00-4c93-afbd-887fbbdce854")
 		)
 		(pin "1"
-			(uuid "d6d52040-b260-42a8-8a5e-6ef1404b27ea")
+			(uuid "17478485-4ce0-45e2-9fa9-a38422001a1a")
 		)
 		(pin "5"
-			(uuid "9a6dc996-fcfb-467e-87c1-44aa4b936f76")
+			(uuid "3bf4b1a2-acdc-4f57-a1ca-347d36cba9ba")
+		)
+		(pin "10"
+			(uuid "f40eafbe-c34e-4764-a33b-b09f106f66fc")
+		)
+		(pin "11"
+			(uuid "845de8d2-4ab2-4476-a60e-b429c0c9adc1")
+		)
+		(pin "15"
+			(uuid "cf0d668e-66af-4e41-8514-4dfd83355c45")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
@@ -3485,35 +2207,32 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Speaker_Ultrasound")
-		(at 208.28 106.68 0)
+		(lib_id "Device:C_Polarized")
+		(at 111.76 149.86 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6421fe77-8f9b-42b6-90db-82d0be91c0d6")
-		(property "Reference" "LS3"
-			(at 213.36 106.6799 0)
+		(uuid "2bd06121-325f-4bce-88fd-4a92dd78bad5")
+		(property "Reference" "C3"
+			(at 118.364 148.336 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "Speaker_Ultrasound"
-			(at 213.36 109.2199 0)
+		(property "Value" "10μF"
+			(at 118.364 150.876 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
-			(at 207.391 107.95 0)
+		(property "Footprint" ""
+			(at 112.7252 153.67 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3522,7 +2241,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.391 107.95 0)
+			(at 111.76 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3530,322 +2249,25 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Ultrasonic transducer"
-			(at 208.28 106.68 0)
+		(property "Description" "Polarized capacitor"
+			(at 111.76 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "72698e37-b7e8-475d-8025-521820170f81")
-		)
-		(pin "2"
-			(uuid "f347d2dc-fae4-4979-8324-b2c192a8ca7c")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "LS3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "74xx:74HC04")
-		(at 143.51 76.2 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "648a69eb-b521-439f-9ea9-82e63acf64fc")
-		(property "Reference" "U2"
-			(at 148.082 70.866 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "74HC04"
-			(at 148.082 73.406 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 143.51 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 143.51 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Hex Inverter"
-			(at 143.51 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "2213d005-0c77-4644-9b22-542960415d99")
-		)
-		(pin "11"
-			(uuid "7b25340b-f886-4aaa-9b09-cc44b37fe90f")
-		)
-		(pin "2"
-			(uuid "7292e751-007f-4344-8fed-2dba40ce1bfa")
-		)
-		(pin "1"
-			(uuid "794a27ce-55e5-45e7-a54e-80a4d7feb12a")
-		)
-		(pin "8"
-			(uuid "b0b688d5-5c86-42bc-b6f7-2a61ffabbf00")
-		)
-		(pin "10"
-			(uuid "ddedc416-2af9-4675-a629-048fb70d061f")
-		)
-		(pin "14"
-			(uuid "1306d9cb-395e-4e5c-8784-bf53744842e9")
-		)
-		(pin "4"
-			(uuid "0ad04db5-6541-40ef-93f4-b3114d4c1d11")
-		)
-		(pin "5"
-			(uuid "74aafc9b-d7b7-431e-b5b2-ece7dc6dad84")
-		)
-		(pin "12"
-			(uuid "885af824-bf86-4a97-87de-0f733f08a8b1")
-		)
-		(pin "7"
-			(uuid "a690e1f8-91a8-404c-9568-a2a24171dde2")
-		)
-		(pin "6"
-			(uuid "c504ad6d-8b2a-4294-97e9-6d70e45723f3")
-		)
-		(pin "9"
-			(uuid "63702e7a-97ff-4d3b-80a1-b959ad279254")
-		)
-		(pin "13"
-			(uuid "0d4c0f35-a170-4d14-8fa6-6956301354f6")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "2N2222:2N2222")
-		(at 162.56 101.6 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6c8d2d22-673b-4305-81bc-d644d91af8c0")
-		(property "Reference" "Q3"
-			(at 166.37 100.3299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "2N2222"
-			(at 166.37 102.8699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "2N2222:TO127P584H533-3"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MF" "ON Semiconductor"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MAXIMUM_PACKAGE_HEIGHT" "5.33 mm"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Package" "TO-18 Texas Instruments"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Price" "None"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=eda"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "STANDARD" "IPC 7351B"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "PARTREV" "R2"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=snap"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MP" "2N2222"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Description_1" "\nBipolar (BJT) Transistor NPN 50V 800mA 300mW Surface Mount Ceramic SMD\n"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Availability" "In Stock"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "Micross"
-			(at 162.56 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 				(hide yes)
 			)
 		)
 		(pin "1"
-			(uuid "10b66efe-5fd7-4f1c-af61-4fa6eb27c3fd")
-		)
-		(pin "3"
-			(uuid "ed7549e6-490e-4170-88ae-eaf592490b17")
+			(uuid "3a0fff6d-3020-4c1b-9b8f-17d22aa6d425")
 		)
 		(pin "2"
-			(uuid "579f027d-28b0-4efb-9cc3-cb1aa70555f1")
+			(uuid "57caeeb3-6416-4ae0-8bf1-4ea08e7266fd")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
 				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "Q3")
+					(reference "C3")
 					(unit 1)
 				)
 			)
@@ -3853,260 +2275,16 @@
 	)
 	(symbol
 		(lib_id "Device:Speaker_Ultrasound")
-		(at 208.28 119.38 0)
+		(at 105.41 55.88 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "7a403797-8dc2-4e69-a84d-5009c2a9cffe")
-		(property "Reference" "LS4"
-			(at 213.36 119.3799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Speaker_Ultrasound"
-			(at 213.36 121.9199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
-			(at 207.391 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 207.391 120.65 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Ultrasonic transducer"
-			(at 208.28 119.38 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "23884a8a-e9d7-40c5-801e-3a7288a013ad")
-		)
-		(pin "2"
-			(uuid "63c39e3d-9c19-4fe2-9b70-6dfab76f9d0d")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "LS4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Microphone_Ultrasound")
-		(at 190.5 71.12 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8f9a115e-7da8-4968-a463-5e82b09a222b")
-		(property "Reference" "MK1"
-			(at 194.31 69.1514 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Microphone_Ultrasound"
-			(at 194.31 71.6914 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
-			(at 191.77 72.898 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 190.5 68.58 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Ultrasound receiver"
-			(at 190.5 71.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "0068668f-a4dd-4305-a456-d239fc029ebe")
-		)
-		(pin "2"
-			(uuid "8875d852-c883-412d-9ce1-5a7283bd66d3")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "MK1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "74xx:74HC04")
-		(at 143.51 88.9 0)
-		(unit 2)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a6c43c9b-4db3-40f2-bc76-61fc162ea2bb")
-		(property "Reference" "U2"
-			(at 147.828 83.566 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "74HC04"
-			(at 147.828 86.106 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Package_DIP:DIP-14_W7.62mm"
-			(at 143.51 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/74HC_HCT04.pdf"
-			(at 143.51 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Hex Inverter"
-			(at 143.51 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "2213d005-0c77-4644-9b22-542960415d9a")
-		)
-		(pin "11"
-			(uuid "7b25340b-f886-4aaa-9b09-cc44b37fe910")
-		)
-		(pin "2"
-			(uuid "7292e751-007f-4344-8fed-2dba40ce1bfb")
-		)
-		(pin "1"
-			(uuid "794a27ce-55e5-45e7-a54e-80a4d7feb12b")
-		)
-		(pin "8"
-			(uuid "b0b688d5-5c86-42bc-b6f7-2a61ffabbf01")
-		)
-		(pin "10"
-			(uuid "ddedc416-2af9-4675-a629-048fb70d0620")
-		)
-		(pin "14"
-			(uuid "1306d9cb-395e-4e5c-8784-bf53744842ea")
-		)
-		(pin "4"
-			(uuid "0ad04db5-6541-40ef-93f4-b3114d4c1d12")
-		)
-		(pin "5"
-			(uuid "74aafc9b-d7b7-431e-b5b2-ece7dc6dad85")
-		)
-		(pin "12"
-			(uuid "885af824-bf86-4a97-87de-0f733f08a8b2")
-		)
-		(pin "7"
-			(uuid "a690e1f8-91a8-404c-9568-a2a24171dde3")
-		)
-		(pin "6"
-			(uuid "c504ad6d-8b2a-4294-97e9-6d70e45723f4")
-		)
-		(pin "9"
-			(uuid "63702e7a-97ff-4d3b-80a1-b959ad279255")
-		)
-		(pin "13"
-			(uuid "0d4c0f35-a170-4d14-8fa6-6956301354f7")
-		)
-		(instances
-			(project "UltrasonicPhasedArrayModule"
-				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "U2")
-					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Speaker_Ultrasound")
-		(at 208.28 81.28 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b5ac2c13-e9b0-4598-98b6-4198fc3881db")
+		(uuid "2fd732a0-42ea-4610-855f-fd44ba842714")
 		(property "Reference" "LS1"
-			(at 213.36 81.2799 0)
+			(at 110.49 55.8799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4115,7 +2293,7 @@
 			)
 		)
 		(property "Value" "Speaker_Ultrasound"
-			(at 213.36 83.8199 0)
+			(at 110.49 58.4199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4123,8 +2301,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
-			(at 207.391 82.55 0)
+		(property "Footprint" ""
+			(at 104.521 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4133,7 +2311,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.391 82.55 0)
+			(at 104.521 57.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4142,7 +2320,7 @@
 			)
 		)
 		(property "Description" "Ultrasonic transducer"
-			(at 208.28 81.28 0)
+			(at 105.41 55.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4151,10 +2329,10 @@
 			)
 		)
 		(pin "1"
-			(uuid "6f786703-fe2f-4db4-a93f-ef98862f5982")
+			(uuid "1ae09383-6a32-4dd0-88f5-7a327175c58d")
 		)
 		(pin "2"
-			(uuid "d52fb949-66de-4226-96b1-c81dab523c80")
+			(uuid "ec71430a-8dca-4a09-96eb-08075a090618")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
@@ -4166,35 +2344,118 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:Speaker_Ultrasound")
-		(at 208.28 93.98 0)
+		(lib_id "Amplifier_Audio:LM386")
+		(at 97.79 135.89 0)
+		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "be2c2823-7bfd-4985-ace4-d57c43f29a4a")
-		(property "Reference" "LS2"
-			(at 213.36 93.9799 0)
+		(uuid "3693461b-9d50-4044-b1c7-96e3a22fc390")
+		(property "Reference" "U1"
+			(at 102.362 142.494 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "Speaker_Ultrasound"
-			(at 213.36 96.5199 0)
+		(property "Value" "LM386"
+			(at 102.362 139.954 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "UltrasonicTransducerReceiver:Ultrasonic Transducer-Receiver"
-			(at 207.391 95.25 0)
+		(property "Footprint" "Package_DIP:DIP-8_W7.62mm"
+			(at 100.33 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/lm386.pdf"
+			(at 102.87 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low Voltage Audio Power Amplifier, DIP-8/SOIC-8/SSOP-8"
+			(at 97.79 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "5"
+			(uuid "59b8c495-818b-4ee0-a321-bfa4f1bdd4eb")
+		)
+		(pin "4"
+			(uuid "58bc40ab-3b0c-451c-b898-d3535e8bf1a0")
+		)
+		(pin "2"
+			(uuid "9be79577-fc41-41f8-9ddd-3b38c0a2416e")
+		)
+		(pin "8"
+			(uuid "cf9bbc76-e211-42eb-a112-4499449ad75a")
+		)
+		(pin "1"
+			(uuid "90acf1a2-e672-4ff7-9907-23084a4ce75d")
+		)
+		(pin "3"
+			(uuid "57144d4c-c12b-4ca2-8cf7-0fce4502c02d")
+		)
+		(pin "7"
+			(uuid "856b2f13-7b3e-4d46-85ac-b430b8226391")
+		)
+		(pin "6"
+			(uuid "0c04d5e8-a3c0-47c4-8f89-816c12762ff4")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 106.68 149.86 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4380d67b-de0b-48ad-aa41-e17cfd36c73d")
+		(property "Reference" "R3"
+			(at 101.6 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470Ω"
+			(at 101.6 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 105.664 149.606 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4203,7 +2464,77 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.391 95.25 0)
+			(at 106.68 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 106.68 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "4d2d210d-fcf5-463b-91fb-e61d8abd965f")
+		)
+		(pin "1"
+			(uuid "60d758bb-67a0-48a3-8e6d-9e6f15bbbcdc")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Speaker_Ultrasound")
+		(at 105.41 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5e0863ed-e0c4-4509-958b-6a0af5e87b28")
+		(property "Reference" "LS2"
+			(at 110.49 68.5799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Speaker_Ultrasound"
+			(at 110.49 71.1199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.521 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.521 69.85 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4212,7 +2543,7 @@
 			)
 		)
 		(property "Description" "Ultrasonic transducer"
-			(at 208.28 93.98 0)
+			(at 105.41 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4220,11 +2551,11 @@
 				(hide yes)
 			)
 		)
-		(pin "1"
-			(uuid "3227c32c-6e61-48a2-bbde-a1a68e57215a")
-		)
 		(pin "2"
-			(uuid "51a0cdca-54df-46db-8045-61025b9c4e7e")
+			(uuid "2287b4fe-b2a6-4d8f-9a9b-4ff8bd5f67ef")
+		)
+		(pin "1"
+			(uuid "fbdd81bf-1023-4256-875a-c57683d52a42")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
@@ -4236,45 +2567,32 @@
 		)
 	)
 	(symbol
-		(lib_id "2N2222:2N2222")
-		(at 162.56 114.3 0)
+		(lib_id "Device:R_US")
+		(at 67.31 138.43 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "dd3f6b95-52e9-493e-a829-5e02ddc0b3b5")
-		(property "Reference" "Q4"
-			(at 166.37 113.0299 0)
+		(uuid "ac972205-981f-487e-b6bd-43ca46e16756")
+		(property "Reference" "R1"
+			(at 67.31 144.78 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "2N2222"
-			(at 166.37 115.5699 0)
+		(property "Value" "1.2kΩ"
+			(at 67.31 142.24 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Footprint" "2N2222:TO127P584H533-3"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 162.56 114.3 0)
+		(property "Footprint" ""
+			(at 67.056 139.446 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4282,8 +2600,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 162.56 114.3 0)
+		(property "Datasheet" "~"
+			(at 67.31 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4291,184 +2609,70 @@
 				(hide yes)
 			)
 		)
-		(property "MF" "ON Semiconductor"
-			(at 162.56 114.3 0)
+		(property "Description" "Resistor, US symbol"
+			(at 67.31 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify bottom)
 				(hide yes)
 			)
-		)
-		(property "MAXIMUM_PACKAGE_HEIGHT" "5.33 mm"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Package" "TO-18 Texas Instruments"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Price" "None"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=eda"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "STANDARD" "IPC 7351B"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "PARTREV" "R2"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=snap"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MP" "2N2222"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Description_1" "\nBipolar (BJT) Transistor NPN 50V 800mA 300mW Surface Mount Ceramic SMD\n"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Availability" "In Stock"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "Micross"
-			(at 162.56 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7714816d-392a-4f81-8858-68f2673ede8c")
-		)
-		(pin "3"
-			(uuid "cb5e12be-2dbc-4e3d-99c7-31af780898dd")
 		)
 		(pin "2"
-			(uuid "71ce0a9b-1ae7-4599-b657-08a500ec7b8e")
+			(uuid "98690f14-8dc6-4ee2-866c-4e1bcb09c86d")
+		)
+		(pin "1"
+			(uuid "3766c88f-8431-41b9-bf38-a56f3a4db218")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
 				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "Q4")
+					(reference "R1")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "2N2222:2N2222")
-		(at 162.56 88.9 0)
+		(lib_id "Device:Microphone_Ultrasound")
+		(at 102.87 109.22 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "ed5e67e5-0672-4f1d-8790-d1ac056c3595")
-		(property "Reference" "Q2"
-			(at 166.37 87.6299 0)
+		(uuid "ad2a97d1-4ba8-40b2-a237-c4a19f0a3384")
+		(property "Reference" "MK1"
+			(at 106.68 108.6484 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "Microphone_Ultrasound"
+			(at 106.68 111.1884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 107.442 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
-			)
-		)
-		(property "Value" "2N2222"
-			(at 166.37 90.1699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "2N2222:TO127P584H533-3"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
-			(at 162.56 88.9 0)
+		(property "Datasheet" "~"
+			(at 102.87 111.76 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4476,165 +2680,42 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 162.56 88.9 0)
+		(property "Description" "Ultrasound receiver"
+			(at 102.87 109.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
-			)
-		)
-		(property "MF" "ON Semiconductor"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MAXIMUM_PACKAGE_HEIGHT" "5.33 mm"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Package" "TO-18 Texas Instruments"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Price" "None"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=eda"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "STANDARD" "IPC 7351B"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "PARTREV" "R2"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=snap"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MP" "2N2222"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Description_1" "\nBipolar (BJT) Transistor NPN 50V 800mA 300mW Surface Mount Ceramic SMD\n"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Availability" "In Stock"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "Micross"
-			(at 162.56 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 				(hide yes)
 			)
 		)
 		(pin "1"
-			(uuid "16422d72-2ce6-427b-9777-44b1225bc509")
-		)
-		(pin "3"
-			(uuid "6e5c1bbf-e035-481e-90d9-572036ebffde")
+			(uuid "3d09b3e6-276a-4468-a78e-e9c041e7fb39")
 		)
 		(pin "2"
-			(uuid "cfed4d77-1fd1-4f03-91f4-3470d9b6bdf8")
+			(uuid "3dc2f422-85d5-489c-a479-54b633238b4a")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
 				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "Q2")
+					(reference "MK1")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "2N2222:2N2222")
-		(at 162.56 76.2 0)
+		(lib_id "Device:Speaker_Ultrasound")
+		(at 105.41 81.28 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "fbb460c8-8953-4ff1-9877-861ebc480cf1")
-		(property "Reference" "Q1"
-			(at 166.37 74.9299 0)
+		(uuid "af8ab55c-abd3-4193-a274-50fe510e6313")
+		(property "Reference" "LS3"
+			(at 110.49 81.2799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4642,8 +2723,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2N2222"
-			(at 166.37 77.4699 0)
+		(property "Value" "Speaker_Ultrasound"
+			(at 110.49 83.8199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4651,18 +2732,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "2N2222:TO127P584H533-3"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 162.56 76.2 0)
+		(property "Footprint" ""
+			(at 104.521 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4670,8 +2741,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
-			(at 162.56 76.2 0)
+		(property "Datasheet" "~"
+			(at 104.521 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4679,139 +2750,297 @@
 				(hide yes)
 			)
 		)
-		(property "MF" "ON Semiconductor"
-			(at 162.56 76.2 0)
+		(property "Description" "Ultrasonic transducer"
+			(at 105.41 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MAXIMUM_PACKAGE_HEIGHT" "5.33 mm"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Package" "TO-18 Texas Instruments"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Price" "None"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Check_prices" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=eda"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "STANDARD" "IPC 7351B"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "PARTREV" "R2"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "SnapEDA_Link" "https://www.snapeda.com/parts/2N2222/Onsemi/view-part/?ref=snap"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MP" "2N2222"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Description_1" "\nBipolar (BJT) Transistor NPN 50V 800mA 300mW Surface Mount Ceramic SMD\n"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "Availability" "In Stock"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
-				(hide yes)
-			)
-		)
-		(property "MANUFACTURER" "Micross"
-			(at 162.56 76.2 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify bottom)
 				(hide yes)
 			)
 		)
 		(pin "1"
-			(uuid "2eb79f81-3136-428a-8a5f-def53cee6701")
-		)
-		(pin "3"
-			(uuid "bad0227c-a3d1-4673-82d3-dad77a09fd79")
+			(uuid "23961156-fe28-46b6-9ab3-022a5e6504e7")
 		)
 		(pin "2"
-			(uuid "fcd8075e-a4f0-47fb-bf34-66683df4af54")
+			(uuid "8cd41d48-b959-44d2-aa4a-4ac1255cb8ef")
 		)
 		(instances
 			(project "UltrasonicPhasedArrayModule"
 				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
-					(reference "Q1")
+					(reference "LS3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 67.31 133.35 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d8c8d375-953b-4544-b87a-b569ffd239a5")
+		(property "Reference" "R2"
+			(at 67.31 127 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1.2kΩ"
+			(at 67.31 129.54 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 67.564 132.334 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 67.31 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 67.31 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c4b362a5-35f5-459a-9041-2a2d25ecfbcb")
+		)
+		(pin "1"
+			(uuid "cf70162e-93c9-4de2-b065-361da9b2bf93")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Speaker_Ultrasound")
+		(at 105.41 93.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "df0d700e-4680-4b0c-bfaa-85f4c1d8e25f")
+		(property "Reference" "LS4"
+			(at 110.49 93.9799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Speaker_Ultrasound"
+			(at 110.49 96.5199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.521 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 104.521 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Ultrasonic transducer"
+			(at 105.41 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "23961156-fe28-46b6-9ab3-022a5e6504e8")
+		)
+		(pin "2"
+			(uuid "8cd41d48-b959-44d2-aa4a-4ac1255cb8f0")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "LS4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 116.84 135.89 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e18ef7b2-436e-4f32-86e2-5435b360561c")
+		(property "Reference" "C1"
+			(at 115.951 128.27 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "200μF"
+			(at 115.951 130.81 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 120.65 134.9248 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 116.84 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 116.84 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "337cb202-ed7b-47aa-8240-4e9697c29131")
+		)
+		(pin "2"
+			(uuid "102eb193-f275-4d84-8dfd-d7f4ef64d348")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Polarized")
+		(at 105.41 124.46 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f4410233-c7bc-4689-9b15-ffa4fbd5cdd1")
+		(property "Reference" "C2"
+			(at 100.838 120.65 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0.05μF"
+			(at 100.838 123.19 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 125.4252 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 105.41 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 105.41 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ab602265-941e-431b-b040-e1892144b6d3")
+		)
+		(pin "2"
+			(uuid "cef4c376-c3cd-47b8-a385-82c634ee9f7e")
+		)
+		(instances
+			(project "UltrasonicPhasedArrayModule"
+				(path "/6750e596-42dc-499b-95fe-076f8cb851f4"
+					(reference "C2")
 					(unit 1)
 				)
 			)
