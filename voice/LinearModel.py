@@ -24,9 +24,8 @@ class LinearModel(nn.Module):
         x = torch.cat((x1, x2), dim=0)
 
         x = F.relu(self.fc2(x))
-        x = self.dropout1(x)
-        x = F.relu(self.fc3(x))
         x = self.dropout2(x)
+        x = F.relu(self.fc3(x))
         
         x = self.fc4(x)
         x = self.sigmoid(x)

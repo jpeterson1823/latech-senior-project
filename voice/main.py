@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     epoch_number = 0
     EPOCHS = 100
-    optimizer = torch.optim.Adam(my_model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(my_model.parameters(), lr=0.00001)
 
     if (action == "train"):   
         training_start = time.time()
@@ -206,6 +206,7 @@ if __name__ == "__main__":
             running_loss = 0
             correct_predictions = 0
             total_samples = 0
+            incorrect = []
             # Iterate over validation data loader
             for file_set in range(len(labels)):
                 speaker_data, comparison_data, label = dataset.__getitem__(file_set)
@@ -231,7 +232,7 @@ if __name__ == "__main__":
                 
                 # Calculate accuracy
                 predicted = outputs
-                if (predicted >= 0.6):
+                if (predicted >= 0.5):
                     predicted = 1.0
                 else:
                     predicted = 0.0
@@ -243,6 +244,9 @@ if __name__ == "__main__":
                 if (DEBUG):
                     print(outputs)
                     print("Predicted:", predicted, " Correct Answer:", label)
+                    if predicted != answer:
+                        incorrect.append([outputs, answer])
+                    
             
             # Calculate average loss and accuracy for the epoch
             avg_loss = running_loss / len(labels)
@@ -255,3 +259,15 @@ if __name__ == "__main__":
              
             # Print epoch statistics
             print(f'Loss: {avg_loss:.4f}, Accuracy: {accuracy:.4f}')
+            if DEBUG:
+                false_positive = []
+                false_negative = []
+                for i in range(len(incorrect)):
+                    if incorrect[i][1] == 0.0:
+                        false_positive.append(incorrect[i][0])
+
+                    else:
+                        false_negative.append(incorrect[i][0])
+                
+                print("False Negatives: ", false_negative, "/nFalse Positives: ", false_positive)
+                print(f"{len(false_positive) / (len(false_negative) + len(false_positive))}% of incorrect guesses are false positives")

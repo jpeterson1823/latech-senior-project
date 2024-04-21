@@ -3,3 +3,4 @@ voice/validation/**
 voice/logs/**
 voice/lib64/**
 voice/lib/**
+voice/vosk-model-en-us-0.42-gigaspeech/**

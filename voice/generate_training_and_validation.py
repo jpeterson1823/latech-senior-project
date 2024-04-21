@@ -7,7 +7,7 @@ import sys
 parent_directory = "ST-AEDS-20180100_1-OS/"
 speaker_directories = os.listdir(parent_directory)
 
-
+# has been altered to give files from one speaker only and give comparisons to that one speaker
 def populate_dataset(dir_name: str, set_size: int):
 
     for i in range(set_size):
@@ -17,7 +17,8 @@ def populate_dataset(dir_name: str, set_size: int):
         os.mkdir(temp_dir_name)
 
         # pick a random speaker
-        speaker = r.randint(0, len(speaker_directories)-1)
+        #speaker = r.randint(0, len(speaker_directories)-1)
+        speaker = 1
         speaker_path = parent_directory + "/" + speaker_directories[speaker]
         speaker_files = os.listdir(speaker_path)
 
@@ -51,7 +52,6 @@ def populate_dataset(dir_name: str, set_size: int):
 
         comparison_dest = dest + comparison_dir[comparison_file_index]
         shutil.copy(comparison_file_path, comparison_dest)
-
 
 
 
