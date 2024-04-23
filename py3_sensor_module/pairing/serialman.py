@@ -21,12 +21,12 @@ class SerialPacket:
         self._ptype = packetType
 
         if self._ptype == PacketType.IDENT:
-            self._data = []
+            self._data = bytearray([])
         else:
-            self._data  = self._header
-            self._data += bytes(self.ptype.value) 
-            self._data += len(data).to_bytes(1, byteorder='big')
-            self._data += data
+            self._data  = bytearray(self._header)
+            self._data += bytearray(self._ptype) 
+            self._data += bytearray(len(data).to_bytes(1, byteorder='big'))
+            self._data += bytearray(data)
     
     @classmethod
     def fromBytes(cls, data: bytes):

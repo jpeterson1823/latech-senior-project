@@ -17,19 +17,18 @@ extern "C" {
  */
 UPASensor::UPASensor() {
     this->pwmActive = false;
-    this->rx = 1; // GP28
+    this->rx = 0; // GP28
 
     // run GPIO and ADC setup
     gpioSetup();
     adcSetup();
 
-    // dma setup
+
+    this->dmaChannel = dma_claim_unused_channel(true);
+    this->dmacfg = dma_channel_get_default_config(dmaChannel);
 }
 
 void UPASensor::dmaSetup() {
-    this->dmaChannel = dma_claim_unused_channel(true);
-    this->dmacfg = dma_channel_get_default_config(dmaChannel);
-
     // write bytes to address
     channel_config_set_transfer_data_size(&dmacfg, DMA_SIZE_16);
     // reading from constant address
@@ -114,13 +113,13 @@ void UPASensor::pulseLR(uint phaseDelay) {
 
     sleep_us(pulseLength);
 
-    pwm_set_enabled(slices[3], true);
+    pwm_set_enabled(slices[3], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[2], true);
+    pwm_set_enabled(slices[2], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[1], true);
+    pwm_set_enabled(slices[1], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[0], true);
+    pwm_set_enabled(slices[0], false);
 }
 
 /**
@@ -139,13 +138,13 @@ void UPASensor::pulseRL(uint phaseDelay) {
 
     sleep_us(pulseLength);
 
-    pwm_set_enabled(slices[0], true);
+    pwm_set_enabled(slices[0], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[1], true);
+    pwm_set_enabled(slices[1], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[2], true);
+    pwm_set_enabled(slices[2], false);
     sleep_us(phaseDelay);
-    pwm_set_enabled(slices[3], true);
+    pwm_set_enabled(slices[3], false);
 }
 
 /**
@@ -213,9 +212,12 @@ float UPASensor::poll(float angle) {
     // if direction angle is 0, fire center
     else this->pulseCC();
 
+    sleep_us(100);
+
     // select receiver as adc input
     adc_select_input(rx);
     // start dma and adc
+    dmaSetup();
     dma_channel_start(dmaChannel);
     adc_run(true);
 
@@ -225,17 +227,18 @@ float UPASensor::poll(float angle) {
     // stop adc sampling and clean adc fifo
     adc_run(false);
     adc_fifo_drain();
+    dma_channel_cleanup(dmaChannel);
 
     // look through all samples and grab the index of largest echo measurement
-    uint16_t index = 0;
-    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++)
-        if (adcCaptureBuf[index] < adcCaptureBuf[i]){
-            std::cout << adcCaptureBuf[index] << std::endl;
-            index = i;
-        }
-    
-    std::cout << "Largest ADC: " << (int)adcCaptureBuf[index] << std::endl;
-    
+    //uint16_t index = 0;
+    //for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+    //    std::cout << adcCaptureBuf[i] << '\n';
+    //    if (adcCaptureBuf[index] < adcCaptureBuf[i]){
+    //        index = i;
+    //    }
+    //}
+    //std::cout << "Largest ADC: " << (int)adcCaptureBuf[index] << std::endl;
+
     // ADC DMA runs at 500Ksps, meaning each sample takes about 2us.
     // (2us * index) = total travel time
     // ttt / 2 = one-way echo
@@ -244,7 +247,39 @@ float UPASensor::poll(float angle) {
     // ==> index / 0.343 = distance in mm
 
     // calculate and return distance to echo
-    return index / 0.343f;
+    //return index / 0.343f;
+
+    // grab the first index above trigger value
+    //for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+    //    if (adcCaptureBuf[i] >= 15) {
+    //        std::cout << i << std::endl;
+    //        return i / 0.343f;
+    //    }
+    //}
+
+    // use modulo to smooth data
+    uint16_t value = 0;
+    uint16_t scalar = 10;
+    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+        if (adcCaptureBuf[i] > value)
+            value += (adcCaptureBuf[i] % scalar);
+        else if (adcCaptureBuf[i] < value)
+            value -= (adcCaptureBuf[i] % scalar);
+        adcCaptureBuf[i] = value;
+    }
+
+    // go through data and grab highest point
+    uint16_t max_i = 0;
+    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+        //std::cout << adcCaptureBuf[i] << std::endl;
+        if (adcCaptureBuf[i] > max_i)
+            max_i = i;
+    }
+
+    // if value at max index is not larger than sensitivity value, then return -1
+    if (adcCaptureBuf[max_i] < 50)
+        return 0;
+    return (max_i/1000.0f) * 343.0f;
 }
 
 /**
@@ -271,16 +306,15 @@ std::vector<struct upa_result> UPASensor::rangeSweep(float startAngle, float end
     endAngle = validateAngle(endAngle);
 
     // create vector for sweep results
-    std::vector<struct upa_result> sweepResult(calcUpaResultVecLen(startAngle, endAngle));
+    std::vector<struct upa_result> sweepResult;
 
     // poll angles and increment by sweep resolution
-    std::size_t resultIndex = 0;
     for (float angle = startAngle; angle <= endAngle; angle += UPA_SWEEP_RESOLUTION) {
         // poll and save results for specific angle
-        sweepResult[resultIndex++] = {
+        sweepResult.push_back({
             angle:      angle,
             distance:   poll(angle)
-        };
+        });
     }
 
     // return sweep results

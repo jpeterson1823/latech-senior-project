@@ -41,22 +41,22 @@ void Kantoku::formatEEPROM() {
         prom.writeByte(0x00, i);
 
     // first two bytes need to be noble-6 (HI:LO)
-    prom.writeByte(0x09, 0x0000);
-    prom.writeByte(0x08, 0x0001);
+    prom.writeByte(0x23, 0x0000);
+    prom.writeByte(0x12, 0x0001);
     // flag byte already at KANTOKU_EEPROM_FORMATTED, so no action needed there
 }
 
 // determines which action should be taken given current situation
 Kantoku::Action Kantoku::determineAction() {
     // first things first, determine if PROM has been formatted via checking first & second byte
-    uint16_t formatFlag = 0x0000;
-    formatFlag |= (uint16_t)(prom.readByte(0x0000)) << 8;
-    formatFlag |= (uint16_t)prom.readByte(0x0001);
+    uint8_t formatFlag_h = prom.readByte(0x0000);
+    uint8_t formatFlag_l = prom.readByte(0x0001);
 
-    std::cout << "format flag: " << formatFlag << std::endl;
+    std::cout << "0x0000: " << std::hex << (int)formatFlag_h << std::endl;
+    std::cout << "0x0001: " << std::hex << (int)formatFlag_l << std::endl;
 
     // format eeprom if first two bytes not noble6
-    if (formatFlag != NOBLE6) {
+    if (formatFlag_h != 0x23 || formatFlag_l != 0x12) {
         std::cout << "Not Noble Enough. Cleaning EEPROM..." << std::endl;
         formatEEPROM();
         // set state to SerialSetup

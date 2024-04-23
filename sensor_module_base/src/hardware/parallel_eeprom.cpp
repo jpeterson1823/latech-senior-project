@@ -5,9 +5,10 @@
 EEPROM::EEPROM() {
     // Init IO pins
     gpio_init_mask(IO_MASK);
+    gpio_set_dir_out_masked(IO_MASK);
 
-    // pull down all IO pins (GPIO 9-15)
-    for (uint8_t i = 9; i < 16; i++)
+    // pull down all IO pins (GPIO 0-7)
+    for (uint8_t i = 0; i < 8; i++)
         gpio_pull_down(i);
 
     // init and set dir of shift register pins
@@ -16,8 +17,6 @@ EEPROM::EEPROM() {
     gpio_init(ser);
     gpio_init(we);
     gpio_init(oe);
-
-    gpio_set_dir_out_masked(IO_MASK);
 
     gpio_set_dir(rclk,  GPIO_OUT);
     gpio_set_dir(srclk, GPIO_OUT);
@@ -41,12 +40,12 @@ EEPROM::EEPROM() {
     gpio_put(oe, 1);
 
     ioDirection = true;
-    gpio_put_masked(IO_MASK, 0x0000);
+    gpio_clr_mask(IO_MASK);
 }
 
 void EEPROM::setBusOutput() {
     if (ioDirection != EEPROM_IO_OUT) {
-        std::cout << "Setting IO bus to OUTPUT\n";
+        //std::cout << "Setting IO bus to OUTPUT\n";
         gpio_set_dir_out_masked(IO_MASK);
         ioDirection = EEPROM_IO_OUT;
     }
@@ -54,7 +53,7 @@ void EEPROM::setBusOutput() {
 
 void EEPROM::setBusInput() {
     if (ioDirection != EEPROM_IO_IN) {
-        std::cout << "Setting IO bus to INPUT\n";
+        //std::cout << "Setting IO bus to INPUT\n";
         gpio_set_dir_in_masked(IO_MASK);
         ioDirection = EEPROM_IO_IN;
     }
@@ -90,13 +89,14 @@ uint8_t EEPROM::readByte(uint16_t address) {
 
     // shift out address and enable output
     shiftOut(address);
+    sleep_us(SHIFT_REG_DELAY);
     gpio_put(oe, 1);
     sleep_us(SHIFT_REG_DELAY);
 
     //std::cout << std::hex << address << std::endl;
 
     // read data lines into var
-    uint8_t data = (gpio_get_all() & IO_MASK) >> 6;
+    uint8_t data = (gpio_get_all() & IO_MASK);
 
     return data;
 }
@@ -136,19 +136,17 @@ void EEPROM::writeByte(uint8_t data, uint16_t address) {
     shiftOut(address);
 
     // write data to data bus
-    gpio_put_masked(IO_MASK, (uint32_t)data << 6);
-    //std::cout << "IO_MASK: " << std::bitset<32>(IO_MASK) << '\n';
-    //std::cout << "DATA   : " << std::bitset<32>((uint32_t)data << 6) << std::endl;
-    sleep_us(10);
+    gpio_put_masked(IO_MASK, (uint32_t)data);
+    sleep_us(500);
     // initiate write condition: OE unset, WE pulse
     gpio_put(oe, 0);
     gpio_put(we, 1);
-    sleep_us(100);
+    sleep_us(500);
     gpio_put(we, 0);
-    sleep_us(100);
+    sleep_us(500);
 
     // unset data lines
-    gpio_put_masked(IO_MASK, 0x0000);
+    gpio_clr_mask(IO_MASK);
 }
 
 void EEPROM::writeString(const char* str, uint16_t address) {

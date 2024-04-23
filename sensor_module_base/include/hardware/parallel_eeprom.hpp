@@ -7,7 +7,7 @@ extern "C" {
     #include <hardware/gpio.h>
 }
 
-#define SHIFT_REG_DELAY 10
+#define SHIFT_REG_DELAY 500
 #define EEPROM_OE_MASK 0x4000
 #define EEPROM_WE_MASK 0x8000
 #define EEPROM_IO_IN false
@@ -16,7 +16,7 @@ extern "C" {
 class EEPROM {
 private:
     // IO Mask covers GPIO 0-7
-    const uint32_t IO_MASK = 0b00000000'00000000'00000000'01111111;
+    const uint32_t IO_MASK = 0x7F;
     // old io mask below
     //const uint32_t IO_MASK = 0b00000000'00000000'00111111'11000000;
     const uint8_t rclk  = 8;

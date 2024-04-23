@@ -1322,7 +1322,7 @@
 			(pintype "free")
 			(uuid "e31d4ecc-a2bb-4d97-be81-8990a1c9418e")
 		)
-		(model "${KICAD6_3DMODEL_USER_DIR}/RPi Pico W w_headers.step"
+		(model "C:/Users/peter/Documents/GitHub/latech-senior-project/kicad/symbols_and_footprints/Raspberry_Pi_Pico_W_Kicad_Files-main/RPi Pico W w_headers.step"
 			(offset
 				(xyz -10.5 -25.5 10)
 			)
@@ -2022,6 +2022,17 @@
 			(solder_mask_margin 0.102)
 			(uuid "6d68023a-e3cf-4f87-b827-2ffdf30491d9")
 		)
+		(model "C:/Users/peter/Documents/GitHub/latech-senior-project/kicad/symbols_and_footprints/AT28C64B-15PU/AT28C64B-15PU.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 90)
+			)
+		)
 	)
 	(footprint "SN74HC595N:DIP794W45P254L1969H508Q16"
 		(layer "F.Cu")
@@ -2508,6 +2519,17 @@
 			(solder_mask_margin 0.102)
 			(uuid "3423fe45-5fd1-42cb-b716-2df812609db2")
 		)
+		(model "C:/Users/peter/Documents/GitHub/latech-senior-project/kicad/symbols_and_footprints/74HC595N_112/74HC595N_112.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 0)
+			)
+		)
 	)
 	(footprint "SN74HC595N:DIP794W45P254L1969H508Q16"
 		(layer "F.Cu")
@@ -2993,6 +3015,17 @@
 			(pintype "power_in")
 			(solder_mask_margin 0.102)
 			(uuid "64b57032-ebb4-4575-aede-ef386ac4648d")
+		)
+		(model "C:/Users/peter/Documents/GitHub/latech-senior-project/kicad/symbols_and_footprints/74HC595N_112/74HC595N_112.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -90 0 0)
+			)
 		)
 	)
 	(footprint "Connector_IDC:IDC-Header_2x08_P2.54mm_Vertical"

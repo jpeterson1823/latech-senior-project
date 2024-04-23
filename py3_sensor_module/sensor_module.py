@@ -30,7 +30,7 @@ def pair(port: str, db: Database):
     ident = SerialPacket(PacketType.IDENT, None)
     session.send(ident)
     packet = session.recv()
-    if packet.typeCode() != PacketType.IDENT:
+    if packet.typeCode != PacketType.IDENT.value:
         print(f"Device did not ident properly. Response Packet: {str(packet)}")
         print("Exiting...")
         exit()
@@ -40,7 +40,7 @@ def pair(port: str, db: Database):
     packet = session.recv()
 
     # pair with module if requested
-    if packet.typeCode() == PacketType.PAIR_REQ:
+    if packet.typeCode == PacketType.PAIR_REQ:
         # start DHCP manager
         dhcpman = DHCPMan()
 
