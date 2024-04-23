@@ -80,13 +80,14 @@ class SerialSession:
         print("SENDING PACKET... ", end='')
         if self._session:
             v = self._session.write(packet.raw())
+            self._session.write('\n'.encode('utf-8'))
             print(f"DONE with v={v}")
             return v
         print("[WARN] Cannot write data to closed serial session!")
         return False
     
     def recv(self) -> SerialPacket:
-        print("RECVIGN PACKET... ", end='')
+        print("RECVING PACKET... ", end='')
         if not self._session:
             print("[WARN::SerialSession] recv() called on closed session!")
             return None
@@ -97,6 +98,7 @@ class SerialSession:
         for i in range(4):
             print(f"reading byte {i+1}")
             self._buf += self._session.read(1)
+            print([chr(x) for x in self._buf])
 
         # read remaining payload
         payload_len = int(self._buf[3])

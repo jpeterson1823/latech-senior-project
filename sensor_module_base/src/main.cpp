@@ -15,7 +15,8 @@ extern "C" {
 int main() {
     // general hardware setup
     cyw43_arch_init();
-    stdio_init_all();
+    //stdio_init_all();
+    stdio_usb_init();
     adc_init();
     gpio_init(CYW43_WL_GPIO_LED_PIN);
     sleep_ms(5000);
@@ -37,23 +38,19 @@ int main() {
     std::cout << "0x0003: 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)rom.readByte(0x0003) << std::endl;
     */
 
-    /*
     // create kantoku for setup, network, and pairing
     // constructor handles serial setup, network connection, pairing, and uplink creation
     Kantoku kan(ModuleType::NONE);
     sleep_ms(2000);
-    kan.prom.writeByte(0x23, 0x0000);
-    std::cout << "First Byte: " << kan.prom.readByte(0x0000) << std::endl;;
     
     // make sure module paired to controller
     if (!kan.attemptPair()) {
         std::cout << "FAILED TO PAIR TO CONTROLLER!" << std::endl;
         exit(1);
     }
-    */
 
-    std::cout << "UPA Starting..." << std::endl;
-    UPASensor upa;
+    //std::cout << "UPA Starting..." << std::endl;
+    //UPASensor upa;
 
     //std::cout << "Polling   0.0 deg:\n"<< upa.poll(0.0f) << "mm" << std::endl;
     //std::cout << "Polling -45.0 deg:\n"<< upa.poll(-45.0f) << "mm" << std::endl;

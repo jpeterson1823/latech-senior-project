@@ -172,7 +172,9 @@ void UPASensor::pulseCC() {
  */
 float UPASensor::calcPhaseDelay(float angle) {
     angle = validateAngle(angle);
-    return (tan(angle * RAD_TO_DEG) - phaseScalar);
+    if (angle == 0)
+        return 0;
+    return angle / RAD_TO_DEG;
 }
 
 /**
@@ -211,8 +213,6 @@ float UPASensor::poll(float angle) {
     }
     // if direction angle is 0, fire center
     else this->pulseCC();
-
-    sleep_us(100);
 
     // select receiver as adc input
     adc_select_input(rx);
@@ -280,17 +280,6 @@ float UPASensor::poll(float angle) {
     if (adcCaptureBuf[max_i] < 50)
         return 0;
     return (max_i/1000.0f) * 343.0f;
-}
-
-/**
- * @brief Calculates length of vector to be created for a given angle range at the current sweep resolution
- * 
- * @param startAngle    starting angle for range
- * @param endAngle      ending angle for range
- * @return              length of resulting upa_result vector
- */
-std::size_t UPASensor::calcUpaResultVecLen(float startAngle, float endAngle) {
-    return abs(startAngle - endAngle) * UPA_SWEEP_RESOLUTION;
 }
 
 /**

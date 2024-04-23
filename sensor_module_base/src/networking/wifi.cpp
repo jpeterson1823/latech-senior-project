@@ -20,6 +20,8 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
 
     if (hostname != NULL)
         netif_set_hostname(netif_default, hostname);
+    if (ip != NULL)
+        netif_set_ipaddr(netif_default, ip);
     if (cyw43_arch_wifi_connect_async(ssid, pass, auth))
         return 2;
     
@@ -78,8 +80,8 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
     return status;
 }
 
-int Wifi::Connect(const char* ssid, const char* pass, const char* hostname) {
-    return Wifi::Setup(CYW43_COUNTRY_USA, ssid, pass, CYW43_AUTH_WPA2_MIXED_PSK, hostname, NULL, NULL, NULL);
+int Wifi::Connect(const char* ssid, const char* pass, ip_addr_t* ip, const char* hostname) {
+    return Wifi::Setup(CYW43_COUNTRY_USA, ssid, pass, CYW43_AUTH_WPA2_MIXED_PSK, hostname, ip, NULL, NULL);
 }
 
 void Wifi::GetMacString(std::string& buf) {

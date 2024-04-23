@@ -66,4 +66,4 @@ def pair(port: str, db: Database):
 
 if __name__ == "__main__":
     #db = Database("localhost", "usr", "123")
-    pair("COM3", None)
+    pair("/dev/ttyACM0", None)

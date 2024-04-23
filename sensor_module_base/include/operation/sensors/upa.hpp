@@ -61,7 +61,6 @@ private:
     void pulseCC();
     void pulseRL(uint phaseDelay);
     void pulseLR(uint phaseDelay);
-    std::size_t calcUpaResultVecLen(float startAngle, float endAngle);
 
     float validateAngle(float angle);
     float calcPhaseDelay(float angle);

@@ -43,6 +43,7 @@ private:
 
 // member vars
 private:
+    EEPROM prom;
     Action action;
     ModuleType moduleType;
 
@@ -54,7 +55,6 @@ private:
     void networkConn();
 
 public:
-    EEPROM prom;
     Kantoku(ModuleType moduleType);
     bool attemptPair();
 };

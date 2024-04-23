@@ -3,6 +3,7 @@
 
 extern "C" {
     #include <pico/multicore.h>
+    #include <pico/stdio.h>
     #include <pico/stdlib.h>
     #include <pico/cyw43_arch.h>
 }
@@ -18,43 +19,27 @@ void SerialSession::__SerialSessionCore1Entry() {
 
 
     // enter session loop
-    std::streamsize availChars;
-    bool sizeKnown = false;
-    uint8_t psize;
     while (*sessionOpen) {
+        std::cout << pbufs << std::endl;
         // only write to pbuf if no packet is ready
-        if (!*packetReady) {
-            // check if data is on std::cin
-            availChars = std::cin.rdbuf()->in_avail();
+        if (!(*packetReady)) {
+            // read char froms serial
+            pbuf[pbufs++] = getchar();
 
-            // if payload size is transmitted, load into variable
-            if (!sizeKnown && availChars >= 4) {
-                uint8_t buf[4];
-                std::cin.rdbuf()->sgetn((char*)buf, 4);
-                psize = buf[3] + 4;
-                sizeKnown = true;
-            }
-
-            // continue only once size is known
-            else if (sizeKnown) {
-                // wait until entire packet is in std::cin
-                while (std::cin.rdbuf()->in_avail() < psize && *sessionOpen) {}
-
-                // load packet into pbuf
-                while(std::cin.rdbuf()->in_avail() && *sessionOpen) {
-                    pbuf[pbufs] = std::cin.rdbuf()->sbumpc();
-                    // make sure no buffer overflow
-                    if (pbufs < SERPAC_DBUF_SIZE && pbufs < psize)
-                        pbufs++;
-                    else
-                        break;
+            // make sure pbufs is within bounds; wrap-around if overflow
+            if (pbufs > SERPAC_DBUF_SIZE)
+                pbufs = 0;
+            
+            // continue only when size is known
+            if (pbufs > 3) {
+                // get characters until entire packet is read
+                while (pbufs < pbuf[3]) {
+                    if (*sessionOpen != true)
+                        exit(0);
+                    pbuf[pbufs++] = getchar();
                 }
-                // clear std::cin once there are no further chars to read
-                std::cin.clear();
-                // reset control vars
-                sizeKnown = false;
-                psize = 0;
-                // set packet ready
+
+                // set packetReady
                 *packetReady = true;
             }
         }
@@ -64,7 +49,7 @@ void SerialSession::__SerialSessionCore1Entry() {
 
 // Class Methods
 SerialSession::SerialSession()
-  : timeout(5.0f), sessionActive(false) {}
+  : timeout(5.0f), sessionActive(false), packetReady(false) {}
 
 void SerialSession::setTimeout(float timeout) {
     this->timeout = timeout;
@@ -74,16 +59,17 @@ bool SerialSession::open() {
     if (sessionActive)
         return false;
 
-    // reset and launch core1
-    multicore_launch_core1(__SerialSessionCore1Entry);
-
     // set session to active
     sessionActive = true;
+
+    // reset and launch core1
+    multicore_launch_core1(__SerialSessionCore1Entry);
 
     // push pbuf and sessionActive pointers to multicore_fifo
     multicore_fifo_push_blocking((uint32_t)(&sessionActive));
     multicore_fifo_push_blocking((uint32_t)(&packetReady));
     multicore_fifo_push_blocking((uint32_t)(&pbuf));
+    std::cout << "Core0 opened serial" << std::endl;
 
     return true;
 }

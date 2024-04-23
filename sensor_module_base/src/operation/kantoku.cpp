@@ -19,7 +19,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     // set module type
     this->moduleType = moduleType;
     // set controller IP
-    IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
+    //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
+    IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
 
@@ -32,6 +33,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     if (this->action == Action::NetworkConnect)
         networkConn();
 
+    //IP4_ADDR(&netinfo.ip, 192, 168, 9, 229);
+    //networkConn();
 };
 
 // formats eeprom
@@ -52,8 +55,8 @@ Kantoku::Action Kantoku::determineAction() {
     uint8_t formatFlag_h = prom.readByte(0x0000);
     uint8_t formatFlag_l = prom.readByte(0x0001);
 
-    std::cout << "0x0000: " << std::hex << (int)formatFlag_h << std::endl;
-    std::cout << "0x0001: " << std::hex << (int)formatFlag_l << std::endl;
+    //std::cout << "0x0000: " << std::hex << (int)formatFlag_h << std::endl;
+    //std::cout << "0x0001: " << std::hex << (int)formatFlag_l << std::endl;
 
     // format eeprom if first two bytes not noble6
     if (formatFlag_h != 0x23 || formatFlag_l != 0x12) {
@@ -91,10 +94,10 @@ void Kantoku::serialSetup() {
     while (shouldLoop) {
         // wait for available packet
         while(!s.packetAvailable()) {
-            //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
-            //sleep_ms(250);
-            //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
-            //sleep_ms(250);
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+            sleep_ms(250);
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+            sleep_ms(250);
         }
 
         // receive packet once one is available
@@ -183,22 +186,25 @@ void Kantoku::serialSetup() {
 // Connect to network using saved creds
 void Kantoku::networkConn() {
     // retrieve creds from EEPROM
-    char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
-    char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
-    uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
-    prom.readUntil(delimAddr+1, '\0', pswd, 1024);
-    sleep_ms(500);
+    //char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    //char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    //uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
+    //prom.readUntil(delimAddr+1, '\0', pswd, 1024);
+    //sleep_ms(500);
+
+    char ssid[] = "bingus";
+    char pswd[] = "FizzBuzz23!";
 
     std::cout << "Attempting to connect to network with following creds:\n";
     std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;
 
     // setup and connect to wifi, 2 retry attempts
-    int status = Wifi::Connect(ssid, pswd);
+    int status = Wifi::Connect(ssid, pswd, &netinfo.ip);
     for (uint8_t i = 0; i < 2; i++) {
         if (status != CYW43_LINK_UP) {
             std::cout << "Failed to connect to network with SSID: \"" << ssid << "\"\n";
             std::cout << "Retrying (attempt " << i + 1 << '/' << 2 << ')' << std::endl;
-            status = Wifi::Connect(ssid, pswd);
+            status = Wifi::Connect(ssid, pswd, &netinfo.ip);
         } else {
             std::cout << "Successfully connected to WiFi network." << std::endl;
             break;
@@ -213,7 +219,8 @@ void Kantoku::networkConn() {
 };
 
 bool Kantoku::attemptPair() {
-    // get mac addr
+    // get ip and mac addr
+    std::string ipAddr(ip4addr_ntoa(&netinfo.ip));
     std::string macAddr;
     Wifi::GetMacString(macAddr);
 
@@ -222,7 +229,7 @@ bool Kantoku::attemptPair() {
 
     // create uri and params string
     std::string uri = "/php/demo.php";
-    std::string data = "REQ=PAIR&DATA=" + macAddr;
+    std::string data = "ipaddr=" + ipAddr + "&macaddr=" + macAddr;
 
     // create pair HTTP request
     Http::PostReq req (
@@ -232,7 +239,7 @@ bool Kantoku::attemptPair() {
     );
 
     // open socket and send http req
-    socket::initialize(&netinfo.ctrlip, 80);
+    socket::initialize(&netinfo.ctrlip, 40553);
     socket::send(req);
     socket::wait();
 
