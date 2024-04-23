@@ -4,3 +4,5 @@ voice/logs/**
 voice/lib64/**
 voice/lib/**
 voice/vosk-model-en-us-0.42-gigaspeech/**
+voice/testing_smaller_true_samples/friends_audio_dont_push
+voice/testing_smaller_true_samples/friends_audio_dont_push.zip
