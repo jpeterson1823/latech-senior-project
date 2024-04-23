@@ -3,10 +3,9 @@ import sqlite3
 
 from weather import MainWindow as WthrMain
 
-#from PyQt5.QtWidgets import QLabel, QMainWindow, QWidget, QApplication, QListWidgetItem, QMessageBox, QPushButton
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 
 #conn = sqlite3.connect("data.db")
 #c = conn.cursor()
@@ -23,6 +22,7 @@ class MainWindow(QMainWindow):
         self.calBtn.clicked.connect(self.calendar)
         self.pairBtn.clicked.connect(self.pair)
         self.wthrBtn.clicked.connect(self.wthr)
+        self.userBtn.clicked.connect(self.addUser)
 
     def calendar(self):
         if self.w is None:
@@ -51,6 +51,13 @@ class MainWindow(QMainWindow):
             self.t = WthrMain()
         self.t.center_screen()
         self.t.show()
+        
+    def addUser(self):
+        messageBox = QMessageBox()
+        messageBox.setText("No user to add")
+        messageBox.setStandardButtons(QMessageBox.Ok)
+        messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 18px;} QPushButton{ width:100px; font-size: 18px; }")
+        messageBox.exec()
         
     def center(self):
         qtRectangle = self.frameGeometry()
@@ -120,20 +127,31 @@ class CalendarWindow(QWidget):
         messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QWidget{background-color:#0000FF; color: black} QPushButton{ width:100px; font-size: 18px; }")
         messageBox.exec()
 
-    def addNewTask(self):
+    def addNewTask(self, vct):
         
         db = sqlite3.connect("data.db")
         cursor = db.cursor()
 
         newTask = str(self.taskLineEdit.text())
+        voiceTask = vct
         newTaskStrip = newTask.strip()
-        if newTask == "":
+        if newTask == "" and voiceTask is False:
             messageBox = QMessageBox()
             messageBox.setText("Must contain text.")
             messageBox.setStandardButtons(QMessageBox.Ok)
             messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QWidget{background-color:#0000FF; color: black} QPushButton{ width:100px; font-size: 18px; }")
             messageBox.exec()
             return
+        elif newTask == "" and voiceTask is not False:
+            date = self.calendarWidget.selectedDate().toPyDate()
+
+            query = "INSERT INTO tasks(task, completed, date) VALUES (?,?,?)"
+            row = (voiceTask, "NO", date,)
+
+            cursor.execute(query, row)
+            db.commit()
+            self.updateTaskList(date)
+            self.taskLineEdit.clear()
         else:        
             date = self.calendarWidget.selectedDate().toPyDate()
 
@@ -149,8 +167,8 @@ class CalendarWindow(QWidget):
         qtRectangle = self.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
-
+        self.move(QApplication.desktop().screen().rect().center()- self.rect().center())
+        
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
