@@ -5,13 +5,14 @@ from PyQt5.QtCore import *
 from MainWindow import Ui_MainWindow
 
 from datetime import datetime
+import subprocess
 import json
 import os
 import sys
 import requests
 from urllib.parse import urlencode
 
-OPENWEATHERMAP_API_KEY = ''
+OPENWEATHERMAP_API_KEY = 'c87115192e57199814dc7d7edfdd4d17'
 
 def from_ts_to_time_of_day(ts):
     dt = datetime.fromtimestamp(ts)
@@ -30,7 +31,7 @@ class WeatherWorker(QRunnable):
 
     def __init__(self, location):
         super(WeatherWorker, self).__init__()
-        self.location = location
+        self.location = location # string. Passed from WeatherWorker(variable)
 
     @pyqtSlot()
     def run(self):
@@ -64,17 +65,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
-        self.pushButton.pressed.connect(self.update_weather)
+        self.pushButton.clicked.connect(self.update_weather)
 
         self.threadpool = QThreadPool()
 
         self.show()
+        
+        #self.update_weather(voicePlace) # Forces forecast to auto appear instead of having to click button
 
     def alert(self, message):
         alert = QMessageBox.warning(self, "Warning", message)
 
-    def update_weather(self):
-        worker = WeatherWorker(self.lineEdit.text())
+    def update_weather(self, place):
+        if place is False:
+            worker = WeatherWorker(self.lineEdit.text())
+        else:
+            worker = WeatherWorker(place)
         worker.signals.result.connect(self.weather_result)
         worker.signals.error.connect(self.alert)
         self.threadpool.start(worker)
@@ -127,6 +133,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         centerPoint = QDesktopWidget().availableGeometry().topLeft()
         qtRectangle.moveCenter(centerPoint)
         self.move(qtRectangle.center())
+        
+    def focusInEvent(self):
+        try:
+            subprocess.Popen(["matchbox-keyboard"])
+            loc = str(self.lineEdit.text())
+            print(f'Loc is {loc}') 
+            return loc
+        except FileNotFoundError:
+            pass
+
+    def focusOutEvent(self):
+        subprocess.Popen(["killall","matchbox-keyboard"])
         
 
 if __name__ == '__main__':
