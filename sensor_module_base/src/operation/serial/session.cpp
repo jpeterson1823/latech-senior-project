@@ -31,7 +31,7 @@ void SerialSession::__SerialSessionCore1Entry() {
             // continue only when size is known
             if (pbufs > 3) {
                 // get characters until entire packet is read
-                while (pbufs-4 < pbuf[3]) {
+                while (pbufs-3 < pbuf[3]) {
                     pbuf[pbufs++] = getchar();
                 }
 
@@ -40,9 +40,9 @@ void SerialSession::__SerialSessionCore1Entry() {
                 pbufs = 0;
             }
         }
-        else {
-            sleep_ms(250);
-        }
+        else
+            sleep_ms(1);
+        
     }
 }
 
@@ -119,6 +119,13 @@ void SerialSession::recv(SerialPacket& packet) {
         sleep_ms(250);
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
         sleep_ms(250);
+    }
+
+    for (int i = 0; i < 10; i++) {
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+        sleep_ms(50);
+        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+        sleep_ms(50);
     }
 
     // load data into SerialPacket and unset packetReady

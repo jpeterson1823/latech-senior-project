@@ -96,8 +96,6 @@ void Kantoku::serialSetup() {
         SerialPacket packet;
         s.recv(packet);
 
-        sleep_ms(500);
-
         // handle packet
         if (packet.getType() == PacketType::IDENT) {
             SerialPacket ident(PacketType::IDENT, nullptr, 0);

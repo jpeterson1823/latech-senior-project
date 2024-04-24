@@ -55,4 +55,23 @@ def pair(port: str, db: Database):
 if __name__ == "__main__":
     #db = Database("localhost", "usr", "123")
     #pair("/dev/ttyACM0", None)
-    pair("com3", None)
+    #pair("com3", None)
+
+    s = SerialSession("com3", 115200)
+    s.open()
+
+    ident = SerialPacket(PacketType.IDENT, [])
+    print("IDENT: " + ident.raw().hex())
+
+    print("SENDING PACKET....", end='')
+    s.send(ident)
+    print("DONE")
+
+    print("RECVING PACKET...", end='')
+    recv = s.recv()
+    print("DONE")
+
+    print("RAW PACKET DATA:")
+    print(recv.hex())
+
+    s.close()

@@ -1,8 +1,20 @@
-#include <operation/serial/packet.hpp>
+#include <serialpacket.hpp>
+#include <string>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
+
+const uint8_t SerialPacket::header[2] = {0x23, 0x12};
 
 SerialPacket::SerialPacket() {
     this->ptype = PacketType::NULLPACKET;
+}
+
+SerialPacket::SerialPacket(const SerialPacket& rhs) {
+    ptype = rhs.ptype;
+    plsize = rhs.plsize;
+    for (uint8_t i = 0; i < plsize; i++)
+        payload[i] = rhs.payload[i];
 }
 
 SerialPacket::SerialPacket(PacketType ptype) {
@@ -27,13 +39,18 @@ void SerialPacket::fromRaw(uint8_t* raw) {
     for (uint16_t i = 0; i < plsize; i++) {
         this->payload[i] = raw[i+4];
     }
-
+    //this->ptype = PacketType(raw[2]);
+    //this->plsize = raw[3];
+    //for (uint8_t i = 0; i < plsize; i++) {
+    //    std::cout << std::hex << raw[i] << std::endl;
+    //    this->payload[i] = raw[i];
+    //}
 }
 
 void SerialPacket::getRaw(uint8_t* buffer, uint8_t* bufsize) {
     buffer[0] = header[0];
     buffer[1] = header[1];
-    buffer[2] = (int)ptype;
+    buffer[2] = ptype;
     buffer[3] = plsize;
     *bufsize = plsize+4;
     for (uint16_t i = 4; i < *bufsize; i++)
@@ -108,4 +125,23 @@ uint8_t SerialPacket::getPayloadByte(uint8_t addr) {
     if (addr < plsize)
         return payload[addr];
     return 0x00;
+}
+
+std::string SerialPacket::toString() {
+    std::stringstream s;
+
+    s << "SerialPacket{header=[";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)this->header[0];
+    s << ",";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)this->header[1];
+    s << "],ptype=";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)ptype;
+    s << ",plsize=" << std::to_string(this->plsize);
+
+    s << ",payload=[";
+    for (uint8_t i = 0; i < plsize; i++)
+        s << std::setw(2) << std::setfill('0') << std::hex << (int)payload[i] << ' ';
+    s << "]}";
+
+    return s.str();
 }

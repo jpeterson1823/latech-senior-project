@@ -1,6 +1,6 @@
 #pragma once
 #include <cstdint>
-#include <sstream>
+#include <string>
 
 #define SERPAC_DBUF_SIZE 256
 
@@ -23,13 +23,14 @@ enum PacketType : uint8_t {
 
 class SerialPacket {
 private:
+    static const uint8_t header[2];
     PacketType ptype;
     uint8_t payload[SERPAC_DBUF_SIZE];
     uint8_t plsize;
 
 public:
-    const uint8_t header[2] = {0x23, 0x12};
     SerialPacket();
+    SerialPacket(const SerialPacket& rhs);
     SerialPacket(uint8_t* rawBytes);
     SerialPacket(PacketType ptype, uint8_t* data, uint8_t dataLen);
     SerialPacket(PacketType ptype);
@@ -48,4 +49,6 @@ public:
     bool setPayloadByte(uint8_t addr, uint8_t byte);
     uint8_t getPayloadByte(uint8_t addr);
 
+
+    std::string toString();
 };

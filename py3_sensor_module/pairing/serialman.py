@@ -16,6 +16,7 @@ class PacketType(Enum):
     PAIR_REQ = 0x04
     DATA_RAW = 0x05
 
+
 class SerialPacket:
     def __init__(self, packetType: PacketType, data: bytes):
         self._header = b'\x23\x12'
@@ -29,16 +30,8 @@ class SerialPacket:
             self._data += bytearray(len(data).to_bytes(1, byteorder='big'))
             self._data += bytearray(data)
     
-    @classmethod
-    def fromBytes(cls, data: bytes):
-        packetType = PacketType(data[2])
-        datalen = data[3]
-        
-        return cls(packetType, data[4:])
-
     def raw(self) -> bytes:
-        b = self._data
-        return b
+        return (self._header + bytes(self._ptype.value) + self._data)
     
     @property
     def data(self) -> bytes:
@@ -86,18 +79,15 @@ class SerialSession:
             self._session = None
     
     def send(self, packet: SerialPacket) -> bool:
-        print("SENDING PACKET... ", end='')
         if self._session:
             for b in packet.raw():
                 self._session.write(b)
                 sleep(0.01)
-            print(f"DONE")
             return True
         print("[WARN] Cannot write data to closed serial session!")
         return False
     
-    def recv(self) -> SerialPacket:
-        print("RECVING PACKET... ", end='')
+    def recv(self) -> bytearray:
         if not self._session:
             print("[WARN::SerialSession] recv() called on closed session!")
             return None
@@ -106,12 +96,7 @@ class SerialSession:
         self._buf = bytearray([])
         # receive first bit of packet until length is received
         for i in range(4):
+            print("READING BYTE")
             self._buf += bytes(self._session.read())
 
-        # read remaining payload
-        payload_len = int(self._buf[3])
-        self._buf += self._session.read(payload_len)
-
-        # return serial packet
-        print("DONE")
-        return SerialPacket.fromBytes(self._buf)
+        return self._buf
