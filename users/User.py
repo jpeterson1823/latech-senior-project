@@ -11,7 +11,7 @@ class User():
         self.audio_folder = audio_files_path
         self.calendar = calendar
 
-    def isUser(self, comparison_array):
+    def isThisUser(self, comparison_array) -> bool:
         tmp_list = os.listdir(self.audio_folder)
         choices = []
         num_comparisons = 9
@@ -32,11 +32,8 @@ class User():
                 outputs_avg += round(output.item(), 2)
             outputs_avg /= num_comparisons
             if outputs_avg > 0.5:
-                print("True")
+                return True
             else:
-                print("False")
+                return False
 
 
-if __name__ == '__main__':
-    u1 = User("John", "Petersons_model", "voice_clips/", "data.db")
-    u1.isUser("perterson_untitled5.npy")
