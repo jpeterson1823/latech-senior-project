@@ -5,6 +5,7 @@ extern "C" {
     #include <pico/stdio.h>
     #include <pico/cyw43_arch.h>
     #include <hardware/adc.h>
+    #include <pico/multicore.h>
 }
 
 #include <operation/kantoku.hpp>
@@ -12,16 +13,23 @@ extern "C" {
 
 #define BUFSIZE 1024
 
+void test() {
+    while(true) {
+        char c = getchar();
+        std::cout << "Char Received: " << c << std::endl;
+    }
+}
+
 int main() {
     // general hardware setup
     cyw43_arch_init();
     //stdio_init_all();
-    stdio_usb_init();
     adc_init();
     gpio_init(CYW43_WL_GPIO_LED_PIN);
+    stdio_usb_init();
     sleep_ms(5000);
 
-    std::cout << "MAIN START" << std::endl;
+    //std::cout << "MAIN START" << std::endl;
 
     /*
     std::cout << "Writing to EEPROM" << std::endl;
@@ -62,6 +70,6 @@ int main() {
     //    std::cout << '(' << sweep[i].angle << "deg, " << sweep[i].distance << "mm)" << std::endl;
 
 
-    std::cout << "REACHED END OF MAIN!" << std::endl;
+    //std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;
 }

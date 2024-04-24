@@ -7,20 +7,6 @@ from networking.dhcpman import DHCPMan
 from networking.addressing import MacAddr, IPv4Addr
 
 
-# only on linux
-def listUsbDevices():
-    device_re = re.compile("Bus\s+(?P<bus>\d+)\s+Device\s+(?P<device>\d+).+ID\s(?P<id>\w+:\w+)\s(?P<tag>.+)$", re.I)
-    df = subprocess.check_output("lsusb")
-    devices = []
-    for i in df.split('\n'):
-        if i:
-            info = device_re.match(i)
-            if info:
-                dinfo = info.groupdict()
-                dinfo['device'] = f'{dinfo.pop("bus")}/{dinfo.pop("device")}'
-                devices.append(dinfo)
-    print(devices)
-
 def pair(port: str, db: Database):
     # open serial session
     session = SerialSession(port, 115200)
@@ -29,6 +15,7 @@ def pair(port: str, db: Database):
     # send IDENT packet and confirm device is a module
     ident = SerialPacket(PacketType.IDENT, None)
     session.send(ident)
+
     packet = session.recv()
     if packet.typeCode != PacketType.IDENT.value:
         print(f"Device did not ident properly. Response Packet: {str(packet)}")
@@ -38,6 +25,7 @@ def pair(port: str, db: Database):
     # device ident'd properly, ask for intention
     session.send(SerialPacket(PacketType.INTENT_Q, None))
     packet = session.recv()
+    print(str(packet))
 
     # pair with module if requested
     if packet.typeCode == PacketType.PAIR_REQ:
@@ -66,4 +54,5 @@ def pair(port: str, db: Database):
 
 if __name__ == "__main__":
     #db = Database("localhost", "usr", "123")
-    pair("/dev/ttyACM0", None)
+    #pair("/dev/ttyACM0", None)
+    pair("com3", None)

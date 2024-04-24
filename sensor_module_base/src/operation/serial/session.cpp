@@ -17,10 +17,8 @@ void SerialSession::__SerialSessionCore1Entry() {
     uint8_t* pbuf = (uint8_t*)multicore_fifo_pop_blocking();
     uint8_t pbufs = 0;
 
-
     // enter session loop
     while (*sessionOpen) {
-        std::cout << pbufs << std::endl;
         // only write to pbuf if no packet is ready
         if (!(*packetReady)) {
             // read char froms serial
@@ -33,15 +31,17 @@ void SerialSession::__SerialSessionCore1Entry() {
             // continue only when size is known
             if (pbufs > 3) {
                 // get characters until entire packet is read
-                while (pbufs < pbuf[3]) {
-                    if (*sessionOpen != true)
-                        exit(0);
+                while (pbufs-4 < pbuf[3]) {
                     pbuf[pbufs++] = getchar();
                 }
 
                 // set packetReady
                 *packetReady = true;
+                pbufs = 0;
             }
+        }
+        else {
+            sleep_ms(250);
         }
     }
 }
@@ -62,14 +62,14 @@ bool SerialSession::open() {
     // set session to active
     sessionActive = true;
 
-    // reset and launch core1
+    //multicore_reset_core1();
     multicore_launch_core1(__SerialSessionCore1Entry);
+
 
     // push pbuf and sessionActive pointers to multicore_fifo
     multicore_fifo_push_blocking((uint32_t)(&sessionActive));
     multicore_fifo_push_blocking((uint32_t)(&packetReady));
-    multicore_fifo_push_blocking((uint32_t)(&pbuf));
-    std::cout << "Core0 opened serial" << std::endl;
+    multicore_fifo_push_blocking((uint32_t)((void*)pbuf));
 
     return true;
 }
@@ -80,6 +80,10 @@ bool SerialSession::close() {
 
     // set session to inactive
     sessionActive = false;
+
+    sleep_ms(1000);
+    multicore_fifo_drain();
+    multicore_reset_core1();
     return true;
 }
 
@@ -92,26 +96,25 @@ bool SerialSession::send(SerialPacket& packet) {
     uint8_t datalen = packet.getPayloadSize();
 
     // send header, type, and data length in raw bytes
-    std::cout << (char)packet.header[0] << (char)packet.header[1];
-    std::cout << (char)packet.getType();
-    std::cout << (char)datalen;
+    std::cout << packet.header[0] << packet.header[1];
+    std::cout << packet.getType();
+    std::cout << datalen;
 
     // print every data byte out
     for (uint8_t i = 0; i < datalen; i++)
         std::cout << (char)data[i];
+    std::cout.flush();
 
     return true;
 }
 
 bool SerialSession::packetAvailable() {
-    if (!sessionActive)
-        return false;
     return this->packetReady;
 }
 
 void SerialSession::recv(SerialPacket& packet) {
     // wait until packet is ready
-    while (!packetReady) {
+    while (!this->packetReady) {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
         sleep_ms(250);
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
@@ -120,7 +123,7 @@ void SerialSession::recv(SerialPacket& packet) {
 
     // load data into SerialPacket and unset packetReady
     packet.fromRaw(this->pbuf);
-    packetReady = false;
+    this->packetReady = false;
 }
 
 bool SerialSession::isActive() {

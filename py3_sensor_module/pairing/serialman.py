@@ -1,5 +1,6 @@
 from serial import Serial
 from enum import Enum
+from time import sleep
 
 class ModuleType(Enum):
     NONE  = 0x00
@@ -24,19 +25,20 @@ class SerialPacket:
             self._data = bytearray([])
         else:
             self._data  = bytearray(self._header)
-            self._data += bytearray(self._ptype) 
+            self._data += bytearray(self._ptype.value) 
             self._data += bytearray(len(data).to_bytes(1, byteorder='big'))
             self._data += bytearray(data)
     
     @classmethod
     def fromBytes(cls, data: bytes):
-        packetType = data[2]
+        packetType = PacketType(data[2])
         datalen = data[3]
         
         return cls(packetType, data[4:])
 
     def raw(self) -> bytes:
-        return self._data
+        b = self._data
+        return b
     
     @property
     def data(self) -> bytes:
@@ -47,7 +49,8 @@ class SerialPacket:
         return self._data[2]
 
     def __str__(self) -> str:
-        return f"SerialPacket[header={self._data[0]:02x}{self._data[1]:02x}, pident={self._data[2]:02x}, len={self._data[3]}, data={str(self._data[4:])}]"
+        s = f"SerialPacket[{self._data.hex()}]"
+        return s
 
 
 
@@ -69,7 +72,13 @@ class SerialSession:
     
     def open(self):
         if not self._session:
-            self._session = Serial(self._port, self._baud)
+            self._session = Serial(
+                port=self._port,
+                baudrate=self._baud,
+                parity='N',
+                stopbits=1,
+                bytesize=8
+            )
     
     def close(self):
         if self._session:
@@ -79,10 +88,11 @@ class SerialSession:
     def send(self, packet: SerialPacket) -> bool:
         print("SENDING PACKET... ", end='')
         if self._session:
-            v = self._session.write(packet.raw())
-            self._session.write('\n'.encode('utf-8'))
-            print(f"DONE with v={v}")
-            return v
+            for b in packet.raw():
+                self._session.write(b)
+                sleep(0.01)
+            print(f"DONE")
+            return True
         print("[WARN] Cannot write data to closed serial session!")
         return False
     
@@ -93,12 +103,10 @@ class SerialSession:
             return None
         
         # reset buf
-        self._buf = []
+        self._buf = bytearray([])
         # receive first bit of packet until length is received
         for i in range(4):
-            print(f"reading byte {i+1}")
-            self._buf += self._session.read(1)
-            print([chr(x) for x in self._buf])
+            self._buf += bytes(self._session.read())
 
         # read remaining payload
         payload_len = int(self._buf[3])

@@ -1,4 +1,5 @@
 #include <operation/serial/packet.hpp>
+#include <iostream>
 
 SerialPacket::SerialPacket() {
     this->ptype = PacketType::NULLPACKET;
@@ -17,17 +18,21 @@ SerialPacket::SerialPacket(PacketType ptype, uint8_t* data, uint8_t dataLen) {
 }
 
 SerialPacket::SerialPacket(uint8_t* rawBytes) {
-    this->ptype = PacketType(rawBytes[2]);
-    plsize = rawBytes[4] > SERPAC_DBUF_SIZE ? SERPAC_DBUF_SIZE : rawBytes[4];
-    for (uint8_t i = 0; i < plsize; i++)
-        payload[i] = rawBytes[i];
+    this->fromRaw(rawBytes);
 }
 
 void SerialPacket::fromRaw(uint8_t* raw) {
     this->ptype = PacketType(raw[2]);
-    this->plsize = raw[3];
-    for (uint8_t i = 0; i < plsize; i++)
-        this->payload[i] = raw[i];
+    this->plsize = raw[3] > SERPAC_DBUF_SIZE ? SERPAC_DBUF_SIZE : raw[3];
+    for (uint16_t i = 0; i < plsize; i++) {
+        this->payload[i] = raw[i+4];
+    }
+    //this->ptype = PacketType(raw[2]);
+    //this->plsize = raw[3];
+    //for (uint8_t i = 0; i < plsize; i++) {
+    //    std::cout << std::hex << raw[i] << std::endl;
+    //    this->payload[i] = raw[i];
+    //}
 }
 
 void SerialPacket::getRaw(uint8_t* buffer, uint8_t* bufsize) {
@@ -35,8 +40,8 @@ void SerialPacket::getRaw(uint8_t* buffer, uint8_t* bufsize) {
     buffer[1] = header[1];
     buffer[2] = ptype;
     buffer[3] = plsize;
-    *bufsize = plsize+3;
-    for (uint16_t i = 4; i < *bufsize+3; i++)
+    *bufsize = plsize+4;
+    for (uint16_t i = 4; i < *bufsize; i++)
         buffer[i] = payload[i-4];
 }
 

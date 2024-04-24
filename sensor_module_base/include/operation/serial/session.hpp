@@ -7,7 +7,7 @@ private:
     float timeout;
     bool sessionActive;
     bool packetReady;
-    uint8_t* pbuf;
+    uint8_t pbuf[SERPAC_DBUF_SIZE+4];
 
 public:
     SerialSession();

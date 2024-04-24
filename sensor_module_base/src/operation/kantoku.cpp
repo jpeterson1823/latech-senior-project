@@ -92,92 +92,82 @@ void Kantoku::serialSetup() {
     // loop until successful pair
     bool shouldLoop = true;
     while (shouldLoop) {
-        // wait for available packet
-        while(!s.packetAvailable()) {
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
-            sleep_ms(250);
-            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
-            sleep_ms(250);
-        }
-
         // receive packet once one is available
         SerialPacket packet;
         s.recv(packet);
 
+        sleep_ms(500);
+
         // handle packet
-        switch(packet.getType()) {
-            // IDENT if requested
-            case PacketType::IDENT:
-            {
-                SerialPacket ident(PacketType::IDENT, nullptr, 0);
-                s.send(ident);
-                break;
-            }
+        if (packet.getType() == PacketType::IDENT) {
+            SerialPacket ident(PacketType::IDENT, nullptr, 0);
+            s.send(ident);
+        }
+        else if (packet.getType() == PacketType::INTENT_Q) {
+            /*
+            Create pair request packet. Data Order:
+            BYTE    |   VALUE
+            0x00    |   0x23
+            0x01    |   0x12
+            0x02    |   PacketType::PAIR_REQ
+            0x03    |   Payload Length
+            0x04... |   Payload
 
-            // state intent if requested
-            case PacketType::INTENT_Q:
-            {
-                /*
-                Create pair request packet. Data Order:
-                BYTE    |   VALUE
-                0x00    |   0x23
-                0x01    |   0x12
-                0x02    |   PacketType::PAIR_REQ
-                0x03    |   Payload Length
-                0x04... |   Payload
+            Payload Structure
+            0x00-0x06 = Mac Addr
+                    0x07 = SensorType
+            */
 
-                Payload Structure
-                0x00-0x06 = Mac Addr
-                     0x07 = SensorType
-                */
+            // create pair request packet
+            SerialPacket pr(PacketType::PAIR_REQ);
 
-                // create pair request packet
-                SerialPacket pr(PacketType::PAIR_REQ);
+            // load mac into payload
+            pr.loadIntoPayload(netinfo.mac, 6);
+            pr.setPayloadByte(0x07, ModuleType::NONE);
+            // send packet
+            s.send(pr);
+        }
+        else if (packet.getType() == PacketType::RESPONSE) {
+            // extract leased IP and store in netinfo
+            IP_ADDR4(
+                &netinfo.ip,
+                packet.getPayloadByte(0),
+                packet.getPayloadByte(1),
+                packet.getPayloadByte(2),
+                packet.getPayloadByte(3)
+            );
 
-                // load mac into payload
-                pr.loadIntoPayload(netinfo.mac, 6);
-                pr.setPayloadByte(0x07, ModuleType::NONE);
-                // send packet
-                s.send(pr);
-                break;
-            }
+            // remaining data is string in format "SSID;PSWD"
+            std::string wifiInfo = "";
+            for (uint8_t i = 4; i < packet.getPayloadSize() && i-4 < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
+                wifiInfo += char(packet.getPayloadByte(i));
             
-            // record response and pair info
-            case PacketType::RESPONSE:
-            {
-                // extract leased IP and store in netinfo
-                IP_ADDR4(
-                    &netinfo.ip,
-                    packet.getPayloadByte(0),
-                    packet.getPayloadByte(1),
-                    packet.getPayloadByte(2),
-                    packet.getPayloadByte(3)
-                );
+            // write this creds string to eeprom
+            prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
+                // append nullchar to end of WiFi info and at KANTOKU_CREDS_BLOCK_NULL_B
+            prom.writeByte(wifiInfo.size() + KANTOKU_WIFI_CREDS_ADDR, '\0');
+            prom.writeByte(KANTOKU_CREDS_BLOCK_NULL_B, '\0');
 
-                // remaining data is string in format "SSID;PSWD"
-                std::string wifiInfo;
-                for (uint8_t i = 4; i < packet.getPayloadSize() && i-4 < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
-                    wifiInfo += char(packet.getPayloadByte(i));
-               
-                // write this creds string to eeprom
-                prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
-                 // append nullchar to end of WiFi info and at KANTOKU_CREDS_BLOCK_NULL_B
-                prom.writeByte(wifiInfo.size() + KANTOKU_WIFI_CREDS_ADDR, '\0');
-                prom.writeByte(KANTOKU_CREDS_BLOCK_NULL_B, '\0');
+            // write leased ip to eeprom
+            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 0), KANTOKU_IP_ADDR);
+            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 1), KANTOKU_IP_ADDR + 1);
+            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 2), KANTOKU_IP_ADDR + 2);
+            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 3), KANTOKU_IP_ADDR + 3);
 
-                // write leased ip to eeprom
-                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 0), KANTOKU_IP_ADDR);
-                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 1), KANTOKU_IP_ADDR + 1);
-                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 2), KANTOKU_IP_ADDR + 2);
-                prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 3), KANTOKU_IP_ADDR + 3);
+            // write module type to eeprom
+            prom.writeByte(moduleType, KANTOKU_SENSTYPE_ADDR);
 
-                // write module type to eeprom
-                prom.writeByte(moduleType, KANTOKU_SENSTYPE_ADDR);
-
-                // halt loop as pairing is complete
-                shouldLoop = false;
-                break;
-            }
+            // halt loop as pairing is complete
+            shouldLoop = false;
+        }
+        else {
+            //std::cout << packet.getType() << " DEFAULT CASE KANTOKU" << std::endl;
+            uint8_t buf[0xff];
+            uint8_t bs;
+            packet.getRaw(buf, &bs);
+            for (int i = 0; i < bs; i++)
+                std::cout << buf[i];
+            std::cout << std::endl;
         }
     }
     s.close();

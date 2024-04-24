@@ -33,7 +33,7 @@ public:
     SerialPacket(PacketType ptype, uint8_t* data, uint8_t dataLen);
     SerialPacket(PacketType ptype);
 
-    void fromRaw(uint8_t* buffer);
+    void fromRaw(uint8_t* raw);
     void getRaw(uint8_t* buffer, uint8_t* bufsize);
     uint8_t* getPayloadBytes();
     uint8_t  getPayloadSize();
