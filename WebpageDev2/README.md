@@ -1,47 +1,55 @@
-# CAPSTONE PRISM WEBPAGE (MODIFIED FOR HARDWARE TESTING PURPOSES)
-This branch is to aid the hardware development/testing PRISM with this web server.
-Below are steps to get docker environment set up for testing purposes:
-1. Have docker and docker-compose installed
-2. Download the docker-compose.yml file above into your working directory
-3. Pull necessary docker images for docker hub to your machine
-4. Deploy docker environment using docker-compose
-5. View webserver and play around
+# CAPSTONE PRISM WEBPAGE (UNDER DEV.)
+This branch is for the development of PRISM's webpage. It uses docker compose, runs on an apache server, and connects to a mysql server for its database. The webpage itself is make with html, css, and php. Below describes:
+- how to preview the webpage
+- access my docker hub repo
+- pull resourcees from my repo
+- how to deploy apache and mysql servers using docker compose
+- and how to view the deployed webpage 
 
-## Step 1: Install Docker and Docker-Compose
-- install docker by following docker's [documentation](https://docs.docker.com/get-docker/)
-- install docker compose by following docker's [documentation](https://docs.docker.com/compose/install/)
+## View Demo of Website Here (slightly outdated)
+- Click for: [Demo Website](https://chh02.github.io/CapstoneWebsite/index.html)
 
-## Step 2: Download Provided Docker-Compose File
-- pull this branch into your local working environment or copy the file contents into a local file
-
-## Step 3: Pull Docker Images from Docker Hub
-### Access token for Docker Hub (Read-Only)
+## Access token for Docker Hub (Read-Only)
 - dckr_pat_cdNZD1At8fUeOT8l3Xm8uWg_HAc
 
-### To Pull from Docker Hub Repo on CLI (Linux):
+## Docker Hub Images
+### MySQL Server Image
+- chh02/capstone-latech-prism:mysql-image
+### Apache2 Server Image
+- chh02/capstone-latech-prism:apach-image
+
+## To Pull from Docker Hub Repo on CLI (Linux):
 1. `docker login -u chh02`
 2. (when prompted) enter access token from above
-3. `docker pull chh02/capstone-latech-prism:mysql-Ver3`
-4. `docker pull chh02/capstone-latech-prism:apache-Ver3`
+3. `docker pull chh02/capstone-latech-prism:mysql-image`
+4. `docker pull chh02/capstone-latech-prism:apach-image`
 
-## Step 4: Deploy Docker Environment
-### Run The Following (Linux):
+## To Run Entire Application (Linux):
 1. pull up your cli
 2. get in the directory with docker-compose.yml
 3. `docker-compose up -d`
 
-## Step 5: View Webserver & Play
 ### View Running Application
 - go to ['localhost'](http://localhost) in your browser
 
-### View WebPage Designed for Demo Day
-- go [here](http://localhost/pages/demo.html)
+# TO TEST DATABASE
+This section is to describe how to currently test and view the web servers interaction with the database.
+### Step 1
+- deploy application as described in above sections
+- go to ['localhost'](http://localhost) to view application
 
-### Test GET & POST Functionality to Demo (Linux CLI)
-- `curl -X GET "localhost/php/demo.php?REQ=your%20MACADDR&DATA=your%20data"`
-- `curl -X POST "localhost/php/demo.php" -d "REQ=your MACADDR&DATA=your data"`
+### Step 2
+- navigate to [Database Testing](http://localhost/third.php) link
+- here you should be able to see a text box and two buttons (submit & reset)
 
-# FEEDBACK
-- feel free to message me any concerns in discord
+### Step 3
+- play around
+- reset button resets the database (`TRUNCATE TABLE XXX`)
+- submit button submits anything entered into the text box to the database (`INSERT INTO XXX (column1) VALUES (value1)`)
+- the text displayed underneath displays values in the database in table XXX (i.e. Name: ...)
+- the text displayed underneath also displays some debugging text between the php (w/ mysqli extension) and the database (MySQL)
+
+### Step 4
+- provide feedback
 
 #### Thank you for your time!

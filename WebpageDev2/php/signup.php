@@ -1,20 +1,9 @@
 <html>
     <body>
         <?php    
-            // info needed to connect to mysql server
-            $servername = "mysql";
-            $username = "apache-server";
-            $password = "PRISM3";
-            $database = "PRISM_DB";
-            $port = "3306";
-
-            // Create connection
-            $conn = new mysqli($servername, $username, $password, $database);
-
-            // Check connection
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
+            // make database connection
+            echo "here";
+            require 'connection.php';
 
             // make querry to database to create new user
             if ($_SERVER["REQUEST_METHOD"] == "POST") {

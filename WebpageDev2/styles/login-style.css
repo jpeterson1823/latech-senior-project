@@ -1,6 +1,13 @@
+/* initial setup of page and things */
 * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    font-family: Inter;
+    font-family: Arial, sans-serif;
+}
+
+input::-ms-reveal, input::-ms-clear {
+    display: none;
 }
 
 html, body {
@@ -12,12 +19,15 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: rgb(26, 55, 80);
+    overflow-x: clip;
+    overflow-y: auto;
 }
 
 .Container1 {
     position: absolute;
     min-width: 1440px;
     height: 100%;
+    min-height: 315px;
     left: 50%;
     transform: translateX(-50%);
     overflow: hidden;
@@ -26,8 +36,11 @@ body {
 
 .Frame1 {
     position: relative;
+    /* overflow: hidden; */
+    overflow-y: auto;
     width: calc(100% - 21.875rem);
     height: calc(100% - 8.188rem);
+    min-height: 315px;
     border-radius: 30px;
     top: 50%;
     left: 50%;
@@ -35,9 +48,18 @@ body {
     background-color: #00000035;
 }
 
+/* setting max width */
 @media (max-width: 1439px) {
     .Container1 {
         min-width: 100%;
+    }
+}
+
+/* if Frame1's height is too low */
+@media (max-height: 526px) {
+    .Frame1 {
+        overflow-x: clip;
+        overflow-y: auto;
     }
 }
 
@@ -47,11 +69,18 @@ body {
     width: fit-content;
     top: 50%;
     left: 50%;
-    border: solid;
+    /* border: solid; */
     transform: translateX(-50%) translateY(-50%);
 }
 
 /* Button Formating */
+
+.Login-Btn {
+    position: relative;
+    width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 .Login-Btn > input[type=submit] {
     border: none;
@@ -62,7 +91,8 @@ body {
     padding-bottom: 16.5px;
     padding-left: 46.335px;
     padding-right: 46.335px;
-    transform: scale(0.6) translateX(20%);
+    position: relative;
+    transform: scale(0.6);
     cursor: pointer;
     font-size: calc(18px * 1.6);
 }
@@ -74,12 +104,91 @@ body {
     color: black;
 }
 
+/* Formating Username & Passord Text Boxes */
 input[type=text], input[type=password] {
     width: 100%;
-    padding: 12px 20px;
+    padding: 12px 32px 12px 16px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 20px;
     box-sizing: border-box;
-  }
+}
+
+/* Toggle Password Visibility Icon Formating */
+#togglePassword {
+    position: absolute;
+    height: 25px;
+    width: 24px;
+    margin-left: -12%;
+    margin-top: calc(29px - (24px / 2));
+}
+
+#togglePassword:hover {
+    cursor: pointer;
+}
+
+/* tooltip formating DOESN"T WORK (WORK IN PROGRESS) */
+.tooltip {
+    visibility: visible;
+    position: absolute;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity .6s;
+    top: -5px;
+    bottom: auto;
+    right: 128%;
+}
+
+input[type=password]:focus ~ .tooltip {
+    visibility: visible;
+}
+
+/* Formating Image & Logo */
+.Group-Logo {
+    position: relative;
+    width: fit-content;
+    top: -6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.Group-Logo > a > img {
+    height: 10rem;
+    margin-left: -1.5rem;
+    overflow: clip;
+    background: #fff;
+}
+
+.Group-Logo > a:hover {
+    transition-duration: 0.4s;
+    opacity: 0.8;
+    box-shadow:
+    1px 1px #373737,
+    2px 2px #373737,
+    3px 3px #373737,
+    4px 4px #373737,
+    5px 5px #373737,
+    6px 6px #373737;
+    -webkit-transform: translateX(-3px);
+    transform: translateX(-3px);
+    transition: .5s ease;
+}
+
+/* Formating Login Text */
+
+.Login-Text {
+    position: absolute;
+    font-weight: bold;
+    font-size: 26px;
+    top: 20%;
+    left: -4rem;
+}

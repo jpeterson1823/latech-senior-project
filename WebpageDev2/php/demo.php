@@ -1,68 +1,53 @@
 <?php
 
-    header("Content-Type: 'raw'");
+    header("Content-Type: 'text/plain'; charset=utf-8");
 
-    $servername = "mysql";
-    $username = "apache-server";
-    $password = "PRISM3";
-    $database = "mydb";
-    $port = "3306";
-
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $database);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    // echo "Connected successfully <br>"
-
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-
-    // echo var_dump($_POST);
-
+    // make database connection
+    require 'connection.php';
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['REQ']) && isset($_POST['DATA'])) {
-            $REQ = test_input($_POST["REQ"]);
-            $DATA = test_input($_POST["DATA"]);
-            $sql = "SELECT IP FROM MacAddr WHERE MAC='$DATA';";
+        if (isset($_POST['ipaddr']) && isset($_POST['macaddr'])) {
+            $ipaddr = test_input($_POST["ipaddr"]);
+            $macaddr = test_input($_POST["macaddr"]);
+            $sql = "SELECT ipaddr FROM Hardware WHERE macaddr='$macaddr';";
             $check = $conn->query($sql);
             if ($check->num_rows == 0) {
-                $ipAddr = long2ip(rand(0, 4294967295));
-                $sql = "INSERT INTO MacAddr (MAC, IP) VALUES ('$DATA', '$ipAddr');";
+                $sql = "INSERT INTO Hardware (macaddr, ipaddr) VALUES ('$macaddr', '$ipaddr');";
                 $conn->query($sql);
-                echo "$ipAddr";
+                echo "$ipaddr";
             } else {
                 $row = $check->fetch_assoc();
-                echo $row['IP'];
+                echo $row['ipaddr'];
             }
         }
     }
-
+    
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        if (isset($_GET['REQ']) && isset($_GET['DATA'])) {
-            $REQ = test_input($_GET["REQ"]);
-            $DATA = test_input($_GET["DATA"]);
-            $sql = "SELECT IP FROM MacAddr WHERE MAC='$DATA';";
+        if (isset($_GET['ipaddr']) && isset($_GET['macaddr'])) {
+            $ipaddr = test_input($_GET["ipaddr"]);
+            $macaddr = test_input($_GET["macaddr"]);
+            $sql = "SELECT ipaddr FROM Hardware WHERE macaddr='$macaddr';";
             $check = $conn->query($sql);
             if ($check->num_rows == 0) {
-                $ipAddr = long2ip(rand(0, 4294967295));
-                $sql = "INSERT INTO MacAddr (MAC, IP) VALUES ('$DATA', '$ipAddr');";
+                $sql = "INSERT INTO Hardware (macaddr, ipaddr) VALUES ('$macaddr', '$ipaddr');";
                 $conn->query($sql);
-                echo "$ipAddr";
+                echo "$ipaddr";
             } else {
                 $row = $check->fetch_assoc();
-                echo $row['IP'];
+                echo $row['ipaddr'];
             }
         }
     }
-
-
+    
+    
     function test_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
+
+    // error handling
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 ?>
