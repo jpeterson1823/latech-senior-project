@@ -2,6 +2,7 @@ import torch
 import os
 import random
 import numpy as np
+import gui_main as gui
 
 
 class User():

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Main Window</string>
+  </property>
+
+ <widget class="QPushButton" name="calBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>150</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+background-color: #0000FF;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>Calendar Planner</string>
+   </property>
+  </widget>
+
+ <widget class="QPushButton" name="pairBtn">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>20</y>
+     <width>150</width>
+     <height>35</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+background-color: #FF0000;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>Pair Device</string>
+   </property>
+  </widget>
+
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>
