@@ -18,16 +18,18 @@ public:
 
 class DHCPMan {
 private:
-    std::string leaseFile;
+    static const std::string LEASE_FILE_PATH;
     std::map<Mac*, IP4*> leases;
     std::vector<std::string> availableIP4s;
 
+    void execLeaseLoader();
+    void forkToLeaseLoader();
     void loadLeaseFile();
     IP4 genNewIP4();
     DHCPLease genLease(Mac mac);
 
 public:
-    DHCPMan(std::string leaseFile);
+    DHCPMan();
     ~DHCPMan();
 
     DHCPLease lease(Mac mac);
