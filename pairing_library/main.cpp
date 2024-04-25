@@ -10,6 +10,7 @@
 #include "lib/serialib.h"
 #include "serialpacket.hpp"
 #include "networking/addressing.hpp"
+#include "networking/dhcpman.hpp"
 
 // create global serial variable
 static serialib serial;
@@ -57,11 +58,7 @@ bool interrogateDevice(SerialPacket p, PacketType expectedType, SerialPacket* re
 
 
 int main() {
-    IP4 ip4(std::string("192.168.0.1"));
-    std::cout << ip4.toString() << std::endl;
-
-    Mac mac(std::string("aa:aa:aa:aa:aa:bb"));
-    std::cout << mac.toString() << std::endl;
+    DHCPMan dhcp("dhcp.leases");
 
     return 0;
     // open serial

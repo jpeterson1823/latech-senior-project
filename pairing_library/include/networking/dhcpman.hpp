@@ -3,22 +3,32 @@
 #include <map>
 #include <vector>
 
-typedef struct __dhcp_lease {
+class DHCPLease {
+friend class DHCPMan;
+private:
     IP4 ip4;
     Mac mac;
-} dhcp_lease;
+public:
+    DHCPLease(std::string ip4str, std::string macstr);
+
+    IP4 getIP4();
+    Mac getMac();
+    std::string toString();
+};
 
 class DHCPMan {
 private:
-    std::string logPath;
-    std::map<Mac, IP4> leases;
+    std::string leaseFile;
+    std::map<Mac*, IP4*> leases;
     std::vector<std::string> availableIP4s;
 
+    void loadLeaseFile();
     IP4 genNewIP4();
-    dhcp_lease genLease(Mac mac);
+    DHCPLease genLease(Mac mac);
 
 public:
-    DHCPMan(std::string logPath);
+    DHCPMan(std::string leaseFile);
+    ~DHCPMan();
 
-    dhcp_lease lease(Mac mac);
+    DHCPLease lease(Mac mac);
 };

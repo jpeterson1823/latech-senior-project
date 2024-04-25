@@ -1,9 +1,8 @@
 #pragma once
 #include <string>
-#include "networking/dhcpman.hpp"
 
 class IP4 {
-friend DHCPMan;
+friend class DHCPMan;
 protected:
     uint8_t octets[4];
 
@@ -14,7 +13,6 @@ public:
 };
 
 class Mac {
-friend DHCPMan;
 protected:
     uint8_t octets[6];
 

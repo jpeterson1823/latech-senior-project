@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "thread": "cpp",
+        "iostream": "cpp",
         "algorithm": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -25,7 +25,6 @@
         "iomanip": "cpp",
         "ios": "cpp",
         "iosfwd": "cpp",
-        "iostream": "cpp",
         "istream": "cpp",
         "iterator": "cpp",
         "limits": "cpp",
@@ -43,6 +42,7 @@
         "streambuf": "cpp",
         "string": "cpp",
         "system_error": "cpp",
+        "thread": "cpp",
         "tuple": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
