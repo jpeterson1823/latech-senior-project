@@ -9,7 +9,8 @@
                 if (isset($_POST['uname']) && isset($_POST['pass'])) {                   
                     $UNAME = test_input($_POST["uname"]);
                     $PASS = test_input($_POST["pass"]);
-                    $sql = "SELECT 1 FROM Users WHERE Username='$UNAME' AND Password='$PASS';";
+                    $hashed_password = crypt($PASS,'$6$rounds=5000$QMDuozZ3Uboh61i5$');
+                    $sql = "SELECT 1 FROM Users WHERE Username='$UNAME' AND Password='$hashed_password';";
                     $result = $conn->query($sql);
 
                     // after successful query, redirect to next webpage
