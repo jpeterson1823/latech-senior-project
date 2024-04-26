@@ -21,8 +21,8 @@ This branch is for the development of PRISM's webpage. It uses docker compose, r
 ## To Pull from Docker Hub Repo on CLI (Linux):
 1. `docker login -u chh02`
 2. (when prompted) enter access token from above
-3. `docker pull chh02/capstone-latech-prism:mysql-image`
-4. `docker pull chh02/capstone-latech-prism:apach-image`
+3. `docker pull chh02/capstone-latech-prism:mysql-Ver6`
+4. `docker pull chh02/capstone-latech-prism:apach-Ver3`
 
 ## To Run Entire Application (Linux):
 1. pull up your cli
@@ -30,16 +30,16 @@ This branch is for the development of PRISM's webpage. It uses docker compose, r
 3. `docker-compose up -d`
 
 ### View Running Application
-- go to ['localhost'](http://localhost) in your browser
+- go to ['localhost'](http://localhost:40553) in your browser
 
 # TO TEST DATABASE
 This section is to describe how to currently test and view the web servers interaction with the database.
 ### Step 1
 - deploy application as described in above sections
-- go to ['localhost'](http://localhost) to view application
+- go to ['localhost'](http://localhost:40553) to view application
 
 ### Step 2
-- navigate to [Database Testing](http://localhost/third.php) link
+- navigate to [Database Testing](http://localhost:40553/third.php) link
 - here you should be able to see a text box and two buttons (submit & reset)
 
 ### Step 3
