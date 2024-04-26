@@ -22,7 +22,7 @@ This branch is for the development of PRISM's webpage. It uses docker compose, r
 1. `docker login -u chh02`
 2. (when prompted) enter access token from above
 3. `docker pull chh02/capstone-latech-prism:mysql-Ver6`
-4. `docker pull chh02/capstone-latech-prism:apach-Ver3`
+4. `docker pull chh02/capstone-latech-prism:apach-Ver4`
 
 ## To Run Entire Application (Linux):
 1. pull up your cli
