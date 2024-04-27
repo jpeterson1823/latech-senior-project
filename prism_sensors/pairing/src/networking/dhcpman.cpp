@@ -7,8 +7,8 @@
 
 DHCPLease::DHCPLease(std::string ip4str, std::string macstr) : ip4(ip4str), mac(macstr) {}
 DHCPLease::DHCPLease(Mac mac, IP4 ip4) : ip4(ip4), mac(mac) {};
-IP4 DHCPLease::getIP4() { return ip4; }
-Mac DHCPLease::getMac() { return mac; }
+IP4* DHCPLease::getIP4() { return &ip4; }
+Mac* DHCPLease::getMac() { return &mac; }
 std::string DHCPLease::toString() {
     std::string s = "";
     s += mac.toString();
@@ -39,8 +39,7 @@ DHCPMan::~DHCPMan() {
 void DHCPMan::execLeaseLoader() {
     char* args[] = {
         "python3",
-        "dbLeaseLoader.py",
-        (char*)this->LEASE_FILE_PATH.c_str()
+        "dbLeaseLoader.py"
     };
 }
 
@@ -117,7 +116,7 @@ IP4* DHCPMan::genNewIP4() {
     return new IP4(ipstr);
 }
 
-DHCPLease DHCPMan::lease(Mac* mac) {
+DHCPLease* DHCPMan::lease(Mac* mac) {
     // generate new IP addr
     IP4* ip4 = genNewIP4();
 
@@ -125,5 +124,5 @@ DHCPLease DHCPMan::lease(Mac* mac) {
     leases.insert({mac, ip4});
 
     // generate lease object and return
-    return DHCPLease(ip4->toString(), mac->toString());
+    return new DHCPLease(ip4->toString(), mac->toString());
 }

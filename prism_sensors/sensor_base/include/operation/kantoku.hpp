@@ -35,9 +35,9 @@ private:
         NoAction
     };
 
-    struct kantoku_netinf {
+    struct kantoku_netinfo {
+        uint8_t mac[6] = {0x00, 0x00, 0x00, 0x00};
         ip4_addr_t ctrlip;
-        uint8_t mac[6];
         ip4_addr_t ip;
     } netinfo;
 

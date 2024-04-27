@@ -93,7 +93,7 @@ bool SerialPacket::loadIntoPayload(uint8_t* data, uint8_t dlen, uint8_t offset) 
 
     // place data in payload, starting at offset
     uint8_t di, pi;
-    for (di = 0, pi = di+offset; di < dlen && pi < plsize; di++)
+    for (di = 0, pi = offset; di < dlen && pi < plsize; di++,pi++)
         payload[pi] = data[di];
 
     // check if all of data fit within the payload
@@ -143,8 +143,12 @@ std::string SerialPacket::toString() {
     s << ",plsize=" << std::to_string(this->plsize);
 
     s << ",payload=[";
-    for (uint8_t i = 0; i < plsize; i++)
-        s << std::setw(2) << std::setfill('0') << std::hex << (int)payload[i] << ' ';
+    for (uint8_t i = 0; i < plsize; i++) {
+        if (i < plsize-1)
+            s << std::setw(2) << std::setfill('0') << std::hex << (int)payload[i] << ' ';
+        else
+            s << std::setw(2) << std::setfill('0') << std::hex << (int)payload[i];
+    }
     s << "]}";
 
     return s.str();

@@ -21,7 +21,7 @@ namespace serial {
         session.setDTR();
     }
 
-    void sendPacket(SerialPacket p) {
+    void sendPacket(SerialPacket& p) {
         // set Request To Send
         session.setRTS();
         // send packet
@@ -46,7 +46,7 @@ namespace serial {
 
         // read remaining payload into pbuf
         if (pbuf[3] != 0)
-            session.readBytes((char*)(pbuf)+4, pbuf[3]);
+            session.readBytes((char*)(pbuf+4), pbuf[3], 1000);
         
         // create serial packet from raw data and return
         return SerialPacket(pbuf);
@@ -74,17 +74,19 @@ namespace pairing {
         return serial::interrogate(SerialPacket(PacketType::INTENT_Q), PacketType::PAIR_REQ, pbuf);
     }
 
-    void sendPairInfo(IP4 ip4) {
+    void sendPairInfo(IP4* ip4) {
         // extract IP address from lease object
         uint8_t ipOctets[4];
-        ip4.getOctets(ipOctets);
+        ip4->getOctets(ipOctets);
         
         // create response packet
         std::string netCreds = "bingus;FizzBuzz23!";
         SerialPacket p(PacketType::RESPONSE);
+        p.setPayloadSize(4+netCreds.size());
         p.loadIntoPayload(ipOctets, 4);
         p.loadIntoPayload((uint8_t*)netCreds.c_str(), netCreds.size(), 0x04);
-        p.setPayloadSize(4+netCreds.size());
+
+        std::cout << "Packet to send: " << p.toString() << std::endl;
 
         // send response packet
         serial::sendPacket(p);

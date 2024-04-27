@@ -19,8 +19,7 @@ int main() {
     serial::openSession("/dev/ttyACM0", 115200);
     serial::session.setDTR();
 
-    SerialPacket pbuf;
-    pairing::pbuf = &pbuf;
+    pairing::pbuf = (SerialPacket*)malloc(sizeof(SerialPacket));
 
     // do ident process
     std::cout << "doIdent()... ";
@@ -31,7 +30,6 @@ int main() {
     }
     std::cout << "SUCCESS!" << std::endl;
 
-
     // do intent query process
     std::cout << "doIdentQ()... ";
     if (!pairing::doIntentQ()) {
@@ -40,6 +38,8 @@ int main() {
         return 1;
     }
     std::cout << "SUCCESS!" << std::endl;
+
+    std::cout << pairing::pbuf->toString() << std::endl;
 
     // parse payload into Mac object
     Mac* mac = new Mac(
@@ -52,12 +52,18 @@ int main() {
     );
 
     // create DHCP manager and create/retrieve module's lease
-    std::cout << "leasing" << std::endl;
+    std::cout << "Generating new lease for " << mac->toString() << "... " << std::endl;
     DHCPMan dhcp;
-    DHCPLease lease = dhcp.lease(mac);
+    DHCPLease* lease = dhcp.lease(mac);
+    std::cout << "Lease generated. Assigned IPv4: " << lease->getIP4()->toString() << std::endl;
 
     // send pairing response
-    pairing::sendPairInfo(lease.getIP4());
+    std::cout << "Sending pairing info... " << std::endl;
+    pairing::sendPairInfo(lease->getIP4());
+    std::cout << "Pairing info sent. USB pairing completed." << std::endl;
+
+    delete lease;
+    free(pairing::pbuf);
 
     return 0;
 }

@@ -1,5 +1,6 @@
 #include "operation/serial/packet.hpp"
 #include <iostream>
+#include <iomanip>
 
 SerialPacket::SerialPacket() {
     this->ptype = PacketType::NULLPACKET;
@@ -76,7 +77,7 @@ bool SerialPacket::loadIntoPayload(uint8_t* data, uint8_t dlen, uint8_t offset) 
 
     // place data in payload, starting at offset
     uint8_t di, pi;
-    for (di = 0, pi = di+offset; di < dlen && pi < plsize; di++)
+    for (di = 0, pi = offset; di < dlen && pi < plsize; di++,pi++)
         payload[pi] = data[di];
 
     // check if all of data fit within the payload
@@ -112,4 +113,24 @@ uint8_t SerialPacket::getPayloadByte(uint8_t addr) {
     if (addr < plsize)
         return payload[addr];
     return 0x00;
+}
+
+std::string SerialPacket::toString() {
+    std::stringstream s;
+
+    s << "SerialPacket{header=[";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)this->header[0];
+    s << ",";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)this->header[1];
+    s << "],ptype=";
+    s << std::hex << std::setfill('0') << std::setw(2) << (int)ptype;
+    s << ",plsize=" << std::to_string(this->plsize);
+
+    s << ",payload=[";
+    for (uint8_t i = 0; i < plsize; i++) {
+        s << std::setw(2) << std::setfill('0') << std::hex << (int)payload[i] << ' ';
+    }
+    s.seekp(-1, s.cur);
+    s << "]}";
+    return s.str();
 }

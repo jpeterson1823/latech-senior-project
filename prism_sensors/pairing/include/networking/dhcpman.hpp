@@ -12,8 +12,8 @@ public:
     DHCPLease(std::string ip4str, std::string macstr);
     DHCPLease(Mac mac, IP4 ip4);
 
-    IP4 getIP4();
-    Mac getMac();
+    IP4* getIP4();
+    Mac* getMac();
     std::string toString();
 };
 
@@ -27,11 +27,11 @@ private:
     void forkToLeaseLoader();
     void loadLeaseFile();
     IP4* genNewIP4();
-    DHCPLease genLease(Mac* mac);
+    DHCPLease* genLease(Mac* mac);
 
 public:
     DHCPMan();
     ~DHCPMan();
 
-    DHCPLease lease(Mac* mac);
+    DHCPLease* lease(Mac* mac);
 };

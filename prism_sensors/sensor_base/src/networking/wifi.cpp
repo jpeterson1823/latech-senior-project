@@ -14,7 +14,7 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
     if (!SetupComplete) {
         //if (cyw43_arch_init_with_country(country))
         //    return 1;
-        cyw43_arch_enable_sta_mode();
+        //cyw43_arch_enable_sta_mode();
         SetupComplete = true;
     }
 
@@ -90,20 +90,19 @@ void Wifi::GetMacString(std::string& buf) {
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, mac);
 
     std::stringstream macStream;
-    macStream << std::hex << std::setfill('0') << std::setw(2);
 
     // convert mac addr to str and store in data
-    macStream << std::to_string(mac[0]);
-    macStream << std::dec << ':' << std::hex;
-    macStream << std::to_string(mac[1]);
-    macStream << std::dec << ':' << std::hex;
-    macStream << std::to_string(mac[2]);
-    macStream << std::dec << ':' << std::hex;
-    macStream << std::to_string(mac[3]);
-    macStream << std::dec << ':' << std::hex;
-    macStream << std::to_string(mac[4]);
-    macStream << std::dec << ':' << std::hex;
-    macStream << std::to_string(mac[5]);
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[0];
+    macStream << ':';
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[1];
+    macStream << ':';
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[2];
+    macStream << ':';
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[3];
+    macStream << ':';
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[4];
+    macStream << ':';
+    macStream << std::hex << std::setfill('0') << std::setw(2) << (int)mac[5];
 
     // convert stream to string
     buf = macStream.str();

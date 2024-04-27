@@ -1,5 +1,6 @@
 #include "hardware/at28hc64.hpp"
 #include <iostream>
+#include <iomanip>
 #include <bitset>
 
 EEPROM::EEPROM() {
@@ -129,6 +130,9 @@ uint16_t EEPROM::readUntil(uint16_t address, char delimiter, char* buf, size_t b
 }
 
 void EEPROM::writeByte(uint8_t data, uint16_t address) {
+    //std::cout << "writeByte(" << std::hex << std::setw(2) << std::setfill('0') << (int)data;
+    //std::cout << ", " << std::hex << std::setw(2) << std::setfill('0') << (int)address;
+    //std::cout << ')' << std::endl;
     // set IO bus to output if not already
     setBusOutput();
 

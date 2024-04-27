@@ -22,34 +22,41 @@ Kantoku::Kantoku(ModuleType moduleType) {
     // set controller IP
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
     IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
+    IP4_ADDR(&netinfo.ip, 192, 168, 9, 229);
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
 
-    for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[0] << ":";
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[1] << ":";
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[2] << ":";
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[3] << ":";
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[4] << ":";
+    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[5] << std::endl;
+
+    /*for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
         std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)prom.readByte(i);
         std::cout << ' ';
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     //first, must determine what state kantoku should be in
-    determineAction();
+    //determineAction();
 
     // go through managerial actions
-    if (this->action == Action::SerialSetup)
-        serialSetup();
+    //if (this->action == Action::SerialSetup)
+    //    serialSetup();
 
-    sleep_ms(5000);
+    /*sleep_ms(5000);
     for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
         std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)prom.readByte(i);
         std::cout << ' ';
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
     
-    if (this->action == Action::NetworkConnect)
-        networkConn();
+    //if (this->action == Action::NetworkConnect)
+    //    networkConn();
 
-    //IP4_ADDR(&netinfo.ip, 192, 168, 9, 229);
-    //networkConn();
+    networkConn();
 };
 
 // formats eeprom
@@ -135,8 +142,9 @@ void Kantoku::serialSetup() {
             SerialPacket pr(PacketType::PAIR_REQ);
 
             // load mac into payload
-            pr.loadIntoPayload(netinfo.mac, 6);
             pr.setPayloadSize(6);
+            pr.loadIntoPayload(netinfo.mac, 6);
+            //std::cout << pr.toString() << std::endl;
             // send packet
             s.send(pr);
         }
@@ -150,15 +158,17 @@ void Kantoku::serialSetup() {
                 packet.getPayloadByte(3)
             );
 
+            sleep_ms(2000);
+
             // remaining data is string in format "SSID;PSWD"
             std::string wifiInfo = "";
-            for (uint8_t i = 4; i < packet.getPayloadSize() && i-4 < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
-                wifiInfo += char(packet.getPayloadByte(i));
+            for (uint8_t i = 0; i < packet.getPayloadSize()+1 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
+                wifiInfo += (char)packet.getPayloadByte(i+4);
+            std::cout << "wifiInfo: " << wifiInfo << std::endl;
             
             // write this creds string to eeprom
             prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
-                // append nullchar to end of WiFi info and at KANTOKU_CREDS_BLOCK_NULL_B
-            prom.writeByte('\0', wifiInfo.size() + KANTOKU_WIFI_CREDS_ADDR);
+                // set nullchar at KANTOKU_CREDS_BLOCK_NULL_B
             prom.writeByte('\0', KANTOKU_CREDS_BLOCK_NULL_B);
 
             // write leased ip to eeprom
@@ -190,15 +200,19 @@ void Kantoku::serialSetup() {
 
 // Connect to network using saved creds
 void Kantoku::networkConn() {
+
     // retrieve creds from EEPROM
-    char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    /*char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
     char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
     uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
-    prom.readUntil(delimAddr+1, '\0', pswd, 1024);
+    prom.readUntil(delimAddr+1, '\0', pswd, KANTOKU_WIFI_CREDS_BLOCKLEN);
     sleep_ms(500);
 
     std::cout << "Attempting to connect to network with following creds:\n";
-    std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;
+    std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;*/
+
+    char ssid[] = "bingus";
+    char pswd[] = "FizzBuzz23!";
 
     // setup and connect to wifi, 2 retry attempts
     int status = Wifi::Connect(ssid, pswd, &netinfo.ip);
@@ -231,7 +245,7 @@ bool Kantoku::attemptPair() {
 
     // create uri and params string
     std::string uri = "/php/demo.php";
-    std::string data = "ipaddr=" + ipAddr + "&macaddr=" + macAddr;
+    std::string data = "ipaddr=" + ipAddr + "&macaddr=" + macAddr + "&sensor_name=upa1";
 
     // create pair HTTP request
     Http::PostReq req (

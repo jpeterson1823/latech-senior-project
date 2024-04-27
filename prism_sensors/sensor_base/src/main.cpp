@@ -10,6 +10,7 @@ extern "C" {
 
 #include "operation/kantoku.hpp"
 #include "operation/sensors/upa.hpp"
+#include "operation/serial/session.hpp"
 
 #define BUFSIZE 1024
 
@@ -22,11 +23,15 @@ void test() {
 
 int main() {
     // general hardware setup
-    cyw43_arch_init();
+    if (cyw43_arch_init_with_country(CYW43_COUNTRY_USA)) {
+        std::cout << "cyw43 failed to init!" << std::endl;
+        exit(1);
+    };
+    cyw43_arch_enable_sta_mode();
     stdio_init_all();
     adc_init();
     gpio_init(CYW43_WL_GPIO_LED_PIN);
-    sleep_ms(5000);
+    sleep_ms(2000);
 
     std::cout << "MAIN START" << std::endl;
 
@@ -47,8 +52,15 @@ int main() {
 
     // create kantoku for setup, network, and pairing
     // constructor handles serial setup, network connection, pairing, and uplink creation
+
+    /*SerialPacket p(PacketType::PAIR_REQ);
+    uint8_t mac[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
+    p.setPayloadSize(6);
+    std::cout << p.loadIntoPayload(mac, 6) << std::endl;
+    std::cout << p.toString() << std::endl;
+    exit(1);*/
+
     Kantoku kan(ModuleType::NONE);
-    sleep_ms(2000);
     
     // make sure module paired to controller
     if (!kan.attemptPair()) {

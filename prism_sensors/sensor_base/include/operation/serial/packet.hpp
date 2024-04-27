@@ -49,4 +49,5 @@ public:
     bool setPayloadByte(uint8_t addr, uint8_t byte);
     uint8_t getPayloadByte(uint8_t addr);
 
+    std::string toString();
 };
