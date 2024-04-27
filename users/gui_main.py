@@ -1,5 +1,4 @@
 import sys
-import sqlite3
 
 from weather import MainWindow as WthrMain
 
@@ -12,12 +11,9 @@ from multiprocessing import Process
 from subprocess import run
 import mysql.connector
 
-#conn = sqlite3.connect("data.db")
-#c = conn.cursor()
-#c.execute("CREATE TABLE tasks(task TEXT, completed TEXT, date TEXT)")
-#c.execute("DROP TABLE tasks")
-
-
+result_ip = run(["docker inspect -f \
+    '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
+    shell=True, capture_output=True, text=True).stdout.strip()
 
 class MainWindow(QMainWindow):
     
@@ -149,10 +145,15 @@ class CalendarWindow(QWidget):
     def updateTaskList(self, date, user):
         self.tasksListWidget.clear()
 
-        db = sqlite3.connect(user.calendar)
+        db = mysql.connector.connect(
+                host=result_ip,
+                user='gui-user',
+                password='Prism-4-GUI',
+                database='PRISM_DB'
+            )
         cursor = db.cursor()
 
-        query = "SELECT task, completed FROM tasks WHERE date = ?"
+        query = "SELECT task, completed FROM GUI_Data WHERE date = %s"
         row = (date,)
         results = cursor.execute(query, row).fetchall()
         for result in results:
@@ -166,7 +167,12 @@ class CalendarWindow(QWidget):
 
     def saveChanges(self, user):
        
-        db = sqlite3.connect(user.calendar)
+        db = mysql.connector.connect(
+                host=result_ip,
+                user='gui-user',
+                password='Prism-4-GUI',
+                database='PRISM_DB'
+            )
         cursor = db.cursor()
         date = self.calendarWidget.selectedDate().toPyDate()
 
@@ -174,9 +180,9 @@ class CalendarWindow(QWidget):
             item = self.tasksListWidget.item(i)
             task = item.text()
             if item.checkState() == QtCore.Qt.Checked:
-                query = "UPDATE tasks SET completed = 'YES' WHERE task = ? AND date = ?"
+                query = "UPDATE GUI_Data SET completed = 'YES' WHERE task = %s AND date = %s"
             else:
-                query = "UPDATE tasks SET completed = 'NO' WHERE task = ? AND date = ?"
+                query = "UPDATE GUI_Data SET completed = 'NO' WHERE task = %s AND date = %s"
             row = (task, date,)
             cursor.execute(query, row)
         db.commit()
@@ -189,7 +195,12 @@ class CalendarWindow(QWidget):
 
     def addNewTask(self, vct, user):
         
-        db = sqlite3.connect(user.calendar)
+        db = mysql.connector.connect(
+                host=result_ip,
+                user='gui-user',
+                password='Prism-4-GUI',
+                database='PRISM_DB'
+            )
         cursor = db.cursor()
 
         newTask = str(self.taskLineEdit.text())
@@ -205,7 +216,7 @@ class CalendarWindow(QWidget):
         elif newTask == "" and voiceTask is not False:
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO tasks(task, completed, date) VALUES (?,?,?)"
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
             row = (voiceTask, "NO", date,)
 
             cursor.execute(query, row)
@@ -215,7 +226,7 @@ class CalendarWindow(QWidget):
         else:        
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO tasks(task, completed, date) VALUES (?,?,?)"
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
             row = (newTask, "NO", date,)
 
             cursor.execute(query, row)
