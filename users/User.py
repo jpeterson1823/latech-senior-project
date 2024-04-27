@@ -2,7 +2,7 @@ import torch
 import os
 import random
 import numpy as np
-import gui_main as gui
+
 
 
 class User():
@@ -12,10 +12,10 @@ class User():
         self.audio_folder = audio_files_path
         self.calendar = calendar
 
-    def isThisUser(self, comparison_array) -> bool:
+    def isThisUser(self, comparison_array, index, return_dict) -> bool:
         tmp_list = os.listdir(self.audio_folder)
         choices = []
-        num_comparisons = 9
+        num_comparisons = 3
         for _ in range(num_comparisons):
             choice = random.choice(tmp_list)
             tmp_list.remove(choice)
@@ -33,8 +33,7 @@ class User():
                 outputs_avg += round(output.item(), 2)
             outputs_avg /= num_comparisons
             if outputs_avg > 0.5:
-                return True
+                return_dict[index] = True
             else:
-                return False
-
+                return_dict[index] = False
 

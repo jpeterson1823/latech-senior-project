@@ -264,7 +264,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Raindar"))
-        self.lineEdit.setText(_translate("MainWindow", "Utrecht,the Netherlands"))
+        self.lineEdit.setText(_translate("MainWindow", "Ruston, LA, USA"))
         self.forecastTime1.setText(_translate("MainWindow", "+3h"))
         self.forecastTime2.setText(_translate("MainWindow", "+6h"))
         self.forecastTime3.setText(_translate("MainWindow", "+9h"))
