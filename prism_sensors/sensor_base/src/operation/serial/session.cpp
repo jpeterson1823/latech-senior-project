@@ -31,7 +31,7 @@ void SerialSession::__SerialSessionCore1Entry() {
             // continue only when size is known
             if (pbufs > 3) {
                 // get characters until entire packet is read
-                while (pbufs-3 < pbuf[3]) {
+                while (pbufs-3 <= pbuf[3]) {
                     pbuf[pbufs++] = getchar();
                 }
 

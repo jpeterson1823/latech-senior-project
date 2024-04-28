@@ -117,7 +117,7 @@ err_t socket::recvCallback(void* arg, struct tcp_pcb* pcb, struct pbuf* p, err_t
             if (hasData)
                 socket::pushRecv();
 
-            std::cout << "Receive Buffer {\n" << state.tmp << '}' << std::endl;
+            //std::cout << "Receive Buffer {\n" << state.tmp << '}' << std::endl;
             tcp_recved(pcb, p->tot_len);
         }
         pbuf_free(p);

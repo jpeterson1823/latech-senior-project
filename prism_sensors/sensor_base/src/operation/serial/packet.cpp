@@ -24,7 +24,7 @@ SerialPacket::SerialPacket(uint8_t* rawBytes) {
 
 void SerialPacket::fromRaw(uint8_t* raw) {
     this->ptype = PacketType(raw[2]);
-    this->plsize = raw[3] > SERPAC_DBUF_SIZE ? SERPAC_DBUF_SIZE : raw[3];
+    this->plsize = raw[3];
     for (uint16_t i = 0; i < plsize; i++) {
         this->payload[i] = raw[i+4];
     }
@@ -112,7 +112,7 @@ bool SerialPacket::setPayloadByte(uint8_t addr, uint8_t byte) {
 uint8_t SerialPacket::getPayloadByte(uint8_t addr) {
     if (addr < plsize)
         return payload[addr];
-    return 0x00;
+    return 0xaa;
 }
 
 std::string SerialPacket::toString() {

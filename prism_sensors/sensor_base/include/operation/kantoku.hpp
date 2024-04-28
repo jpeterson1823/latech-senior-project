@@ -2,17 +2,20 @@
 
 #include "hardware/at28hc64.hpp"
 #include "operation/serial/session.hpp"
+#include "operation/sensors/upa.hpp"
 
 extern "C" {
     #include <lwip/tcp.h>
 }
 
-#define NOBLE6 2312
+// Byte values
 #define KANTOKU_EEPROM_FORMATTED    0x00
 #define KANTOKU_CREDS_SAVED         0x01
-#define KANTOKU_PAIRED              0x02
-#define KANTOKU_ROM_START           0x03
+#define KANTOKU_NETCON_ESTABLISHED  0x02
+#define KANTOKU_PAIRED_SUCCESSFULLY 0x03
 
+// Address locations
+#define KANTOKU_PAIR_STATUS_ADDR    0x02
 #define KANTOKU_WIFI_CREDS_ADDR     0x03
 #define KANTOKU_WIFI_CREDS_BLOCKLEN 0x80    // 128 characters
 #define KANTOKU_CREDS_BLOCK_NULL_B  0x83    // extra nullterm to make sure no overread
@@ -32,6 +35,7 @@ private:
         NetworkConnect,
         NetworkPair,
         EstablishUplink,
+        SkipPair,
         NoAction
     };
 
@@ -46,15 +50,19 @@ private:
     EEPROM prom;
     Action action;
     ModuleType moduleType;
+    UPASensor* upa;
 
-// member fn
 private:
     Action determineAction();
     void formatEEPROM();
     void serialSetup();
     void networkConn();
+    void parseSettinsJson(std::string rawJson, std::vector<std::pair<std::string, std::string>>& settingsBuf);
+    std::vector<std::string> splitString(std::string str, char delimiter);
 
 public:
     Kantoku(ModuleType moduleType);
     bool attemptPair();
+    void attachUPA(UPASensor& s);
+    void updateSensorInfo();
 };

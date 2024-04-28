@@ -68,8 +68,10 @@ int main() {
         exit(1);
     }
 
-    //std::cout << "UPA Starting..." << std::endl;
-    //UPASensor upa;
+    std::cout << "UPA Starting..." << std::endl;
+    UPASensor upa;
+    kan.attachUPA(upa);
+    kan.updateSensorInfo();
 
     //std::cout << "Polling   0.0 deg:\n"<< upa.poll(0.0f) << "mm" << std::endl;
     //std::cout << "Polling -45.0 deg:\n"<< upa.poll(-45.0f) << "mm" << std::endl;
@@ -81,6 +83,6 @@ int main() {
     //    std::cout << '(' << sweep[i].angle << "deg, " << sweep[i].distance << "mm)" << std::endl;
 
 
-    //std::cout << "REACHED END OF MAIN!" << std::endl;
+    std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;
 }

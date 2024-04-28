@@ -40,11 +40,14 @@ Kantoku::Kantoku(ModuleType moduleType) {
     std::cout << std::endl;*/
 
     //first, must determine what state kantoku should be in
-    //determineAction();
+    determineAction();
+
+    if (this->action == Action::NoAction)
+        exit(1);
 
     // go through managerial actions
-    //if (this->action == Action::SerialSetup)
-    //    serialSetup();
+    if (this->action == Action::SerialSetup)
+        serialSetup();
 
     /*sleep_ms(5000);
     for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
@@ -53,10 +56,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     }
     std::cout << std::endl;*/
     
-    //if (this->action == Action::NetworkConnect)
-    //    networkConn();
-
-    networkConn();
+    if (this->action == Action::NetworkConnect || this->action == Action::SkipPair)
+        networkConn();
 };
 
 // formats eeprom
@@ -90,16 +91,19 @@ Kantoku::Action Kantoku::determineAction() {
         return this->action;
     }
 
-    // if noble6, then check flag state and return appropriate action
-    uint8_t flags = prom.readByte(0x0002);
-    if (flags == KANTOKU_EEPROM_FORMATTED)
+    // if noble, check pair status
+    uint8_t pstat = prom.readByte(KANTOKU_PAIR_STATUS_ADDR);
+    std::cout << "pstat = " << std::hex << std::setw(2) << std::setfill('0') << (int)pstat << std::endl;
+    if (pstat == KANTOKU_EEPROM_FORMATTED)
         this->action = Action::SerialSetup;
-    else if (flags == KANTOKU_CREDS_SAVED)
+    else if (pstat == KANTOKU_CREDS_SAVED)
         this->action = Action::NetworkConnect;
-    else if (flags == KANTOKU_PAIRED)
-        this->action = Action::EstablishUplink;
-    else
+    else if (pstat == KANTOKU_PAIRED_SUCCESSFULLY)
+        this->action = Action::SkipPair;
+    else {
         this->action = Action::NoAction;
+        prom.writeByte(KANTOKU_EEPROM_FORMATTED, KANTOKU_PAIR_STATUS_ADDR);
+    }
     
     // return current action
     return this->action;
@@ -162,10 +166,15 @@ void Kantoku::serialSetup() {
 
             // remaining data is string in format "SSID;PSWD"
             std::string wifiInfo = "";
-            for (uint8_t i = 0; i < packet.getPayloadSize()+1 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
+            for (uint8_t i = 0; i < packet.getPayloadSize()-4 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
                 wifiInfo += (char)packet.getPayloadByte(i+4);
             std::cout << "wifiInfo: " << wifiInfo << std::endl;
             
+
+            for (char c : wifiInfo)
+                std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)c << " ";
+            std::cout << std::endl;
+
             // write this creds string to eeprom
             prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
                 // set nullchar at KANTOKU_CREDS_BLOCK_NULL_B
@@ -179,6 +188,9 @@ void Kantoku::serialSetup() {
 
             // write module type to eeprom
             prom.writeByte(moduleType, KANTOKU_SENSTYPE_ADDR);
+
+            // set pair status byte to CREDS_SAVED
+            prom.writeByte(KANTOKU_CREDS_SAVED, KANTOKU_PAIR_STATUS_ADDR);
 
             // halt loop as pairing is complete
             shouldLoop = false;
@@ -200,19 +212,15 @@ void Kantoku::serialSetup() {
 
 // Connect to network using saved creds
 void Kantoku::networkConn() {
-
     // retrieve creds from EEPROM
-    /*char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
+    char ssid[KANTOKU_WIFI_CREDS_BLOCKLEN];
     char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
     uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
     prom.readUntil(delimAddr+1, '\0', pswd, KANTOKU_WIFI_CREDS_BLOCKLEN);
     sleep_ms(500);
 
     std::cout << "Attempting to connect to network with following creds:\n";
-    std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;*/
-
-    char ssid[] = "bingus";
-    char pswd[] = "FizzBuzz23!";
+    std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;
 
     // setup and connect to wifi, 2 retry attempts
     int status = Wifi::Connect(ssid, pswd, &netinfo.ip);
@@ -230,11 +238,15 @@ void Kantoku::networkConn() {
         std::cout << "Could not connect to WiFi network. Exiting..." << std::endl;
         this->action = Action::NoAction;
     } else {
-        this->action = Action::NetworkPair;
+        if (this->action != Action::SkipPair)
+            this->action = Action::NetworkPair;
     }
 };
 
 bool Kantoku::attemptPair() {
+    if (this->action == Action::SkipPair)
+        return true;
+
     // get ip and mac addr
     std::string ipAddr(ip4addr_ntoa(&netinfo.ip));
     std::string macAddr;
@@ -259,5 +271,71 @@ bool Kantoku::attemptPair() {
     socket::send(req);
     socket::wait();
 
-    return socket::dataAvailable();
+    if (socket::dataAvailable()) {
+        // pop response off of queue
+        std::cout << socket::popRecvq() << std::endl;
+        // set pair status byte to PAIRED_SUCCESSFULLY
+        prom.writeByte(KANTOKU_PAIRED_SUCCESSFULLY, KANTOKU_PAIR_STATUS_ADDR);
+        return true;
+    }
+    else return false;
+}
+
+void Kantoku::attachUPA(UPASensor& upa) {
+    this->upa = &upa;
+}
+
+
+std::vector<std::string> Kantoku::splitString(std::string str, char delimiter) {
+    size_t pos = 0;
+    std::string token;
+    std::vector<std::string> split;
+    while ((pos = str.find(delimiter)) != std::string::npos) {
+        token = str.substr(0, pos);
+        split.push_back(token);
+        str.erase(0, pos + 1);
+    }
+    return split;
+}
+
+void Kantoku::parseSettinsJson(std::string rawJson, std::vector<std::pair<std::string, std::string>>& settingsBuf) {
+    // remove squiggle brackets from front and back
+    rawJson.erase(0);
+    rawJson.erase(rawJson.length()-1);
+
+    // split json by commas
+    for (std::string settingStr : splitString(rawJson, ',')) {
+        std::vector<std::string> pair = splitString(settingStr, ':');
+        // erase " from front and back
+        pair[0].erase(0);
+        pair[0].erase(pair[0].length()-1);
+        pair[1].erase(0);
+        pair[1].erase(pair[1].length()-1);
+        // add pair to buffer
+        settingsBuf.push_back(std::pair<std::string, std::string>(pair[0], pair[1]));
+    }
+}
+
+void Kantoku::updateSensorInfo() {
+    // make get request for current sensor's paired data with db
+    std::string mac;
+    Wifi::GetMacString(mac);
+    Http::GetReq req (
+        ip4addr_ntoa(&netinfo.ctrlip),
+        "/php/demo.php",
+        std::string("macaddr=") + mac
+    );
+
+    socket::initialize(&netinfo.ctrlip, 40553);
+    socket::send(req);
+    socket::wait();
+
+    // pull json data out of GET response
+    std::string httpRes = socket::popRecvq();
+    std::string rawSensorSettings = httpRes.substr(httpRes.find("\r\n\r\n")+4, httpRes.length()-1);
+    std::cout << rawSensorSettings << std::endl;
+
+    // parse raw sensor settings into setting variables
+    std::vector<std::pair<std::string, std::string>> settingsBuf;
+    parseSettinsJson(rawSensorSettings, settingsBuf);
 }
