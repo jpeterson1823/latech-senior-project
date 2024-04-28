@@ -24,9 +24,24 @@ extern "C" {
 // still provides range of 3.43m
 #define UPA_ADC_CAPTURE_DEPTH 5000
 
-struct upa_result {
-    float angle;
-    float distance;
+
+namespace upa {
+    typedef struct _upa_result {
+        float angle;
+        float distance;
+    } result;
+
+    typedef struct _upa_config {
+        float lFovLimit;
+        float rFovLimit;
+        uint16_t adcGate;
+    } config;
+
+    static const config default_config = {
+        lFovLimit: -45.0f,
+        rFovLimit:  45.0f,
+        adcGate:    50u
+    };
 };
 
 class UPASensor {
@@ -45,13 +60,15 @@ private:
     const float phaseScalar = pulseLength / 0.000343f;
 
 
-    bool pwmActive;
     uint rx; //ADC2
     uint slices[4];
+    bool pwmActive;
     uint16_t adcCaptureBuf[UPA_ADC_CAPTURE_DEPTH];
 
     uint dmaChannel;
     dma_channel_config dmacfg;
+    upa::config config;
+
 
 private:
     void adcSetup();
@@ -67,9 +84,10 @@ private:
 
 public:
     UPASensor();
-    
+
     float poll(float angle);
+    void configure(upa::config config);
     // transducer & receiver control
-    std::vector<struct upa_result> sweepScan();
-    std::vector<struct upa_result> rangeSweep(float startAngle, float endAngle);
+    std::vector<upa::result> sweepScan();
+    std::vector<upa::result> rangeSweep(float startAngle, float endAngle);
 };

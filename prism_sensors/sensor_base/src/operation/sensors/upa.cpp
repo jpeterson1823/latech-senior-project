@@ -13,21 +13,27 @@ extern "C" {
 
 /**
  * @brief Construct a new UPASensor::UPASensor object
- * 
  */
 UPASensor::UPASensor() {
+    // general setup
     this->pwmActive = false;
     this->rx = 0; // GP28
+
+    // set default configuration
+    this->config = upa::default_config;
 
     // run GPIO and ADC setup
     gpioSetup();
     adcSetup();
 
-
+    // claim dma channel and set default config
     this->dmaChannel = dma_claim_unused_channel(true);
     this->dmacfg = dma_channel_get_default_config(dmaChannel);
 }
 
+/**
+ * @brief Configures DMA channel for ADC polling.
+ */
 void UPASensor::dmaSetup() {
     // write bytes to address
     channel_config_set_transfer_data_size(&dmacfg, DMA_SIZE_16);
@@ -47,6 +53,9 @@ void UPASensor::dmaSetup() {
     );
 }
 
+/**
+ * @brief Set up ADC controls
+ */
 void UPASensor::adcSetup() {
     // analog pin setup
     adc_gpio_init(26 + rx);
@@ -64,7 +73,6 @@ void UPASensor::adcSetup() {
 
 /**
  * @brief Initialize gpio pins and set up pwm for UPASensor
- * 
  */
 void UPASensor::gpioSetup() {
     gpio_init(UPA_TPIN_LL);
@@ -95,7 +103,6 @@ void UPASensor::gpioSetup() {
         pwm_set_chan_level(slices[pinIndex], channels[pinIndex], 125'000'000 / 40'000 / 2);
     }
 }
-
 
 /**
  * @brief Pulse transceivers from left to right, pausing inbetween for specified phase delay.
@@ -277,7 +284,7 @@ float UPASensor::poll(float angle) {
     }
 
     // if value at max index is not larger than sensitivity value, then return -1
-    if (adcCaptureBuf[max_i] < 50)
+    if (adcCaptureBuf[max_i] < config.adcGate)
         return 0;
     return (max_i/1000.0f) * 343.0f;
 }
@@ -289,13 +296,13 @@ float UPASensor::poll(float angle) {
  * @param endAngle   ending angle for range
  * @return           vector of poll results
  */
-std::vector<struct upa_result> UPASensor::rangeSweep(float startAngle, float endAngle) {
+std::vector<upa::result> UPASensor::rangeSweep(float startAngle, float endAngle) {
     // make sure angles are valid and ceil/floor if not
     startAngle = validateAngle(startAngle);
     endAngle = validateAngle(endAngle);
 
     // create vector for sweep results
-    std::vector<struct upa_result> sweepResult;
+    std::vector<upa::result> sweepResult;
 
     // poll angles and increment by sweep resolution
     for (float angle = startAngle; angle <= endAngle; angle += UPA_SWEEP_RESOLUTION) {
@@ -311,6 +318,13 @@ std::vector<struct upa_result> UPASensor::rangeSweep(float startAngle, float end
 }
 
 // poll entire FoV of sensor
-std::vector<struct upa_result> UPASensor::sweepScan() {
-    return rangeSweep(-UPA_ANGLE_LIMIT, UPA_ANGLE_LIMIT);
+std::vector<upa::result> UPASensor::sweepScan() {
+    return rangeSweep(config.lFovLimit, config.rFovLimit);
+}
+
+// update configuration settings
+void UPASensor::configure(upa::config config) {
+    this->config.lFovLimit = config.lFovLimit;
+    this->config.rFovLimit = config.rFovLimit;
+    this->config.adcGate   = config.adcGate;
 }

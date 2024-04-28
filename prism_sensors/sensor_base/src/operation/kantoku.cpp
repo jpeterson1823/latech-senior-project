@@ -26,37 +26,19 @@ Kantoku::Kantoku(ModuleType moduleType) {
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
 
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[0] << ":";
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[1] << ":";
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[2] << ":";
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[3] << ":";
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[4] << ":";
-    //std::cout << std::hex << std::setfill('0') << std::setw(2) << (int)netinfo.mac[5] << std::endl;
-
-    /*for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
-        std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)prom.readByte(i);
-        std::cout << ' ';
-    }
-    std::cout << std::endl;*/
-
     //first, must determine what state kantoku should be in
     determineAction();
 
+    // if action is set to NoAction
     if (this->action == Action::NoAction)
         exit(1);
 
     // go through managerial actions
     if (this->action == Action::SerialSetup)
         serialSetup();
-
-    /*sleep_ms(5000);
-    for (uint16_t i = 0x0000; i < KANTOKU_SENSTYPE_ADDR; i++) {
-        std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)prom.readByte(i);
-        std::cout << ' ';
-    }
-    std::cout << std::endl;*/
     
-    if (this->action == Action::NetworkConnect || this->action == Action::SkipPair)
+    // start network connection
+    if (this->action == Action::NetworkConnect)
         networkConn();
 };
 
@@ -72,41 +54,56 @@ void Kantoku::formatEEPROM() {
     // flag byte already at KANTOKU_EEPROM_FORMATTED, so no action needed there
 }
 
-// determines which action should be taken given current situation
+uint8_t Kantoku::getPairStatus() {
+    return prom.readByte(KANTOKU_PAIR_STATUS_ADDR);
+}
+
+// Determines inital action for module base to start with
 Kantoku::Action Kantoku::determineAction() {
-    // first things first, determine if PROM has been formatted via checking first & second byte
-    uint8_t formatFlag_h = prom.readByte(0x0000);
-    uint8_t formatFlag_l = prom.readByte(0x0001);
-
-    //std::cout << "0x0000: " << std::hex << (int)formatFlag_h << std::endl;
-    //std::cout << "0x0001: " << std::hex << (int)formatFlag_l << std::endl;
-
-    // format eeprom if first two bytes not noble6
-    if (formatFlag_h != 0x23 || formatFlag_l != 0x12) {
-        std::cout << "Not Noble Enough. Cleaning EEPROM..." << std::endl;
+    // format EEPROM if not noble
+    if (!isNoble()) {
         formatEEPROM();
-        // set state to SerialSetup
+        // set next action to Serial Setup
         this->action = Action::SerialSetup;
-        std::cout << "Cleaning finished. SerialSetup set as action." << std::endl;
         return this->action;
     }
 
-    // if noble, check pair status
+    // check pair status
     uint8_t pstat = prom.readByte(KANTOKU_PAIR_STATUS_ADDR);
-    std::cout << "pstat = " << std::hex << std::setw(2) << std::setfill('0') << (int)pstat << std::endl;
+
+    // if EEPROM is formatted, action is serial setup
     if (pstat == KANTOKU_EEPROM_FORMATTED)
         this->action = Action::SerialSetup;
+    
+    // if network credits have been saved, start network connection
     else if (pstat == KANTOKU_CREDS_SAVED)
         this->action = Action::NetworkConnect;
+    
+    // if pairing has been successful before, complete startup
     else if (pstat == KANTOKU_PAIRED_SUCCESSFULLY)
-        this->action = Action::SkipPair;
+        this->action = Action::CompleteStartup;
+
+    // Otherwise, an issue has occurred.
     else {
         this->action = Action::NoAction;
-        prom.writeByte(KANTOKU_EEPROM_FORMATTED, KANTOKU_PAIR_STATUS_ADDR);
+        prom.writeByte(KANTOKU_FORMAT_ERROR, KANTOKU_PAIR_STATUS_ADDR);
     }
     
     // return current action
     return this->action;
+}
+
+// Determines if EEPROM is Noble
+bool Kantoku::isNoble() {
+    // read first two bytes of EEPROM
+    uint8_t noble[2];
+    prom.readBytes(0x0000, noble, 2);
+
+    // read pair status byte
+    uint8_t pstat = prom.readByte(KANTOKU_PAIR_STATUS_ADDR);
+
+    // determine nobility
+    return (noble[0] == 0x23 && noble[1] == 0x12) && pstat != 0xFF;
 }
 
 // negotiates creds with controller
@@ -161,7 +158,6 @@ void Kantoku::serialSetup() {
                 packet.getPayloadByte(2),
                 packet.getPayloadByte(3)
             );
-
             sleep_ms(2000);
 
             // remaining data is string in format "SSID;PSWD"
@@ -237,16 +233,11 @@ void Kantoku::networkConn() {
     if (status != CYW43_LINK_UP) {
         std::cout << "Could not connect to WiFi network. Exiting..." << std::endl;
         this->action = Action::NoAction;
-    } else {
-        if (this->action != Action::SkipPair)
-            this->action = Action::NetworkPair;
     }
+    else this->action = Action::CompleteStartup;
 };
 
 bool Kantoku::attemptPair() {
-    if (this->action == Action::SkipPair)
-        return true;
-
     // get ip and mac addr
     std::string ipAddr(ip4addr_ntoa(&netinfo.ip));
     std::string macAddr;
@@ -285,7 +276,6 @@ void Kantoku::attachUPA(UPASensor& upa) {
     this->upa = &upa;
 }
 
-
 std::vector<std::string> Kantoku::splitString(std::string str, char delimiter) {
     size_t pos = 0;
     std::string token;
@@ -298,7 +288,7 @@ std::vector<std::string> Kantoku::splitString(std::string str, char delimiter) {
     return split;
 }
 
-void Kantoku::parseSettinsJson(std::string rawJson, std::vector<std::pair<std::string, std::string>>& settingsBuf) {
+void Kantoku::parseSettinsJson(std::string rawJson, std::map<std::string, std::string>& settingsBuf) {
     // remove squiggle brackets from front and back
     rawJson.erase(0);
     rawJson.erase(rawJson.length()-1);
@@ -312,7 +302,7 @@ void Kantoku::parseSettinsJson(std::string rawJson, std::vector<std::pair<std::s
         pair[1].erase(0);
         pair[1].erase(pair[1].length()-1);
         // add pair to buffer
-        settingsBuf.push_back(std::pair<std::string, std::string>(pair[0], pair[1]));
+        settingsBuf.insert({pair[0], pair[1]});
     }
 }
 
@@ -333,9 +323,41 @@ void Kantoku::updateSensorInfo() {
     // pull json data out of GET response
     std::string httpRes = socket::popRecvq();
     std::string rawSensorSettings = httpRes.substr(httpRes.find("\r\n\r\n")+4, httpRes.length()-1);
-    std::cout << rawSensorSettings << std::endl;
+
+    // if http data is empty, no update
+    if (rawSensorSettings.length() == 0)
+        return;
 
     // parse raw sensor settings into setting variables
-    std::vector<std::pair<std::string, std::string>> settingsBuf;
-    parseSettinsJson(rawSensorSettings, settingsBuf);
+    std::map<std::string, std::string> smap;
+    parseSettinsJson(rawSensorSettings, smap);
+    
+    // update sensor settings
+    upa::config cfg  = {
+        std::stof(smap["lFovLimit"]),
+        std::stof(smap["rFovLimit"]),
+        std::stoul(smap["adcGate"])
+    };
+    upa->configure(cfg);
+
+    // write configuration to EEPROM
+    prom.writeFloat(cfg.lFovLimit,              KANTOKU_UPA_LFOV_LIMIT_ADDR);
+    prom.writeFloat(cfg.rFovLimit,              KANTOKU_UPA_RFOV_LIMIT_ADDR);
+    prom.writeByte((cfg.adcGate & 0xFF00) >> 8, KANTOKU_UPA_ADC_GATE_ADDR);
+    prom.writeByte( cfg.adcGate & 0x00FF,       KANTOKU_UPA_ADC_GATE_ADDR);
+}
+
+void Kantoku::alertController() {
+    // generate HTTP Post
+    Http::PostReq req = {
+        std::string(ip4addr_ntoa(&netinfo.ctrlip)),
+        "/php/demo.php",
+        "UPA ALERT"
+    };
+    // send alert
+    socket::send(req);
+}
+
+void Kantoku::mainLoop() {
+    // call bound sensor's mainLoop
 }

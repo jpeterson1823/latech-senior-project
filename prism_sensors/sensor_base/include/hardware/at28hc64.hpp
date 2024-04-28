@@ -13,7 +13,7 @@ extern "C" {
 #define EEPROM_IO_IN false
 #define EEPROM_IO_OUT true
 
-class EEPROM {
+class At28hc64b {
 private:
     // IO Mask covers GPIO 0-7
     const uint32_t IO_MASK = 0x7F;
@@ -35,10 +35,14 @@ private:
     void setBusInput();
 
 public:
-    EEPROM();
-    void writeByte(uint8_t data, uint16_t address);
+    At28hc64b();
+    void writeByte(uint8_t byte, uint16_t address);
+    void writeBytes(uint8_t* bytes, uint16_t nbytes, uint16_t address);
+    void writeFloat(float f, uint16_t address);
     void writeString(const char* str, uint16_t address);
+
     uint8_t readByte(uint16_t address);
-    void readString(uint16_t address, char* buf, size_t buflen);
-    uint16_t readUntil(uint16_t address, char delimiter, char* buf, size_t buflen);
+    void readBytes(uint16_t address, uint8_t* buf, uint16_t nbytes);
+    void readString(uint16_t address, char* sbuf, uint16_t nchars);
+    uint16_t readUntil(uint16_t address, char delimiter, char* sbuf, uint16_t sbsize);
 };

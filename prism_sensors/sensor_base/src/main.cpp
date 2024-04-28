@@ -14,64 +14,51 @@ extern "C" {
 
 #define BUFSIZE 1024
 
-void test() {
-    while(true) {
-        char c = getchar();
-        std::cout << "Char Received: " << c << std::endl;
-    }
-}
-
 int main() {
-    // general hardware setup
+    // initialize PicoW hardware
     if (cyw43_arch_init_with_country(CYW43_COUNTRY_USA)) {
         std::cout << "cyw43 failed to init!" << std::endl;
         exit(1);
     };
+    // enable STA mode to populate netif and cyw43_state
     cyw43_arch_enable_sta_mode();
+    // initialize all PicoW stdio
     stdio_init_all();
+    // initialize PicoW adc hardware
     adc_init();
+    // initialize built-in LED GPIO pin
     gpio_init(CYW43_WL_GPIO_LED_PIN);
-    sleep_ms(2000);
 
+    // sleep for 2 seconds to assure async hardware setup is completed
+    sleep_ms(2000);
     std::cout << "MAIN START" << std::endl;
 
-    /*
-    std::cout << "Writing to EEPROM" << std::endl;
-    EEPROM rom;
-    rom.writeByte(0x0000, 0x23);
-    rom.writeByte(0x0001, 0x12);
-    rom.writeByte(0x0002, 0x23);
-    rom.writeByte(0x0003, 0x12);
-
-    std::cout << "Values: " << std::endl;
-    std::cout << "0x0000: 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)rom.readByte(0x0000) << std::endl;
-    std::cout << "0x0001: 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)rom.readByte(0x0001) << std::endl;
-    std::cout << "0x0002: 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)rom.readByte(0x0002) << std::endl;
-    std::cout << "0x0003: 0x" << std::hex << std::setw(2) << std::setfill('0') << (int)rom.readByte(0x0003) << std::endl;
-    */
-
-    // create kantoku for setup, network, and pairing
-    // constructor handles serial setup, network connection, pairing, and uplink creation
-
-    /*SerialPacket p(PacketType::PAIR_REQ);
-    uint8_t mac[] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa};
-    p.setPayloadSize(6);
-    std::cout << p.loadIntoPayload(mac, 6) << std::endl;
-    std::cout << p.toString() << std::endl;
-    exit(1);*/
-
-    Kantoku kan(ModuleType::NONE);
+    // Start kantoku for a UPA module
+    Kantoku kan(ModuleType::UPA);
     
-    // make sure module paired to controller
-    if (!kan.attemptPair()) {
-        std::cout << "FAILED TO PAIR TO CONTROLLER!" << std::endl;
-        exit(1);
+    // if base module is not paired, attempt to pair.
+    if (kan.getPairStatus() != KANTOKU_PAIRED_SUCCESSFULLY) {
+        // if pairing fails, exit
+        if (!kan.attemptPair()) {
+            std::cout << "FAILED TO PAIR TO CONTROLLER!" << std::endl;
+            exit(1);
+        }
     }
 
+    // create UPASensor object
     std::cout << "UPA Starting..." << std::endl;
     UPASensor upa;
+
+    // bind upa to kantoku
+    std::cout << "Attaching UPA..." << std::endl;
     kan.attachUPA(upa);
+
+    // check for sensor config update
+    std::cout << "Updating sensor config..." << std::endl;
     kan.updateSensorInfo();
+
+    // begin main loop of sensor
+    kan.mainLoop();
 
     //std::cout << "Polling   0.0 deg:\n"<< upa.poll(0.0f) << "mm" << std::endl;
     //std::cout << "Polling -45.0 deg:\n"<< upa.poll(-45.0f) << "mm" << std::endl;
