@@ -60,16 +60,6 @@ int main() {
     // begin main loop of sensor
     kan.mainLoop();
 
-    //std::cout << "Polling   0.0 deg:\n"<< upa.poll(0.0f) << "mm" << std::endl;
-    //std::cout << "Polling -45.0 deg:\n"<< upa.poll(-45.0f) << "mm" << std::endl;
-    //std::cout << "Polling  45.0 deg:\n"<< upa.poll(45.0f) << "mm" << std::endl;
-
-    //std::vector<struct upa_result> sweep = upa.rangeSweep(-10, 10);
-    //std::cout << "Printing sweep ping results:" << std::endl;
-    //for (int i = 0; i < sweep.size(); i++)
-    //    std::cout << '(' << sweep[i].angle << "deg, " << sweep[i].distance << "mm)" << std::endl;
-
-
     std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;
 }

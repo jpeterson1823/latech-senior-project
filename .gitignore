@@ -4,3 +4,4 @@ docker/**
 **.pyc
 **/.venv/**
 **/.winvenv/**
+**/.vscode/**

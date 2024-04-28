@@ -359,5 +359,21 @@ void Kantoku::alertController() {
 }
 
 void Kantoku::mainLoop() {
-    // call bound sensor's mainLoop
+    std::vector<upa::result> scan;
+
+    for (;;) {
+        // scan fov
+        scan = upa->sweepScan();
+
+        // get closest ping
+        upa::result closest = scan[0];
+        for (upa::result r : scan) {
+            if (closest.distance < r.distance)
+                closest = r;
+        }
+        
+        // print closest angle
+        std::cout << "Closest Echo: " << closest.distance << "mm @ ";
+        std::cout << closest.angle << "deg" << std::endl;
+    }
 }
