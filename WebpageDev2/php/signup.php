@@ -1,6 +1,9 @@
 <html>
     <body>
-        <?php    
+        <?php
+            // support functions
+            require 'support.php';
+
             // make database connection
             require 'connection.php';
 
@@ -28,24 +31,6 @@
                     $conn->close();                    
                 }
             }
-            
-            
-            // support functions
-            function test_input($data) {
-                $data = trim($data);
-                $data = stripslashes($data);
-                $data = htmlspecialchars($data);
-                return $data;
-            }
-            
-            function redirect($url, $permanent = false) {
-                header('Location: ' . $url, true, $permanent ? 301 : 302);
-                exit();
-            }
-            
-            // error handling
-            error_reporting(E_ALL);
-            ini_set('display_errors', 1);
         ?>
     </body>
 </html>

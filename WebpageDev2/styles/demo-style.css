@@ -1,0 +1,24 @@
+/* initial setup of page and things */
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+input::-ms-reveal, input::-ms-clear {
+    display: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(26, 55, 80);
+    overflow-x: clip;
+    overflow-y: auto;
+}

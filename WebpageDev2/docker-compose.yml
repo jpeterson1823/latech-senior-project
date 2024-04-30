@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysql:
-    image: chh02/capstone-latech-prism:mysql-Ver6
+    image: chh02/capstone-latech-prism:mysql-Ver7
     container_name: mysql-compose
     ports:
       - 13306:16842

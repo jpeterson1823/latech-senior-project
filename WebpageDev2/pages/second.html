@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../styles/style.css">
     <title>Prism</title>
 </head>
-<body class="is-transitioned">
+<body class="is-transitioned" onload = "getHardwareFromDB()">
     <div class="example-page">
         <header>
             <nav>
@@ -32,53 +32,17 @@
             </nav>
         </header>
         <div class="frame2-mobile">
-            <div class="horizontal-scroll">
-                <button class="btn" id="wire">wireless settings</button>
-                <button class="btn" id="comm">communication settings</button>
-                <button class="btn" id="app">application settings</button>
-                <button class="btn" id="gui">gui settings</button>
-                <button class="btn" id="pers">personal settings</button>
-            </div>
+            <div class="horizontal-scroll list-options"></div>
         </div>
         <div class="container1">
-            <div class="frame2">
-                <button class="btn" id="wire">wireless settings</button>
-                <button class="btn" id="comm">communication settings</button>
-                <button class="btn" id="app">application settings</button>
-                <button class="btn" id="gui">gui settings</button>
-                <button class="btn" id="pers">personal settings</button>
-            </div>
+            <div class="frame2 list-options"></div>
             <div class="frame3">
-                <div class="wire setting" for="open">
-                    <p>change stuff here1</p>
-                    <p>change stuff here</p>
-                    <p>change stuff here</p>
-                </div>
-                <div class="comm setting" for="close">
-                    <p>change stuff here2</p>
-                    <p>change stuff here</p>
-                    <p>change stuff here</p>
-                </div>
-                <div class="app setting" for="close">
-                    <p>change stuff here3</p>
-                    <p>change stuff here</p>
-                    <p>change stuff here</p>
-                </div>
-                <div class="gui setting" for="close">
-                    <p>change stuff here4</p>
-                    <p>change stuff here</p>
-                    <p>change stuff here</p>
-                </div>
-                <div class="pers setting" for="close">
-                    <p>change stuff here5</p>
-                    <p>change stuff here</p>
-                    <p>change stuff here</p>
-                </div>
+                <form name="update-form" action="/php/updateSettings.php" method="post" target="_self" id="list-settings"></form>
             </div>
         </div>
     </div>
 
-    <script>
+    <script defer>
         myFunction = () => {
           var x = document.getElementById("myLinks");
           if (x.style.display === "block") {
@@ -94,10 +58,52 @@
             update.setAttribute("for", "open")
 
         }
-        const btn = document.querySelectorAll(".btn")
-        btn.forEach((button) => {
-            button.addEventListener('click', (event) => toggleButtons(event.target.id))
-        });
+
+        getHardwareFromDB = () => {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200 && this.response != "") {
+                    const response = JSON.parse(this.response);
+                    createSettingElements(response);
+                }
+            };
+            xmlhttp.open("GET", "/php/getHardware.php", true);
+            xmlhttp.send();
+        }
+
+        createSettingElements = (response) => {
+            const parent = document.getElementById('list-settings');
+            const newDiv1 = Array(response[0].length);
+            for (let index = 0; index < newDiv1.length; index++) {
+                newDiv1[index] = document.createElement('div');
+                parent.appendChild(newDiv1[index]);
+                if(newDiv1[index] == parent.firstElementChild) {
+                    newDiv1[index].setAttribute('for', 'open');
+                } else {
+                    newDiv1[index].setAttribute('for', 'close');
+                }
+                newDiv1[index].setAttribute('class', `sensor${index + 1} setting`);
+                var newChild = document.createElement('p');
+                for (let j = 0; j < response[1][index].length; j++) {
+                    newChild.innerHTML = response[1][index][j];
+                    newDiv1[index].appendChild(newChild.firstChild);
+                }
+                if (response[1][index].length == 0) {
+                    newChild.innerHTML = "<p>No Settings Available</p>";
+                    newDiv1[index].appendChild(newChild.firstChild);
+                }
+            }
+
+            const collection = document.getElementsByClassName('list-options')
+            for (let index = 0; index < collection.length; index++) {
+                response[0].forEach(element => {
+                    collection[index].innerHTML += element;
+                });
+                collection[index].childNodes.forEach((button) => {
+                    button.addEventListener('click', (event) => toggleButtons(event.target.id))
+                });
+            }
+        }
     </script>
 </body>
 </html>
