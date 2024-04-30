@@ -4,6 +4,8 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <cstdlib>
+#include <pwd.h>
 
 DHCPLease::DHCPLease(std::string ip4str, std::string macstr) : ip4(ip4str), mac(macstr) {}
 DHCPLease::DHCPLease(Mac mac, IP4 ip4) : ip4(ip4), mac(mac) {};
@@ -18,7 +20,7 @@ std::string DHCPLease::toString() {
 }
 
 
-const std::string DHCPMan::LEASE_FILE_PATH = "/tmp/module.leases";
+const std::string DHCPMan::LEASE_FILE_PATH = std::string(getpwuid(getuid())->pw_dir) + "/Documents/.prism/module.leases";
 DHCPMan::DHCPMan() { 
     // fill availableIP4s with valid ip4str's (x.x.x.2-254)
     IP4 ip4("192.168.0.2");
@@ -26,6 +28,9 @@ DHCPMan::DHCPMan() {
         availableIP4s.push_back(ip4.toString());
         ip4.octets[3] += 1;
     }
+
+    // load lease file
+    loadLeaseFile();
 }
 
 DHCPMan::~DHCPMan() {
@@ -34,13 +39,6 @@ DHCPMan::~DHCPMan() {
         delete(it->first);
         delete(it->second);
     }
-}
-
-void DHCPMan::execLeaseLoader() {
-    char* args[] = {
-        "python3",
-        "dbLeaseLoader.py"
-    };
 }
 
 /*/
@@ -52,8 +50,11 @@ void DHCPMan::forkToLeaseLoader() {
     pid_t pid = fork();
 
     // if this process is the child process, execute db lease loader script
-    if (pid == 0)
-        execLeaseLoader();
+    if (pid == 0) {
+        std::cout << "Forked to dbLeaseLoader.py:" << std::endl;
+        system("source ../.venv/bin/activate && python3 ../dbLeaseLoader.py");
+        exit(0);
+    }
     
     // otherwise, wait for child process to finish
     int status;
@@ -87,7 +88,7 @@ void DHCPMan::loadLeaseFile() {
 
     // parse lease file into this->leases
     std::string line;
-    while (leaseIfs.good()) {
+    while (leaseIfs.good() && leaseIfs.peek() != EOF) {
         // get the current line
         leaseIfs.getline(line.data(), 256);
 
@@ -107,6 +108,7 @@ void DHCPMan::loadLeaseFile() {
 
         // add pair to leases
         leases.insert({new Mac(macstr), new IP4(ip4str)});
+        std::cout << "fixed" << std::endl;
     }
 }
 

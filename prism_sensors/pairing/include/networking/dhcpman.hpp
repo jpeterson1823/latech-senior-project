@@ -23,7 +23,6 @@ private:
     std::map<Mac*, IP4*> leases;
     std::vector<std::string> availableIP4s;
 
-    void execLeaseLoader();
     void forkToLeaseLoader();
     void loadLeaseFile();
     IP4* genNewIP4();
