@@ -6,11 +6,12 @@ import numpy as np
 
 
 class User():
-    def __init__(self, name, model, audio_files_path, calendar):
+    def __init__(self, name, model, audio_files_path, calendar, userID):
         self.user_name = name
         self.Model_path = model
         self.audio_folder = audio_files_path
         self.calendar = calendar
+        self.userID = userID
 
     def isThisUser(self, comparison_array, index, return_dict) -> bool:
         tmp_list = os.listdir(self.audio_folder)

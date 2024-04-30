@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
     def instantiateExistingUsers(self, users_entry):
         print("made it here")
         for i in range(len(users_entry)):
-            self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3]))
+            self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
         print(self.users, "This print statement runs")
     
     def pullData(self):
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         cursor = db.cursor()
 
         #query = "UPDATE Users SET model_path='Petersons_model', audio_path='voice_clips/', calendar_path='calen.ui' WHERE Username='demo_tester'"
-        query = "SELECT Username, model_path, audio_path, calendar_path FROM Users"
+        query = "SELECT Username, model_path, audio_path, calendar_path, idUsers FROM Users"
         cursor.execute(query)
         #db.commit()
         print(cursor.fetchall())
@@ -153,8 +153,8 @@ class CalendarWindow(QWidget):
             )
         cursor = db.cursor()
 
-        query = "SELECT task, completed FROM GUI_Data WHERE date = %s"
-        row = (date,)
+        query = "SELECT task, completed FROM GUI_Data WHERE date = %s AND Users_idUsers = %s"
+        row = (date, self.users[self.activeUserIndex].user_ID)
         results = cursor.execute(query, row).fetchall()
         for result in results:
             item = QListWidgetItem(str(result[0]))
@@ -180,10 +180,10 @@ class CalendarWindow(QWidget):
             item = self.tasksListWidget.item(i)
             task = item.text()
             if item.checkState() == QtCore.Qt.Checked:
-                query = "UPDATE GUI_Data SET completed = 'YES' WHERE task = %s AND date = %s"
+                query = "UPDATE GUI_Data SET completed = 'YES' WHERE task = %s AND date = %s AND Users_idUsers = %s"
             else:
-                query = "UPDATE GUI_Data SET completed = 'NO' WHERE task = %s AND date = %s"
-            row = (task, date,)
+                query = "UPDATE GUI_Data SET completed = 'NO' WHERE task = %s AND date = %s AND Users_idUsers = %s"
+            row = (task, date, self.users[self.activeUserIndex].user_ID)
             cursor.execute(query, row)
         db.commit()
 
@@ -216,8 +216,8 @@ class CalendarWindow(QWidget):
         elif newTask == "" and voiceTask is not False:
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
-            row = (voiceTask, "NO", date,)
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,%s)"
+            row = (voiceTask, "NO", date, self.users[self.activeUserIndex].user_ID)
 
             cursor.execute(query, row)
             db.commit()
@@ -226,8 +226,8 @@ class CalendarWindow(QWidget):
         else:        
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
-            row = (newTask, "NO", date,)
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,%s)"
+            row = (newTask, "NO", date, self.users[self.activeUserIndex].user_ID)
 
             cursor.execute(query, row)
             db.commit()
