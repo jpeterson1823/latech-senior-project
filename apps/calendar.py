@@ -1,15 +1,11 @@
-import mysql.connector, subprocess, sys
+import mysql.connector
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 
-
 class CalendarWindow(QWidget):
     def __init__(self):
         super(CalendarWindow, self).__init__()
-        self.host = subprocess.run(["docker inspect -f \
-            '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
-            shell=True, capture_output=True, text=True).stdout.strip()
         loadUi("res/ui/calen.ui", self)
         self.todaysDate = self.calendarWidget.selectedDate().toPyDate()
         print("Today is:", self.todaysDate)
@@ -18,9 +14,6 @@ class CalendarWindow(QWidget):
         self.saveButton.clicked.connect(self.saveChanges)
         self.addButton.clicked.connect(self.addNewTask)
         self.todayButton.clicked.connect(self.today)
-
-        print(self.host)
-
         
     def today(self):
         self.calendarWidget.setSelectedDate(self.todaysDate)
@@ -31,21 +24,20 @@ class CalendarWindow(QWidget):
         print("Date selected:", dateSelected)
         self.updateTaskList(dateSelected)
 
-    def updateTaskList(self, date):
+    def updateTaskList(self, date, user):
         self.tasksListWidget.clear()
 
         db = mysql.connector.connect(
-                host=self.host,
+                host=self.result_ip,
                 user='gui-user',
                 password='Prism-4-GUI',
                 database='PRISM_DB'
             )
         cursor = db.cursor()
 
-        query = "SELECT task, completed FROM GUI_Data WHERE date = %s"
-        row = (date,)
-        cursor.execute(query, row)
-        results = cursor.fetchall()
+        query = "SELECT task, completed FROM GUI_Data WHERE date = %s AND Users_idUsers = %s"
+        row = (date, self.users[self.activeUserIndex].user_ID)
+        results = cursor.execute(query, row).fetchall()
         for result in results:
             item = QListWidgetItem(str(result[0]))
             item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable)
@@ -55,10 +47,9 @@ class CalendarWindow(QWidget):
                 item.setCheckState(QtCore.Qt.Unchecked)
             self.tasksListWidget.addItem(item)
 
-    def saveChanges(self):
-       
+    def saveChanges(self, user):
         db = mysql.connector.connect(
-                host=self.host,
+                host=self.result_ip,
                 user='gui-user',
                 password='Prism-4-GUI',
                 database='PRISM_DB'
@@ -70,10 +61,10 @@ class CalendarWindow(QWidget):
             item = self.tasksListWidget.item(i)
             task = item.text()
             if item.checkState() == QtCore.Qt.Checked:
-                query = "UPDATE GUI_Data SET completed = 'YES' WHERE task = %s AND date = %s"
+                query = "UPDATE GUI_Data SET completed = 'YES' WHERE task = %s AND date = %s AND Users_idUsers = %s"
             else:
-                query = "UPDATE GUI_Data SET completed = 'NO' WHERE task = %s AND date = %s"
-            row = (task, date,)
+                query = "UPDATE GUI_Data SET completed = 'NO' WHERE task = %s AND date = %s AND Users_idUsers = %s"
+            row = (task, date, self.users[self.activeUserIndex].user_ID)
             cursor.execute(query, row)
         db.commit()
 
@@ -83,10 +74,10 @@ class CalendarWindow(QWidget):
         messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QWidget{background-color:#0000FF; color: black} QPushButton{ width:100px; font-size: 18px; }")
         messageBox.exec()
 
-    def addNewTask(self, vct):
+    def addNewTask(self, vct, user):
         
         db = mysql.connector.connect(
-                host=self.host,
+                host=self.result_ip,
                 user='gui-user',
                 password='Prism-4-GUI',
                 database='PRISM_DB'
@@ -106,8 +97,8 @@ class CalendarWindow(QWidget):
         elif newTask == "" and voiceTask is not False:
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
-            row = (voiceTask, "NO", date,)
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,%s)"
+            row = (voiceTask, "NO", date, self.users[self.activeUserIndex].user_ID)
 
             cursor.execute(query, row)
             db.commit()
@@ -116,8 +107,8 @@ class CalendarWindow(QWidget):
         else:        
             date = self.calendarWidget.selectedDate().toPyDate()
 
-            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,1)"
-            row = (newTask, "NO", date,)
+            query = "INSERT INTO GUI_Data (task, completed, date, Users_idUsers) VALUES (%s,%s,%s,%s)"
+            row = (newTask, "NO", date, self.users[self.activeUserIndex].user_ID)
 
             cursor.execute(query, row)
             db.commit()
