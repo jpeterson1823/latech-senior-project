@@ -74,7 +74,7 @@ namespace pairing {
         return serial::interrogate(SerialPacket(PacketType::INTENT_Q), PacketType::PAIR_REQ, pbuf);
     }
 
-    void sendPairInfo(IP4* ip4) {
+    void sendPairInfo(IP4* ip4, uint32_t uid) {
         // extract IP address from lease object
         uint8_t ipOctets[4];
         ip4->getOctets(ipOctets);
@@ -82,9 +82,10 @@ namespace pairing {
         // create response packet
         std::string netCreds = "bingus;FizzBuzz23!";
         SerialPacket p(PacketType::RESPONSE);
-        p.setPayloadSize(4+netCreds.size());
+        p.setPayloadSize(5+netCreds.size());
         p.loadIntoPayload(ipOctets, 4);
-        p.loadIntoPayload((uint8_t*)netCreds.c_str(), netCreds.size(), 0x04);
+        p.setPayloadByte(0x04, (uint8_t)uid);
+        p.loadIntoPayload((uint8_t*)netCreds.c_str(), netCreds.size(), 0x05);
 
         std::cout << "Packet to send: " << p.toString() << std::endl;
 

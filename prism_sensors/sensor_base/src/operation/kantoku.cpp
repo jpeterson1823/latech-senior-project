@@ -19,6 +19,7 @@ extern "C" {
 Kantoku::Kantoku(ModuleType moduleType) {
     // set module type
     this->moduleType = moduleType;
+    this->uid = 0;
     // set controller IP
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
     IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
@@ -162,8 +163,8 @@ void Kantoku::serialSetup() {
 
             // remaining data is string in format "SSID;PSWD"
             std::string wifiInfo = "";
-            for (uint8_t i = 0; i < packet.getPayloadSize()-4 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
-                wifiInfo += (char)packet.getPayloadByte(i+4);
+            for (uint8_t i = 0; i < packet.getPayloadSize()-5 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
+                wifiInfo += (char)packet.getPayloadByte(i+5);
             std::cout << "wifiInfo: " << wifiInfo << std::endl;
             
 
@@ -175,6 +176,9 @@ void Kantoku::serialSetup() {
             prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
                 // set nullchar at KANTOKU_CREDS_BLOCK_NULL_B
             prom.writeByte('\0', KANTOKU_CREDS_BLOCK_NULL_B);
+
+            // save user id
+            prom.writeByte(packet.getPayloadByte(0x04), KANTOKU_PAIRED_UID_ADDR);
 
             // write leased ip to eeprom
             prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 0), KANTOKU_IP_ADDR);
@@ -248,7 +252,7 @@ bool Kantoku::attemptPair() {
 
     // create uri and params string
     std::string uri = "/php/demo.php";
-    std::string data = "ipaddr=" + ipAddr + "&macaddr=" + macAddr + "&sensor_name=upa1";
+    std::string data = "ipaddr=" + ipAddr + "&macaddr=" + macAddr + "&uid=" + std::to_string((int)uid);
 
     // create pair HTTP request
     Http::PostReq req (
@@ -322,6 +326,8 @@ void Kantoku::updateSensorInfo() {
 
     // pull json data out of GET response
     std::string httpRes = socket::popRecvq();
+    if (httpRes.length() == 0)
+        return;
     std::string rawSensorSettings = httpRes.substr(httpRes.find("\r\n\r\n")+4, httpRes.length()-1);
 
     // if http data is empty, no update

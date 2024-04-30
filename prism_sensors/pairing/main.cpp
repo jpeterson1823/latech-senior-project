@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 
     // send pairing response
     std::cout << "Sending pairing info... " << std::endl;
-    pairing::sendPairInfo(lease->getIP4());
+    pairing::sendPairInfo(lease->getIP4(), uid);
     std::cout << "Pairing info sent. USB pairing completed." << std::endl;
 
     delete lease;

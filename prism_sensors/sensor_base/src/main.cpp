@@ -58,7 +58,7 @@ int main() {
     kan.updateSensorInfo();
 
     // begin main loop of sensor
-    kan.mainLoop();
+    //kan.mainLoop();
 
     std::cout << "REACHED END OF MAIN!" << std::endl;
     return 0;

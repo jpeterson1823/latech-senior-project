@@ -23,13 +23,14 @@ extern "C" {
 #define KANTOKU_CREDS_BLOCK_NULL_B  0x0083  // extra nullterm to make sure no overread
 #define KANTOKU_IP_ADDR             0x0084  //addr for leased ip
 #define KANTOKU_SENSTYPE_ADDR       0x0088
+#define KANTOKU_PAIRED_UID_ADDR     0x0089
 
 // UPA Address locations
 #define KANTOKU_UPA_BLOCK_START     0x0010  // start of UPA config block
 #define KANTOKU_UPA_LFOV_LIMIT_ADDR 0x0010  // 4 bytes for a float
 #define KANTOKU_UPA_RFOV_LIMIT_ADDR 0x0014  // 4 bytes for a float
 #define KANTOKU_UPA_ADC_GATE_ADDR   0x0018  // 2 bytes for uint16_t
-#define KANTOKU_UPA_BLOCK_SIZE      0x000A  // total size of upa config block (4+4+2=10 bytes)
+#define KANTOKU_UPA_BLOCK_SIZE      0x000B  // total size of upa config block (4+4+2=10 bytes)
 
 /*
 Kantoku: Director of comms
@@ -59,6 +60,7 @@ private:
     Action action;
     ModuleType moduleType;
     UPASensor* upa;
+    uint8_t uid;
 
 private:
     Action determineAction();
