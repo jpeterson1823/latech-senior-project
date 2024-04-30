@@ -2,7 +2,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
-from MainWindow import Ui_MainWindow
+from res.Ui_MainWindow import Ui_MainWindow
 
 from datetime import datetime
 import subprocess
@@ -12,20 +12,24 @@ import sys
 import requests
 from urllib.parse import urlencode
 
-OPENWEATHERMAP_API_KEY = 'ASK_FOR_API'
+OPENWEATHERMAP_API_KEY = 'c87115192e57199814dc7d7edfdd4d17'
 
 def from_ts_to_time_of_day(ts):
     dt = datetime.fromtimestamp(ts)
     return dt.strftime("%I%p").lstrip("0")
 
+
+
+
 class WorkerSignals(QObject):
-    
     finished = pyqtSignal()
     error = pyqtSignal(str)
     result = pyqtSignal(dict, dict)
 
+
+
+
 class WeatherWorker(QRunnable):
-    
     signals = WorkerSignals()
     is_interrupted = False
 
@@ -59,8 +63,11 @@ class WeatherWorker(QRunnable):
 
         self.signals.finished.emit()
 
-class MainWindow(QMainWindow, Ui_MainWindow):
 
+
+
+
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
@@ -120,13 +127,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             getattr(self, 'forecastTemp%d' % n).setText(f'{self.ForTemp} °F')
 
     def set_weather_icon(self, label, weather):
-        label.setPixmap(
-            QPixmap(os.path.join('images', "%s.png" %
-                                 weather[0]['icon']
-                                 )
-                    )
-
-        )
+        print(os.getcwd())
+        label.setPixmap(QPixmap(f"res/images/{weather[0]['icon']}.png"))
         
     def center_screen(self):
         qtRectangle = self.frameGeometry()
