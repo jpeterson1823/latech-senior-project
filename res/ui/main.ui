@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>100</x>
+    <y>100</y>
+    <width>795</width>
+    <height>410</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Main Window</string>
+  </property>
+  <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+background-color: #000000;
+</string>
+   </property>
+
+ <widget class="QPushButton" name="calBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>350</width>
+     <height>170</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+font-weight: bold;
+background-color: #0000FF;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>Calendar Planner</string>
+   </property>
+  </widget>
+
+  <widget class="QPushButton" name="wthrBtn">
+   <property name="geometry">
+    <rect>
+     <x>425</x>
+     <y>20</y>
+     <width>350</width>
+     <height>170</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+font-weight: bold;
+background-color: #505050;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>12-Hour Weather</string>
+   </property>
+  </widget>
+
+ <widget class="QPushButton" name="pairBtn">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>215</y>
+     <width>350</width>
+     <height>170</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+font-weight: bold;
+background-color: #FF0000;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>Pair Device</string>
+   </property>
+  </widget>
+
+<widget class="QPushButton" name="userBtn">
+   <property name="geometry">
+    <rect>
+     <x>425</x>
+     <y>215</y>
+     <width>350</width>
+     <height>170</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:10px;
+font-weight: bold;
+border: 2px solid #FFFFFF;
+background-color: #000000;
+color:white;
+</string>
+   </property>
+   <property name="text">
+    <string>Add User</string>
+   </property>
+  </widget>
+
+
+ </widget>
+
+ <resources/>
+ <connections/>
+</ui>
