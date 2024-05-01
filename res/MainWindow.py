@@ -8,6 +8,7 @@ import multiprocessing
 from multiprocessing import Process
 from res.User import User
 import mysql.connector
+import os.path
 
 class MainWindow(QMainWindow):
     
@@ -82,20 +83,29 @@ class MainWindow(QMainWindow):
         self.w.show()
         
     def pair(self):
-        #Pairing code
-        if 1:
-            messageBox = QMessageBox()
+        # create message box
+        messageBox = QMessageBox()
+
+        # if ttyACMX not available, no device is detected
+        if not os.path.exists("/dev/ttyACM0"):
             messageBox.setText("No device detected. Ensure it is on.")
             messageBox.setStandardButtons(QMessageBox.Ok)
             messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 18px;} QPushButton{ width:100px; font-size: 18px; }")
             messageBox.exec()
-        #else:
-            #messageBox = QMessageBox()
-            #messageBox.setText("Device paired successfully.")
-            #messageBox.setStandardButtons(QMessageBox.Ok)
-            #messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QPushButton{ width:100px; font-size: 18px; }")
-            #messageBox.exec()
-        return
+        # otherwise, attempt to pair
+        else:
+            # fork to modpair. if exit code != 0, pairing failed
+            try:
+                subprocess.run([r"./modpair", "123"]).check_returncode()
+                messageBox.setText("Device paired successfully.")
+                messageBox.setStandardButtons(QMessageBox.Ok)
+                messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QPushButton{ width:100px; font-size: 18px; }")
+            except subprocess.CalledProcessError as e:
+                messageBox.setText("Device paired successfully.")
+                messageBox.setStandardButtons(QMessageBox.Ok)
+                messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QPushButton{ width:100px; font-size: 18px; }")
+            messageBox.exec()
+
     
     def wthr(self):
         if self.t is None:
