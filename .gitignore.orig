@@ -2,7 +2,15 @@
 **/build/**
 docker/**
 *.o
-=======
 **/__pycache__/**
 **/.venv/**
->>>>>>> PyQT-Raspberry-Pi
+*.
+=======
+**/build/**
+docker/**
+*.o
+**.pyc
+**/.venv/**
+**/.winvenv/**
+**/.vscode/**
+>>>>>>> sensor-modules
