@@ -21,8 +21,8 @@ Below are steps to get docker environment set up for testing purposes:
 ### To Pull from Docker Hub Repo on CLI (Linux):
 1. `docker login -u chh02`
 2. (when prompted) enter access token from above
-3. `docker pull chh02/capstone-latech-prism:mysql-Ver3`
-4. `docker pull chh02/capstone-latech-prism:apache-Ver3`
+3. `docker pull chh02/capstone-latech-prism:mysql-Ver7`
+4. `docker pull chh02/capstone-latech-prism:apache-Ver5`
 
 ## Step 4: Deploy Docker Environment
 ### Run The Following (Linux):
@@ -32,14 +32,14 @@ Below are steps to get docker environment set up for testing purposes:
 
 ## Step 5: View Webserver & Play
 ### View Running Application
-- go to ['localhost'](http://localhost) in your browser
+- go to ['localhost'](http://localhost:40553) in your browser
 
 ### View WebPage Designed for Demo Day
-- go [here](http://localhost/pages/demo.html)
+- go [here](http://localhost:40553/pages/demo.html)
 
 ### Test GET & POST Functionality to Demo (Linux CLI)
-- `curl -X GET "localhost/php/demo.php?REQ=your%20MACADDR&DATA=your%20data"`
-- `curl -X POST "localhost/php/demo.php" -d "REQ=your MACADDR&DATA=your data"`
+- `curl -X GET "localhost:40553/php/demo.php?REQ=your%20MACADDR&DATA=your%20data"`
+- `curl -X POST "localhost:40553/php/demo.php" -d "REQ=your MACADDR&DATA=your data"`
 
 # FEEDBACK
 - feel free to message me any concerns in discord
