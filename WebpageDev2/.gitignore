@@ -1,2 +1,3 @@
 .vscode/
-.dockerfile
+edit-config.conf
+test_db.sql

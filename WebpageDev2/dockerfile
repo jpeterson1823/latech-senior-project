@@ -1,3 +1,3 @@
-FROM chh02/capstone-latech-prism:apach-image
+FROM chh02/capstone-latech-prism:apache-Ver5-tmp
 
-COPY . /var/www/html/.
+COPY ./tmp/. /var/www/html/.

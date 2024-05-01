@@ -32,7 +32,7 @@
         }
         $sql .= ", changed = '1' WHERE idHardware='". $_POST['HardwareID'] . "';";
         $result = $conn->query($sql);
-        redirect("/pages/second.html");
+        redirect("/pages/second.php");
     }
 
 ?>

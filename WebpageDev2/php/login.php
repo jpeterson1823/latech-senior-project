@@ -9,20 +9,24 @@
 
             // make query to database to check against user data
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                if (isset($_POST['uname']) && isset($_POST['pass'])) {                   
+                if (isset($_POST['uname']) && isset($_POST['pass'])) {
                     $UNAME = test_input($_POST["uname"]);
                     $PASS = test_input($_POST["pass"]);
                     $hashed_password = crypt($PASS,'$6$rounds=5000$QMDuozZ3Uboh61i5$');
-                    $sql = "SELECT 1 FROM Users WHERE Username='$UNAME' AND Password='$hashed_password';";
-                    $result = $conn->query($sql);
+                    $sql = "SELECT idUsers FROM Users WHERE Username='$UNAME' AND Password='$hashed_password';";
+                    $result = $conn->query($sql)->fetch_assoc();
 
+                    
+                    
                     // after successful query, redirect to next webpage
-                    if ($result->fetch_assoc()) {
-                        redirect("/pages/second.html");
+                    if ($result) {
+                        session_start();
+                        $_SESSION['uid'] = $result['idUsers'];
+                        redirect("/pages/second");
                     } 
                     // if query fails or returns false, prompt user
                     else {
-                        redirect("/pages/login.html");
+                        redirect("/pages/login");
                     }
                 }
             }

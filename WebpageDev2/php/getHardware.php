@@ -1,17 +1,22 @@
 <?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         require 'connection.php';
+        session_start();
         
-        $sql = "SELECT * FROM Hardware";
+        $sql = "SELECT * FROM Hardware h"
+            . " INNER JOIN Users_has_Hardware uh on h.idHardware = uh.Hardware_idHardware"
+            . " INNER JOIN Users u on uh.Users_idUsers = u.idUsers"
+            . " WHERE u.idUsers = '" . $_SESSION['uid'] . "'";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             $return_array = array();
             $some_data = array();
             $more_data = array();
+            $counter = 1;
             while($row = $result->fetch_assoc()) {
                 $other_data = array();
-                $some_data[] = "<button class='btn' id='sensor". $row['idHardware'] . "'>" . $row['sensor_name'] . "</button>";
+                $some_data[] = "<button class='btn' id='sensor". $counter . "'>" . $row['sensor_name'] . "</button>";
                 if ($row['setting1'] != 'null'){
                     $other_data[] = 
                         "<div>
@@ -56,6 +61,7 @@
                         </div>";
                 }
                 $more_data[] = $other_data;
+                $counter++;
             }
             $return_array[] = $some_data;
             $return_array[] = $more_data;

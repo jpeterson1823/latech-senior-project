@@ -1,10 +1,18 @@
+<?php
+    // check if user is logged in
+    session_start();
+    if (isset($_SESSION['uid'])){
+        header("Location: second");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/login-style.css">
-    <title>PRISM | Signup</title>
+    <title>PRISM | Login</title>
 </head>
 <body>
     <div class="Container1">
@@ -12,14 +20,14 @@
             <div class="Group-Content">
                 <div class="Group-Logo">
                     <!-- logo and picture here -->
-                    <a href="/index.html">
+                    <a href="/">
                         <img src="/assets/OIG4-grey-variant.png" alt="Diamond logo for PRISM">
                     </a>
                 </div>
                 <div class="Login-Text">
-                    Signup:
+                    Login:
                 </div>
-                <form name="login-form" class="Username-Password" action="/php/signup.php" target="_self" method="post" id="login-form">
+                <form name="login-form" class="Username-Password" action="/php/login" target="_self" method="post" id="login-form">
                     <div class="Group-Username">
                         <label for="uname">Username:</label><br>
                         <input type="text" placeholder="Enter Username" id="uname" name="uname" required autofocus>
@@ -31,11 +39,11 @@
                         <!-- <span class="tooltip">"tooltip text"</span> -->
                     </div>
                     <div class="Login-Btn">
-                        <input type="submit" value="Sign Up">
+                        <input type="submit" value="Log In">
                     </div>
                 </form>
                 <div class="Group-SignUp" id="SignUp">
-                    <p>Already Have An Account? <a href="login.html">Log In</a></p>
+                    <p>Don't Have An Account? <a href="signup">Sign Up</a></p>
                 </div>
             </div>
         </div>

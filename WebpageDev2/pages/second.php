@@ -1,3 +1,12 @@
+<?php
+    // check if user is logged in
+    session_start();
+    if (!isset($_SESSION['uid'])){
+        header("Location: login");
+        session_destroy();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,20 +20,20 @@
     <div class="example-page">
         <header>
             <nav>
-                <a href="/index.html">
+                <a href="/">
                     <div class="group2">
                         <img src="../assets/OIG4-white-variant.png" alt="Diamond logo for PRISM">
                     </div>
                 </a>
                 <div class="links">
-                    <a href="javascript:void(0);" class="quick-settings">quick settings</a>
+                    <a href="https://github.com/jpeterson1823/latech-senior-project" class="quick-settings">Documentation</a>
                     <a href="demo.html" class="basic-settings">Demo</a>
-                    <a href="third.php" class="advanced-settings">Database Testing</a>
+                    <a href="/php/logout" class="advanced-settings">Logout</a>
                 </div>
                 <div class="links" id="myLinks">
-                    <a href="javascript:void(0);" class="quick-settings">quick settings</a>
+                    <a href="https://github.com/jpeterson1823/latech-senior-project" class="quick-settings">Documentation</a>
                     <a href="demo.html" class="basic-settings">Demo</a>
-                    <a href="third.php" class="advanced-settings">Database Testing</a>
+                    <a href="/php/logout" class="advanced-settings">Logout</a>
                 </div>
                 <a href="javascript:void(0);" class="icon" onclick="myFunction()">
                     <img src="../assets/icons8-menu-50.png" alt="hamburger menu icon">
@@ -37,7 +46,7 @@
         <div class="container1">
             <div class="frame2 list-options"></div>
             <div class="frame3">
-                <form name="update-form" action="/php/updateSettings.php" method="post" target="_self" id="list-settings"></form>
+                <form name="update-form" action="/php/updateSettings" method="post" target="_self" id="list-settings"></form>
             </div>
         </div>
     </div>
@@ -54,6 +63,8 @@
         toggleButtons = (id) => {
             var old = document.querySelector("[for='open']")
             var update = document.querySelector(`.${id}`)
+            console.log(old);
+            console.log(id);
             old.setAttribute("for", "close")
             update.setAttribute("for", "open")
 
@@ -67,7 +78,7 @@
                     createSettingElements(response);
                 }
             };
-            xmlhttp.open("GET", "/php/getHardware.php", true);
+            xmlhttp.open("GET", "/php/getHardware", true);
             xmlhttp.send();
         }
 
