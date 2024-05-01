@@ -1,0 +1,8 @@
+<<<<<<< HEAD
+**/build/**
+docker/**
+*.o
+=======
+**/__pycache__/**
+**/.venv/**
+>>>>>>> PyQT-Raspberry-Pi
