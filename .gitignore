@@ -6,3 +6,4 @@ docker/**
 **/.venv/**
 **/.winvenv/**
 **/.vscode/**
+**/commands_venv/**
