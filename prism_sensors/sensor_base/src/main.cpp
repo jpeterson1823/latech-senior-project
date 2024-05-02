@@ -44,6 +44,7 @@ int main() {
             exit(1);
         }
     }
+    else std::cout << "PAIRED PREVIOUSLY" << std::endl;
 
     // create UPASensor object
     std::cout << "UPA Starting..." << std::endl;
