@@ -12,7 +12,7 @@ class User():
         self.audio_folder = audio_files_path
         self.calendar = calendar
 
-    def isThisUser(self, comparison_array, index, return_dict) -> bool:
+    def isThisUser(self, comparison_array, index, return_dict):
         tmp_list = os.listdir(self.audio_folder)
         choices = []
         num_comparisons = 3
@@ -34,6 +34,9 @@ class User():
             outputs_avg /= num_comparisons
             if outputs_avg > 0.5:
                 return_dict[index] = True
+                print("updated dict")
             else:
                 return_dict[index] = False
+                print("updated dict")
+                print(outputs_avg)
 

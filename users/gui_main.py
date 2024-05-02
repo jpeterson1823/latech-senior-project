@@ -42,9 +42,6 @@ class MainWindow(QMainWindow):
         print(self.users, "This print statement runs")
     
     def pullData(self):
-        result_ip = run(["docker inspect -f \
-            '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
-            shell=True, capture_output=True, text=True).stdout.strip()
 
         db = mysql.connector.connect(
                         host=result_ip,

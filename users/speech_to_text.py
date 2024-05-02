@@ -11,8 +11,6 @@ def text_from_speech():
     stream.start_stream()
 
     data = stream.read(4096)
-    if len(data) == 0:
-        break
 
     if recognizer.AcceptWaveform(data):
         return recognizer.Result()
