@@ -1,0 +1,16 @@
+<<<<<<< HEAD
+**/build/**
+docker/**
+*.o
+**/__pycache__/**
+**/.venv/**
+*.
+=======
+**/build/**
+docker/**
+*.o
+**.pyc
+**/.venv/**
+**/.winvenv/**
+**/.vscode/**
+>>>>>>> sensor-modules
