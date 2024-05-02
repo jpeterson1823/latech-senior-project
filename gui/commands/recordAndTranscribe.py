@@ -70,3 +70,4 @@ if __name__ == '__main__':
 
     record_thread.join()
     transcribe_thread.join()
+
