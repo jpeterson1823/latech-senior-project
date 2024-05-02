@@ -19,7 +19,7 @@ extern "C" {
 Kantoku::Kantoku(ModuleType moduleType) {
     // set module type
     this->moduleType = moduleType;
-    this->uid = 0;
+    this->uid = 1;
     // set controller IP
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
     IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
@@ -35,11 +35,11 @@ Kantoku::Kantoku(ModuleType moduleType) {
         exit(1);
 
     // go through managerial actions
-    if (this->action == Action::SerialSetup)
+    if (this->action == Action::SerialSetup || this->action == Action::CompleteStartup)
         serialSetup();
     
     // start network connection
-    if (this->action == Action::NetworkConnect)
+    if (this->action == Action::NetworkConnect || this->action == Action::CompleteStartup)
         networkConn();
 };
 

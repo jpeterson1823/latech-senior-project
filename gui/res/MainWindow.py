@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
         else:
             # fork to modpair. if exit code != 0, pairing failed
             try:
-                subprocess.run("cd ../prism_sensors/pairing/build && ./modpair 123").check_returncode()
+                subprocess.run("../prism_sensors/pairing/build/modpair 123".split(' ')).check_returncode()
                 messageBox.setText("Device paired successfully.")
                 messageBox.setStandardButtons(QMessageBox.Ok)
                 messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QPushButton{ width:100px; font-size: 18px; }")
