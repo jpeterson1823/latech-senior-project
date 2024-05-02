@@ -9,6 +9,8 @@ from multiprocessing import Process
 from res.User import User
 import mysql.connector
 import os.path
+import commands.recordAndTranscribe as rat
+import threading
 
 class MainWindow(QMainWindow):
     
@@ -35,7 +37,6 @@ class MainWindow(QMainWindow):
         print("made it here")
         for i in range(len(users_entry)):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
-        print(self.users, "This print statement runs")
     
     def pullData(self):
         self.result_ip = subprocess.run(["docker inspect -f \
@@ -54,7 +55,6 @@ class MainWindow(QMainWindow):
         query = "SELECT Username, model_path, audio_path, calendar_path, idUsers FROM Users"
         cursor.execute(query)
         #db.commit()
-        print(cursor.fetchall())
         return cursor.fetchall()
 
     def getCurrentSpeaker(self, comparison_array):
@@ -75,6 +75,21 @@ class MainWindow(QMainWindow):
             return 0
         else:
             return 1
+
+    def startRecording(self):
+
+        speech_detection_Event = threading.Event()
+        record_thread = threading.Thread(target=rat.record_buffer)
+        transcribe_thread = threading.Thread(target=rat.transcribe_buffer, args=[(speech_detection_Event)])
+
+        record_thread.start()
+        transcribe_thread.start()
+
+        speech_detection_Event.wait()
+
+        return record_thread, transcribe_thread
+
+
 
     def calendar(self, user_index):
         if self.w is None:
