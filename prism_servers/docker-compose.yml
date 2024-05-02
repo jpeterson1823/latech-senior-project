@@ -4,6 +4,7 @@ services:
     image: chh02/capstone-latech-prism:mysql-Ver7
     container_name: mysql-compose
     ports:
+      - 13306:3306
   web:
     image: chh02/capstone-latech-prism:apache-Ver5
     ports:
