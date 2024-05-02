@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(pico_sdk_import.cmake)
 project(at28hc64_reader C CXX ASM)
+
 pico_sdk_init()
 
 add_compile_options(
@@ -24,8 +25,8 @@ target_include_directories(reader PRIVATE
 
 target_link_libraries(reader
     pico_stdlib
-    pico_time
     pico_cyw43_arch_none
+    pico_time
     hardware_gpio
 )
 

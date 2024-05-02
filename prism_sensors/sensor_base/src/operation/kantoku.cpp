@@ -22,7 +22,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     this->uid = 1;
     // set controller IP
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
-    IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
+    //IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
+    IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 49);
     IP4_ADDR(&netinfo.ip, 192, 168, 9, 229);
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
@@ -35,7 +36,7 @@ Kantoku::Kantoku(ModuleType moduleType) {
         exit(1);
 
     // go through managerial actions
-    if (this->action == Action::SerialSetup || this->action == Action::CompleteStartup)
+    if (this->action == Action::SerialSetup)
         serialSetup();
     
     // start network connection
@@ -77,12 +78,8 @@ Kantoku::Action Kantoku::determineAction() {
         this->action = Action::SerialSetup;
     
     // if network credits have been saved, start network connection
-    else if (pstat == KANTOKU_CREDS_SAVED)
+    else if (pstat == KANTOKU_CREDS_SAVED || pstat == KANTOKU_PAIRED_SUCCESSFULLY)
         this->action = Action::NetworkConnect;
-    
-    // if pairing has been successful before, complete startup
-    else if (pstat == KANTOKU_PAIRED_SUCCESSFULLY)
-        this->action = Action::CompleteStartup;
 
     // Otherwise, an issue has occurred.
     else {

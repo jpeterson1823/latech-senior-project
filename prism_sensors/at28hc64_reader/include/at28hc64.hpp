@@ -29,7 +29,7 @@
 // EEPROM Configuration
 #define MAX_ADDR        0x0fff
 #define DATA_BUS_MASK   0x000000ffu     //gpio 0-7
-#define ADDR_BUS_MASK   0x1fffff00u     //gpio 8-20
+#define ADDR_BUS_MASK   0x001fff00u     //gpio 8-20
 #define OE 21u
 #define WE 22u
 #define CE 26u
@@ -58,5 +58,6 @@ public:
     void printByte(uint8_t byte);
 
     void hexdump();
+    void hexdump(uint16_t startAddr, uint16_t endAddr);
     void clean();
 };

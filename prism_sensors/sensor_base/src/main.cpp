@@ -43,6 +43,12 @@ int main() {
             std::cout << "FAILED TO PAIR TO CONTROLLER!" << std::endl;
             exit(1);
         }
+
+        // otherwise, pause
+        else {
+            std::cout << "USB Pairing Successful. Please unplug and replug." << std::endl;
+            for (;;) { sleep_ms(1000); }
+        }
     }
     else std::cout << "PAIRED PREVIOUSLY" << std::endl;
 

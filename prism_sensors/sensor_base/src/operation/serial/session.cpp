@@ -63,6 +63,8 @@ bool SerialSession::open() {
     sessionActive = true;
 
     //multicore_reset_core1();
+    multicore_fifo_drain();
+    multicore_reset_core1();
     multicore_launch_core1(__SerialSessionCore1Entry);
 
 
@@ -81,9 +83,6 @@ bool SerialSession::close() {
     // set session to inactive
     sessionActive = false;
 
-    sleep_ms(1000);
-    multicore_fifo_drain();
-    multicore_reset_core1();
     return true;
 }
 
