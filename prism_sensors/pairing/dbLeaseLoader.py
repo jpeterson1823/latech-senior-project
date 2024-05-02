@@ -11,7 +11,7 @@ def querydb():
 
     # create db object
     db = mysql.connector.connect(
-                host="192.168.9.228",
+                host=result_ip,
                 user='apache-server',
                 password='PRISM3',
                 database='PRISM_DB'

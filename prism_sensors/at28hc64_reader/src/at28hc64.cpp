@@ -15,13 +15,13 @@ At28hc64::At28hc64(uint8_t oeGpio, uint8_t weGpio, uint8_t ceGpio) {
     gpioSetup();
 };
 
-void At28hc64::sleep() { sleep_us(200u); }
+void At28hc64::sleep() { sleep_us(100u); }
 void At28hc64::oeSetHi() { gpio_put(OE, 1); }
 void At28hc64::oeSetLo() { gpio_put(OE, 0); }
-void At28hc64::weSetHi() { gpio_put(OE, 1); }
-void At28hc64::weSetLo() { gpio_put(OE, 0); }
-void At28hc64::ceSetHi() { gpio_put(OE, 1); }
-void At28hc64::ceSetLo() { gpio_put(OE, 0); }
+void At28hc64::weSetHi() { gpio_put(WE, 1); }
+void At28hc64::weSetLo() { gpio_put(WE, 0); }
+void At28hc64::ceSetHi() { gpio_put(CE, 1); }
+void At28hc64::ceSetLo() { gpio_put(CE, 0); }
 void At28hc64::gpioSetup() {
     // init gpio pins
     gpio_init_mask(ADDR_BUS_MASK | DATA_BUS_MASK);
@@ -56,7 +56,6 @@ uint8_t At28hc64::readByte(uint16_t addr) {
     //     WE <- HIGH
     //     OE <-LOW
     oeSetLo();
-    sleep();
     weSetHi();
     ceSetLo();
     sleep();
@@ -70,10 +69,11 @@ void At28hc64::writeByte(uint8_t byte, uint16_t addr) {
     sleep();
     // Write Condition: CE low pulse with WE low and OE high
     oeSetHi();
-    ceSetHi();
+    ceSetLo();
     sleep();
 
     weSetLo();
+    sleep();
     sleep();
     weSetHi();
     sleep();
@@ -104,17 +104,37 @@ void At28hc64::hexdump() {
     }
     std::cout << std::endl;
 }
+
+void At28hc64::hexdump(uint16_t startAddr, uint16_t endAddr) {
+    std::cout.flush();
+    std::cout << std::endl;
+    std::cout << "B# 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" << std::endl;
+    std::cout << "--------------------------------------------------" << std::endl;
+    std::cout << "   ";
+    for (uint16_t addr = startAddr; addr <= endAddr; addr++) {
+        if (addr % 16 == 0 && addr != 0x0000) {
+            std::cout << "\n   ";
+            printByte(readByte(addr));
+            std::cout << ' ';
+        }
+        else {
+            printByte(readByte(addr));
+            std::cout << ' ';
+        }
+    }
+    std::cout << std::endl;
+}
+
 void At28hc64::clean() {
     std::cout << "Cleaning EEPROM..." << std::endl;
-    //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
     
     for (uint16_t addr = 0x0000; addr <= MAX_ADDR; addr++) {
-        if (addr % 0x0100 == 0)
-            std::cout << "   0x" << std::hex << std::setw(4) << std::setfill('0') << addr << std::endl;
+        std::cout << "\r   0x" << std::hex << std::setw(4) << std::setfill('0') << addr;
         writeByte(0x00, addr);
     }
 
     std::cout << " DONE!";
-    //cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
+    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 0);
 }
 
