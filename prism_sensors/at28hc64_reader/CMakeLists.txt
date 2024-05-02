@@ -14,12 +14,13 @@ add_compile_options(
 
 add_executable(reader
     main.cpp
+    src/at28hc64.cpp
 )
 
 # custom include
-#target_include_directories(reader PRIVATE
-#    ./include
-#)
+target_include_directories(reader PRIVATE
+    ./include
+)
 
 target_link_libraries(reader
     pico_stdlib
