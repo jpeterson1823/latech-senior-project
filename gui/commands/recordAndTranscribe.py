@@ -35,7 +35,7 @@ def transcribe_buffer():
         with sr.AudioFile(audio_file) as source:
             audio = speech.record(source)
             try:
-                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.85), ("weather", 0.9), ("show", 0.99), ("today", 0.9)])
+                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.75), ("weather", 0.8), ("show", 0.999), ("today", 0.9)])
             except sr.exceptions.UnknownValueError:
                 text = "No Command Given"
         if "prism" in text:
