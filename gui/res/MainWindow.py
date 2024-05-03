@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
+from PyQt5.QtCore import pyqtSignal, QObject
 
 from apps.calendar import CalendarWindow
 from apps.weather import MainWindow as WthrMain
@@ -10,8 +11,11 @@ from res.User import User
 import mysql.connector
 import os.path
 import commands.recordAndTranscribe as rat
-import commands.shared
 
+
+class Command(QObject):
+    calendar_command = pyqtSignal()
+    weather_command = pyqtSignal()
 
 class MainWindow(QMainWindow):
     
@@ -23,8 +27,12 @@ class MainWindow(QMainWindow):
         self.t = None
         self.users = []
         self.data = self.pullData()
+        print(self.data)
         self.activeUserIndex = 0
-        self.calBtn.clicked.connect(self.calendar, self.activeUserIndex)
+        self.command = Command()
+        self.command.calendar_command.connect(self.calendar)
+        self.command.weather_command.connect(self.wthr)
+        self.calBtn.clicked.connect(self.calendar)
         self.pairBtn.clicked.connect(self.pair)
         self.wthrBtn.clicked.connect(self.wthr)
         self.userBtn.clicked.connect(self.addUser)
@@ -32,6 +40,7 @@ class MainWindow(QMainWindow):
         if len(self.data) > 0:
             print("Instantiating Users")
             self.instantiateExistingUsers(self.data)
+            print(len(self.users))
 
     # subject to change depending on how the database is setup
     def instantiateExistingUsers(self, users_entry):
@@ -39,6 +48,12 @@ class MainWindow(QMainWindow):
         for i in range(len(users_entry)):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
     
+    def weatherCommand(self):
+        self.command.weather_command.emit()
+
+    def calendarCommand(self):
+        self.command.calendar_command.emit()
+
     def pullData(self):
         self.result_ip = subprocess.run(["docker inspect -f \
             '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
@@ -58,7 +73,6 @@ class MainWindow(QMainWindow):
 
         query = "SELECT Username, model_path, audio_path, calendar_path, idUsers FROM Users"
         cursor.execute(query)
-        print(cursor.fetchall())
         return cursor.fetchall()
 
     def getCurrentSpeaker(self, comparison_array):
@@ -80,9 +94,9 @@ class MainWindow(QMainWindow):
         else:
             return 1
 
-    def calendar(self, user_index):
+    def calendar(self):
         if self.w is None:
-            self.w = CalendarWindow()
+            self.w = CalendarWindow(self)
             self.w.center_cal()
         self.w.show()
         

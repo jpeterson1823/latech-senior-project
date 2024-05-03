@@ -6,8 +6,9 @@ import speech_recognition as sr
 import numpy as np
 import commands.data_handling as dh
 import noisereduce as nr
+import time
 
-import commands.shared
+import voiceman
 
 audio_file = "commands/command_audio/command.wav"
 duration = 5  # Record audio for 3 seconds
@@ -23,6 +24,7 @@ def record_buffer():
         audio = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=channels, dtype='int16')
         sd.wait()
         audio_buffer.put(audio)
+        time.sleep(0.5)
 
 def transcribe_buffer():
     global speech_detection_Event
@@ -35,11 +37,11 @@ def transcribe_buffer():
         with sr.AudioFile(audio_file) as source:
             audio = speech.record(source)
             try:
-                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.75), ("weather", 0.8), ("show", 0.999), ("today", 0.9)])
+                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.70), ("weather", 0.9), ("show", 0.999), ("today", 0.9)])
             except sr.exceptions.UnknownValueError:
                 text = "No Command Given"
         if "prism" in text:
-            commands.shared.poll()["command"] = text
+            voiceman.poll()["command"] = text
             data, samplerate = sf.read(audio_file)
             y_reduced = nr.reduce_noise(y=data, sr=samplerate)
             sf.write(audio_file, y_reduced, samplerate)
@@ -47,14 +49,18 @@ def transcribe_buffer():
             np.save("commands/command_audio/command.npy", numpy_arr)
             speech_detection_Event.set()   
             parse()
+        time.sleep(0.5)
 
 def parse():
     print("was given a command")
-    command = commands.shared.poll()['command']
+    command = voiceman.poll()['command']
     command = command.split("  ")
     command = list(set(command))
+    for i in range(len(command)):
+        command[i] = command[i].strip()
+
     print(command)
-    commands.shared.poll()["parsed"] = command
+    voiceman.poll()["parsed"] = command
 
 def startThreads():
     print("Listening")
@@ -65,6 +71,7 @@ def startThreads():
     print("starting record thread")
     transcribe_thread.start()
     print("starting transcribe thread")
+
 
     return [record_thread, transcribe_thread]
 
