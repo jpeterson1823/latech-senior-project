@@ -23,8 +23,8 @@ class MainWindow(QMainWindow):
         self.t = None
         self.users = []
         self.data = self.pullData()
-        self.activeUserIndex = None
-        self.calBtn.clicked.connect(self.calendar)
+        self.activeUserIndex = 0
+        self.calBtn.clicked.connect(self.calendar, self.activeUserIndex)
         self.pairBtn.clicked.connect(self.pair)
         self.wthrBtn.clicked.connect(self.wthr)
         self.userBtn.clicked.connect(self.addUser)
