@@ -24,7 +24,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
     //IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
     IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 49);
-    IP4_ADDR(&netinfo.ip, 192, 168, 9, 229);
+    IP4_ADDR(&netinfo.gw, 192, 168, 9, 0);
+    IP4_ADDR(&netinfo.mask, 255, 255, 255, 0);
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);
 
@@ -148,40 +149,25 @@ void Kantoku::serialSetup() {
             s.send(pr);
         }
         else if (packet.getType() == PacketType::RESPONSE) {
-            // extract leased IP and store in netinfo
-            IP_ADDR4(
-                &netinfo.ip,
-                packet.getPayloadByte(0),
-                packet.getPayloadByte(1),
-                packet.getPayloadByte(2),
-                packet.getPayloadByte(3)
-            );
-            sleep_ms(2000);
-
-            // remaining data is string in format "SSID;PSWD"
+            // extract wifi info from response packet
             std::string wifiInfo = "";
             for (uint8_t i = 0; i < packet.getPayloadSize()-5 && i < KANTOKU_WIFI_CREDS_BLOCKLEN; i++)
                 wifiInfo += (char)packet.getPayloadByte(i+5);
             std::cout << "wifiInfo: " << wifiInfo << std::endl;
             
-
-            for (char c : wifiInfo)
-                std::cout << std::hex << std::setw(2) << std::setfill('0') << (int)c << " ";
-            std::cout << std::endl;
-
             // write this creds string to eeprom
             prom.writeString(wifiInfo.c_str(), KANTOKU_WIFI_CREDS_ADDR);
                 // set nullchar at KANTOKU_CREDS_BLOCK_NULL_B
             prom.writeByte('\0', KANTOKU_CREDS_BLOCK_NULL_B);
 
             // save user id
-            prom.writeByte(packet.getPayloadByte(0x04), KANTOKU_PAIRED_UID_ADDR);
+            prom.writeByte(packet.getPayloadByte(4), KANTOKU_PAIRED_UID_ADDR);
 
             // write leased ip to eeprom
-            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 0), KANTOKU_IP_ADDR);
-            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 1), KANTOKU_IP_ADDR + 1);
-            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 2), KANTOKU_IP_ADDR + 2);
-            prom.writeByte(ip4_addr_get_byte(&netinfo.ip, 3), KANTOKU_IP_ADDR + 3);
+            prom.writeByte(packet.getPayloadByte(0), KANTOKU_IP_ADDR);
+            prom.writeByte(packet.getPayloadByte(1), KANTOKU_IP_ADDR + 1);
+            prom.writeByte(packet.getPayloadByte(2), KANTOKU_IP_ADDR + 2);
+            prom.writeByte(packet.getPayloadByte(3), KANTOKU_IP_ADDR + 3);
 
             // write module type to eeprom
             prom.writeByte(moduleType, KANTOKU_SENSTYPE_ADDR);
@@ -214,18 +200,30 @@ void Kantoku::networkConn() {
     char pswd[KANTOKU_WIFI_CREDS_BLOCKLEN];
     uint16_t delimAddr = prom.readUntil(KANTOKU_WIFI_CREDS_ADDR, ';', ssid, KANTOKU_WIFI_CREDS_BLOCKLEN);
     prom.readUntil(delimAddr+1, '\0', pswd, KANTOKU_WIFI_CREDS_BLOCKLEN);
-    sleep_ms(500);
+
+    // load IP address into netinfo
+    IP4_ADDR(
+        &netinfo.ip,
+        prom.readByte(KANTOKU_IP_ADDR),
+        prom.readByte(KANTOKU_IP_ADDR + 1),
+        prom.readByte(KANTOKU_IP_ADDR + 2),
+        prom.readByte(KANTOKU_IP_ADDR + 3)
+    );
 
     std::cout << "Attempting to connect to network with following creds:\n";
     std::cout << "  SSID: " << ssid << "\n  PSWD: " << pswd << std::endl;
+    std::cout << "  IPv4: " << (int)ip4_addr_get_byte(&netinfo.ip, 0) << '.'
+                            << (int)ip4_addr_get_byte(&netinfo.ip, 1) << '.'
+                            << (int)ip4_addr_get_byte(&netinfo.ip, 2) << '.'
+                            << (int)ip4_addr_get_byte(&netinfo.ip, 3) << std::endl;
 
     // setup and connect to wifi, 2 retry attempts
-    int status = Wifi::Connect(ssid, pswd, &netinfo.ip);
+    int status = Wifi::Connect(ssid, pswd, &netinfo.ip, &netinfo.mask, &netinfo.gw);
     for (uint8_t i = 0; i < 2; i++) {
         if (status != CYW43_LINK_UP) {
             std::cout << "Failed to connect to network with SSID: \"" << ssid << "\"\n";
             std::cout << "Retrying (attempt " << i + 1 << '/' << 2 << ')' << std::endl;
-            status = Wifi::Connect(ssid, pswd, &netinfo.ip);
+            status = Wifi::Connect(ssid, pswd, &netinfo.ip, &netinfo.mask, &netinfo.gw);
         } else {
             std::cout << "Successfully connected to WiFi network." << std::endl;
             break;
@@ -378,5 +376,21 @@ void Kantoku::mainLoop() {
         // print closest angle
         std::cout << "Closest Echo: " << closest.distance << "mm @ ";
         std::cout << closest.angle << "deg" << std::endl;
+
+        // generate and send http post for data
+        std::string pingData = std::to_string(closest.distance) + '&' + std::to_string(closest.angle);
+        Http::PostReq post(
+            std::string(ip4addr_ntoa(&netinfo.ctrlip)),
+            "/php/proxy.php",
+            pingData
+        );
+        socket::send(post);
+        socket::wait();
+
+        while (!socket::dataAvailable()) {sleep_ms(100);}
+        //std::cout << "RECEIVED: " << socket::popRecvq() << "\n\n\n\n\n\n\n" << std::endl;
+        socket::popRecvq();
+
+        sleep_ms(1000);
     }
 }

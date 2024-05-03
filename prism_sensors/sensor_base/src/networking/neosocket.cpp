@@ -27,7 +27,6 @@ void socket::initialize(ip_addr_t* remoteAddr, uint16_t remotePort) {
     // check if already initialized
     if (state.initialized) {
         std::cout << "already initialized! Be Careful!!!" << std::endl;
-        return;
     }
 
     // update socket state
@@ -45,7 +44,7 @@ err_t socket::send(Http::Request req) {
     std::string buf;
     req.genString(buf);
 
-    std::cout << "Sending HTTP Request:\n\n" << buf << "\n" << std::endl;
+    std::cout << "Sending HTTP Request:\n\n" << buf << std::endl;
 
     state.data = (uint8_t*)buf.c_str();
 
@@ -89,9 +88,12 @@ bool socket::dataAvailable() {
 }
 
 std::string socket::popRecvq() {
-    std::string temp = state.recvq.front();
-    state.recvq.pop();
-    return temp;
+    if (!state.recvq.empty()){
+        std::string temp = state.recvq.front();
+        state.recvq.pop();
+        return temp;
+    }
+    return std::string("");
 }
 
 // callbacks

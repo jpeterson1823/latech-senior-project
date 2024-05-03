@@ -6,6 +6,6 @@ services:
     ports:
       - 13306:16842
   web:
-    image: chh02/capstone-latech-prism:apache-Ver5
+    image: chh02/capstone-latech-prism:apache-Ver7
     ports:
       - 40553:80

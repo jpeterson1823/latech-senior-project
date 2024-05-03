@@ -20,8 +20,9 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
 
     if (hostname != NULL)
         netif_set_hostname(netif_default, hostname);
-    if (ip != NULL)
-        netif_set_ipaddr(netif_default, ip);
+    if (ip != NULL) {
+        netif_set_addr(netif_default, ip, mask, gw);
+    }
     if (cyw43_arch_wifi_connect_async(ssid, pass, auth))
         return 2;
     
@@ -63,12 +64,12 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
     // otherwise, display network info over serial
     else {
         cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, 1);
-        if (ip != NULL)
-            netif_set_ipaddr(netif_default, ip);
-        if (mask != NULL)
-            netif_set_ipaddr(netif_default, mask);
-        if (gw != NULL)
-            netif_set_gw(netif_default, gw);
+        //if (ip != NULL)
+        //    netif_set_ipaddr(netif_default, ip);
+        //if (mask != NULL)
+        //    netif_set_ipaddr(netif_default, mask);
+        //if (gw != NULL)
+        //    netif_set_gw(netif_default, gw);
         
         std::cout << "IP ......: " << ip4addr_ntoa(netif_ip_addr4(netif_default)) << '\n';
         std::cout << "MASK ....: " << ip4addr_ntoa(netif_ip_netmask4(netif_default)) << '\n';
@@ -80,8 +81,8 @@ int Wifi::Setup(uint32_t country, const char* ssid, const char* pass, uint32_t a
     return status;
 }
 
-int Wifi::Connect(const char* ssid, const char* pass, ip_addr_t* ip, const char* hostname) {
-    return Wifi::Setup(CYW43_COUNTRY_USA, ssid, pass, CYW43_AUTH_WPA2_MIXED_PSK, hostname, ip, NULL, NULL);
+int Wifi::Connect(const char* ssid, const char* pass, ip_addr_t* ip, ip_addr_t* mask, ip_addr_t* gw, const char* hostname) {
+    return Wifi::Setup(CYW43_COUNTRY_USA, ssid, pass, CYW43_AUTH_WPA2_MIXED_PSK, hostname, ip, mask, gw);
 }
 
 void Wifi::GetMacString(std::string& buf) {
