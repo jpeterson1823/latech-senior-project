@@ -10,7 +10,8 @@ from res.User import User
 import mysql.connector
 import os.path
 import commands.recordAndTranscribe as rat
-import threading
+import commands.shared
+
 
 class MainWindow(QMainWindow):
     
@@ -51,10 +52,13 @@ class MainWindow(QMainWindow):
                     ) 
         cursor = db.cursor()
 
-        #query = "UPDATE Users SET model_path='Petersons_model', audio_path='voice_clips/', calendar_path='calen.ui' WHERE Username='demo_tester'"
+        #query = "UPDATE Users SET model_path='commands/Users/demo_tester/Waskom_model', audio_path='commands/Users/demo_tester/audio_files/', calendar_path='calen.ui' WHERE Username='demo_tester'"
+        #cursor.execute(query)
+        #db.commit()
+
         query = "SELECT Username, model_path, audio_path, calendar_path, idUsers FROM Users"
         cursor.execute(query)
-        #db.commit()
+        print(cursor.fetchall())
         return cursor.fetchall()
 
     def getCurrentSpeaker(self, comparison_array):
@@ -76,27 +80,13 @@ class MainWindow(QMainWindow):
         else:
             return 1
 
-    def startRecording(self):
-
-        speech_detection_Event = threading.Event()
-        record_thread = threading.Thread(target=rat.record_buffer)
-        transcribe_thread = threading.Thread(target=rat.transcribe_buffer, args=[(speech_detection_Event)])
-
-        record_thread.start()
-        transcribe_thread.start()
-
-        speech_detection_Event.wait()
-
-        return record_thread, transcribe_thread
-
-
-
     def calendar(self, user_index):
         if self.w is None:
             self.w = CalendarWindow()
             self.w.center_cal()
         self.w.show()
         
+    
     def pair(self):
         # create message box
         messageBox = QMessageBox()
@@ -120,6 +110,7 @@ class MainWindow(QMainWindow):
                 messageBox.setStandardButtons(QMessageBox.Ok)
                 messageBox.setStyleSheet("QLabel{min-width:300 px; font-size: 24px;} QPushButton{ width:100px; font-size: 18px; }")
             messageBox.exec()
+
 
     
     def wthr(self):
