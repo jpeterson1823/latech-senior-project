@@ -13,15 +13,13 @@ class RequestHandler(BaseHTTPRequestHandler):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
 
-        print(self.headers)
-        print(post_data)
         gSensorAlert = True
         gSensorAlertData = post_data
 
 def _listen_thread_entry():
     gSensorAlert = False
     port = 23120
-    http = HTTPServer(('0.0.0.0', port), RequestHandler)
+    http = HTTPServer(('', port), RequestHandler)
 
     try:
         http.serve_forever()
