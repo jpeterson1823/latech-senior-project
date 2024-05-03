@@ -16,9 +16,7 @@ extern "C" {
 class At28hc64b {
 private:
     // IO Mask covers GPIO 0-7
-    const uint32_t IO_MASK = 0x7F;
-    // old io mask below
-    //const uint32_t IO_MASK = 0b00000000'00000000'00111111'11000000;
+    const uint32_t IO_MASK = 0x000000ff;
     const uint8_t rclk  = 8;
     const uint8_t srclk = 9;
     const uint8_t ser   = 10;

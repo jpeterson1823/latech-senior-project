@@ -17,9 +17,13 @@ int main() {
         return -1;
     }
 
+    sleep_ms(5000);
+    std::cout << "Starting decypher" << std::endl;
+
     At28hc64 prom;
     prom.clean();
-    prom.hexdump(0x0000, 0x00FF);
+    prom.hexdump(0x0000, KANTOKU_FINAL_BYTE);
+    prom.decypher();
 
     return 0;
 }

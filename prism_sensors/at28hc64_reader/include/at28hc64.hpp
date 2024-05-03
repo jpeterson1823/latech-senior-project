@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 // Byte values
 #define KANTOKU_EEPROM_FORMATTED    0x00
@@ -18,6 +19,8 @@
 #define KANTOKU_SENSTYPE_ADDR       0x0088
 #define KANTOKU_PAIRED_UID_ADDR     0x0089
 
+#define KANTOKU_FINAL_BYTE          0x0089
+
 // UPA Address locations
 #define KANTOKU_UPA_BLOCK_START     0x0010  // start of UPA config block
 #define KANTOKU_UPA_LFOV_LIMIT_ADDR 0x0010  // 4 bytes for a float
@@ -28,17 +31,21 @@
 
 // EEPROM Configuration
 #define MAX_ADDR        0x0fff
-#define DATA_BUS_MASK   0x000000ffu     //gpio 0-7
-#define ADDR_BUS_MASK   0x001fff00u     //gpio 8-20
-#define OE 21u
-#define WE 22u
-#define CE 26u
+#define DATA_BUS_MASK   0b0000'0000'0000'0000'0000'0000'1111'1111     //gpio 0-7
+#define ADDR_BUS_MASK   0b0000'0000'0000'1111'1111'1111'0000'0000     //gpio 8-20
+#define OE 22
+#define WE 21
+#define CE 26
+
+#define DBUS_IN  false
+#define DBUS_OUT true
 
 class At28hc64 {
 private:
-    uint8_t outputEnable;
-    uint8_t writeEnable;
-    uint8_t chipEnable;
+    bool dbusState;
+    bool oeState;
+    bool weState;
+    bool ceState;
 
     void sleep();
     void oeSetHi();
@@ -48,16 +55,20 @@ private:
     void ceSetHi();
     void ceSetLo();
     void gpioSetup();
+    void dbusOut();
+    void dbusIn();
+    uint32_t shiftAddr(uint16_t addr);
 
 public:
-    At28hc64(uint8_t oeGpio, uint8_t weGpio, uint8_t ceGpio);
     At28hc64();
 
     uint8_t readByte(uint16_t addr);
     void writeByte(uint8_t byte, uint16_t addr);
     void printByte(uint8_t byte);
+    std::string byteHex(uint8_t byte);
 
     void hexdump();
     void hexdump(uint16_t startAddr, uint16_t endAddr);
+    void decypher();
     void clean();
 };

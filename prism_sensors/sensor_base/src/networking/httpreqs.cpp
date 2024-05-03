@@ -20,8 +20,10 @@ void Http::Request::genString(std::string& buf) {
         case ReqType::HTTP_POST:
             buf = "POST " + this->uri + " HTTP/1.1\r\n";
             buf += "Host: " + this->rhost + "\r\n";
-            buf += "Content-Length: " + std::to_string(data.length()) + "\r\n";
+            buf += "User-Agent: prism/1.0.0\r\n";
+            buf += "Accept: */*\r\n";
             buf += "Content-Type: application/x-www-form-urlencoded\r\n";
+            buf += "Content-Length: " + std::to_string(data.length()) + "\r\n";
             buf += "\r\n";
             buf += data;
             break;
