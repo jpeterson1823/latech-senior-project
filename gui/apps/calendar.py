@@ -2,12 +2,19 @@ import mysql.connector
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
+import subprocess
+from res.User import User
 
 class CalendarWindow(QWidget):
     def __init__(self):
         super(CalendarWindow, self).__init__()
+        self.result_ip = subprocess.run(["docker inspect -f \
+            '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
+            shell=True, capture_output=True, text=True).stdout.strip()
         loadUi("res/ui/calen.ui", self)
         self.todaysDate = self.calendarWidget.selectedDate().toPyDate()
+        self.users = [User()]
+        self.activeUserIndex = 0
         print("Today is:", self.todaysDate)
         self.calendarWidget.selectionChanged.connect(self.calendarDateChanged)
         self.calendarDateChanged()
@@ -24,7 +31,7 @@ class CalendarWindow(QWidget):
         print("Date selected:", dateSelected)
         self.updateTaskList(dateSelected)
 
-    def updateTaskList(self, date, user):
+    def updateTaskList(self, date):
         self.tasksListWidget.clear()
 
         db = mysql.connector.connect(
@@ -47,7 +54,7 @@ class CalendarWindow(QWidget):
                 item.setCheckState(QtCore.Qt.Unchecked)
             self.tasksListWidget.addItem(item)
 
-    def saveChanges(self, user):
+    def saveChanges(self):
         db = mysql.connector.connect(
                 host=self.result_ip,
                 user='gui-user',

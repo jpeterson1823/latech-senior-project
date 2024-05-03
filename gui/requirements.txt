@@ -4,3 +4,9 @@ requests>=2.0.0
 mysql-connector-python
 torch
 numpy
+sounddevice
+soundfile
+SpeechRecognition
+librosa
+noisereduce
+pocketsphinx
