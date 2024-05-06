@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.12)
 
-#if (NOT DEFINED ENV{PICO_SDK_PATH})
-#    if(WIN32 OR MSVC)
-#        set(ENV{PICO_SDK_PATH} "/Users/peter/Documents/pico-dev/pico-sdk")
-#    else()
-#        set(ENV{PICO_SDK_PATH} "/home/invisa/Documents/code_stuffs/pi_pico/pico-files/pico-sdk")
-#    endif()
-#endif()
+if (NOT DEFINED ENV{PICO_SDK_PATH})
+    if(WIN32 OR MSVC)
+        set(ENV{PICO_SDK_PATH} "/Users/peter/Documents/pico-dev/pico-sdk")
+    else()
+        set(ENV{PICO_SDK_PATH} "/home/invisa/Documents/code_stuffs/pi_pico/pico-files/pico-sdk")
+    endif()
+endif()
 
 set(PICO_BOARD pico_w)
 set(CMAKE_C_STANDARD 11)
@@ -54,9 +54,28 @@ target_link_libraries( main
     hardware_dma
 )
 
+
+add_executable(eeprom-tool
+    src/eeprom-tool.cpp
+    src/hardware/at28hc64.cpp
+)
+target_include_directories(eeprom-tool PRIVATE
+    ./include
+)
+target_link_libraries(eeprom-tool
+    pico_stdlib
+    pico_cyw43_arch_none
+    hardware_gpio
+)
+
 # enable usb output, disable uart output
 pico_enable_stdio_usb(main 1)
 pico_enable_stdio_uart(main 0)
 
 # create map/bin/hex/uf2 file etc.
 pico_add_extra_outputs(main)
+
+
+pico_enable_stdio_usb(eeprom-tool 1)
+pico_enable_stdio_uart(eeprom-tool 0)
+pico_add_extra_outputs(eeprom-tool)

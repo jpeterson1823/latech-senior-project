@@ -231,6 +231,17 @@ void Kantoku::networkConn() {
     }
     if (status != CYW43_LINK_UP) {
         std::cout << "Could not connect to WiFi network. Exiting..." << std::endl;
+        while (true) {
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+            sleep_ms(100);
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+            sleep_ms(100);
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, true);
+            sleep_ms(100);
+            cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, false);
+
+            sleep_ms(2000);
+        }
         this->action = Action::NoAction;
     }
     else this->action = Action::CompleteStartup;
@@ -385,9 +396,7 @@ void Kantoku::mainLoop() {
             pingData
         );
         socket::send(post);
-        socket::wait();
 
-        while (!socket::dataAvailable()) {sleep_ms(100);}
         //std::cout << "RECEIVED: " << socket::popRecvq() << "\n\n\n\n\n\n\n" << std::endl;
         socket::popRecvq();
 

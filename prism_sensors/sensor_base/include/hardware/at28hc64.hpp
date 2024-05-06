@@ -7,7 +7,7 @@ extern "C" {
     #include <hardware/gpio.h>
 }
 
-#define SHIFT_REG_DELAY 500
+#define SHIFT_REG_DELAY 250
 #define EEPROM_OE_MASK 0x4000
 #define EEPROM_WE_MASK 0x8000
 #define EEPROM_IO_IN false
