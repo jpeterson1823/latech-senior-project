@@ -11,11 +11,13 @@ from res.User import User
 import mysql.connector
 import os.path
 import commands.recordAndTranscribe as rat
+import numpy.typing as npt
 
 
 class Command(QObject):
     calendar_command = pyqtSignal()
     weather_command = pyqtSignal()
+    pair_command = pyqtSignal()
 
 class MainWindow(QMainWindow):
     
@@ -32,6 +34,7 @@ class MainWindow(QMainWindow):
         self.command = Command()
         self.command.calendar_command.connect(self.calendar)
         self.command.weather_command.connect(self.wthr)
+        self.command.pair_command.connect(self.pair)
         self.calBtn.clicked.connect(self.calendar)
         self.pairBtn.clicked.connect(self.pair)
         self.wthrBtn.clicked.connect(self.wthr)
@@ -43,7 +46,7 @@ class MainWindow(QMainWindow):
             print(len(self.users))
 
     # subject to change depending on how the database is setup
-    def instantiateExistingUsers(self, users_entry):
+    def instantiateExistingUsers(self, users_entry: list):
         print("made it here")
         for i in range(len(users_entry)):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
@@ -54,7 +57,10 @@ class MainWindow(QMainWindow):
     def calendarCommand(self):
         self.command.calendar_command.emit()
 
-    def pullData(self):
+    def pairCommand(self):
+        self.command.pair_command.emit()
+
+    def pullData(self) -> list:
         self.result_ip = subprocess.run(["docker inspect -f \
             '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql-compose"],
             shell=True, capture_output=True, text=True).stdout.strip()
@@ -75,7 +81,7 @@ class MainWindow(QMainWindow):
         cursor.execute(query)
         return cursor.fetchall()
 
-    def getCurrentSpeaker(self, comparison_array):
+    def getCurrentSpeaker(self, comparison_array: npt.NDArray) -> int:
         processes = []
         manager = multiprocessing.Manager()
         return_dict = manager.dict()

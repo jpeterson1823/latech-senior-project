@@ -10,3 +10,4 @@ SpeechRecognition
 librosa
 noisereduce
 pocketsphinx
+resampy

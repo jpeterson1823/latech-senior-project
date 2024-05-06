@@ -1,5 +1,7 @@
 from threading import Thread
 import time
+from multiprocessing import Process
+import commands.data_handling as dh
 
 global gVoiceCommand, gVoiceActive
 global gMainWindow
@@ -28,8 +30,13 @@ def _voice_man_thread_entry(mainWindow):
     while (True):
         print(gVoiceCommand)
         if gVoiceCommand['parsed'] != "":
+            p = Process(target=dh.save_data, args=('commands/command_audio/command.wav', 'commands/command_audio/command.npy'))
+            p.start()
+            p.join()
             if "calendar" in gVoiceCommand['parsed']:
                 mainWindow.calendarCommand()
+            elif "pair" in gVoiceCommand['parsed']:
+                mainWindow.pairCommand()
             elif "weather" in gVoiceCommand['parsed']:
                 mainWindow.weatherCommand()
                 print("passed event to mainWindow")

@@ -77,3 +77,7 @@ def extract_mfcc(audio_file_path, max_length, num_mfcc=40):
         processed_data[i] = processed_data[i].astype('float32')
 
     return processed_data
+
+def save_data(path: str, save_path):
+    data = extract_mfcc(path, 100)
+    np.save(save_path, data)

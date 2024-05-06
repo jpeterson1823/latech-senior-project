@@ -3,9 +3,6 @@ import soundfile as sf
 import threading
 import queue
 import speech_recognition as sr
-import numpy as np
-import commands.data_handling as dh
-import noisereduce as nr
 import time
 
 import voiceman
@@ -37,17 +34,16 @@ def transcribe_buffer():
         with sr.AudioFile(audio_file) as source:
             audio = speech.record(source)
             try:
-                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.70), ("weather", 0.9), ("show", 0.999), ("today", 0.9)])
+                text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.9), ("calendar", 0.70), ("weather", 0.95), ("show", 0.999), ("today", 0.9), ("pair", 0.99)])
             except sr.exceptions.UnknownValueError:
                 text = "No Command Given"
         if "prism" in text:
             voiceman.poll()["command"] = text
-            data, samplerate = sf.read(audio_file)
-            y_reduced = nr.reduce_noise(y=data, sr=samplerate)
-            sf.write(audio_file, y_reduced, samplerate)
-            numpy_arr = dh.extract_mfcc(audio_file, 100)
-            np.save("commands/command_audio/command.npy", numpy_arr)
-            speech_detection_Event.set()   
+            #data, samplerate = sf.read(audio_file)
+            #y_reduced = nr.reduce_noise(y=data, sr=samplerate)
+            #sf.write(audio_file, y_reduced, samplerate)
+            #numpy_arr = dh.extract_mfcc(audio_file, 100)
+            #np.save("commands/command_audio/command.npy", numpy_arr)
             parse()
         time.sleep(0.5)
 
@@ -62,7 +58,7 @@ def parse():
     print(command)
     voiceman.poll()["parsed"] = command
 
-def startThreads():
+def startThreads() -> threading.Thread:
     print("Listening")
     record_thread = threading.Thread(target=record_buffer)
     transcribe_thread = threading.Thread(target=transcribe_buffer)
