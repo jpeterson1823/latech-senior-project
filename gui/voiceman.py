@@ -35,11 +35,11 @@ def _voice_man_thread_entry(mainWindow):
             p.join()
             if "calendar" in gVoiceCommand['parsed']:
                 mainWindow.calendarCommand()
-            elif "pair" in gVoiceCommand['parsed']:
-                mainWindow.pairCommand()
             elif "weather" in gVoiceCommand['parsed']:
                 mainWindow.weatherCommand()
                 print("passed event to mainWindow")
+            elif "pair" in gVoiceCommand['parsed']:
+                mainWindow.pairCommand()
             _reset_command()
 
         time.sleep(1)

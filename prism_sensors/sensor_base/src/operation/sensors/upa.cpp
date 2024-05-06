@@ -17,7 +17,7 @@ extern "C" {
 UPASensor::UPASensor() {
     // general setup
     this->pwmActive = false;
-    this->rx = 0; // GP28
+    this->rx = 2; // GP28
 
     // set default configuration
     this->config = upa::default_config;
@@ -181,7 +181,7 @@ float UPASensor::calcPhaseDelay(float angle) {
     angle = validateAngle(angle);
     if (angle == 0)
         return 0;
-    return angle / RAD_TO_DEG;
+    return ((0.06283f)*sin(angle / RAD_TO_DEG))/0.008575;
 }
 
 /**
@@ -266,7 +266,7 @@ float UPASensor::poll(float angle) {
 
     // use modulo to smooth data
     uint16_t value = 0;
-    uint16_t scalar = 10;
+    uint16_t scalar = 20;
     for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
         if (adcCaptureBuf[i] > value)
             value += (adcCaptureBuf[i] % scalar);
