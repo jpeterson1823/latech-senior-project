@@ -8,31 +8,24 @@
     }
 -->
 <?php
-    echo phpinfo();
     // get data sent in http request
     $data = file_get_contents('php://input');
 
     // parse data from http request
     $json = (isJson($data)) ? json_decode($data, true) : [];
-    $test = json_decode('{
-            "ipaddr": "howdy",
-            "macaddr": "true",
-            "sensorhex": "",
-            "action": "lkj"
-        }', true);
     
     // if there is action to take
-    if (array_key_exists('action', $test)) {
-        switch ($test['action']) {
+    if (array_key_exists('action', $json)) {
+        switch ($json['action']) {
 
             // sending pair sensor data to database
             case 'pair':
                 // sanitize input just in case
                 require 'support.php';
-                $ipaddr = test_input($test['ipaddr'] ?? '');
-                $macaddr = test_input($test['macaddr'] ?? '');
-                $userID = test_input($test['uid'] ?? '');
-                $sensor_name = getSensorName($test['sensorhex'] ?? '');    // define sensor name dynamically
+                $ipaddr = test_input($json['ipaddr'] ?? '');
+                $macaddr = test_input($json['macaddr'] ?? '');
+                $userID = test_input($json['uid'] ?? '');
+                $sensor_name = getSensorName($json['sensorhex'] ?? '');    // define sensor name dynamically
 
                 // connect to database and insert sensor data accordingly
                 require 'connection.php';
@@ -63,7 +56,7 @@
             case 'changed':
                 // sanitize input just in case
                 require 'support.php';
-                $macaddr = test_input($test['macaddr'] ?? '');
+                $macaddr = test_input($json['macaddr'] ?? '');
 
                 // connect to and query database
                 require 'connection.php';
