@@ -6,6 +6,8 @@ import commands.recordAndTranscribe as rat
 import sensorman
 import voiceman
 
+global gVoiceActive
+
 def main():
     # pyqt
     app = QApplication(sys.argv)

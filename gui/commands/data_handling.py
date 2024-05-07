@@ -3,6 +3,8 @@ import numpy as np
 import random
 import librosa
 import torch
+import noisereduce as nr
+import soundfile as sf
 
 class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, speaker_data, comparison_data, labels):
@@ -79,5 +81,9 @@ def extract_mfcc(audio_file_path, max_length, num_mfcc=40):
     return processed_data
 
 def save_data(path: str, save_path):
+    data, sr = sf.read(path)
+    y_reduced = nr.reduce_noise(y=data, sr=sr)
+    sf.write(path, y_reduced, sr)
     data = extract_mfcc(path, 100)
     np.save(save_path, data)
+    print("Audio data extracted and saved")

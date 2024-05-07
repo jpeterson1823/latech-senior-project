@@ -32,7 +32,6 @@ def _voice_man_thread_entry(mainWindow):
         if gVoiceCommand['parsed'] != "":
             p = Process(target=dh.save_data, args=('commands/command_audio/command.wav', 'commands/command_audio/command.npy'))
             p.start()
-            p.join()
             if "calendar" in gVoiceCommand['parsed']:
                 mainWindow.calendarCommand()
             elif "pair" in gVoiceCommand['parsed']:
@@ -41,6 +40,7 @@ def _voice_man_thread_entry(mainWindow):
                 mainWindow.weatherCommand()
                 print("passed event to mainWindow")
             _reset_command()
+            p.join()
 
         time.sleep(1)
 
