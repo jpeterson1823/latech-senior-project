@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
         db = mysql.connector.connect(
                         host=self.result_ip,
                         user='voice-user',
-                        password='Prism-4-VOICEAI',
+                        password='Prism-4-VOICAI',
                         database='PRISM_DB'
                     ) 
         cursor = db.cursor()

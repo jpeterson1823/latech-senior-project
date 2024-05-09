@@ -52,7 +52,8 @@ void DHCPMan::forkToLeaseLoader() {
     // if this process is the child process, execute db lease loader script
     if (pid == 0) {
         std::cout << "Forked to dbLeaseLoader.py:" << std::endl;
-        system("source ../.venv/bin/activate && python3 ../dbLeaseLoader.py");
+	system("pwd");
+        system("bash -c \"source .venv/bin/activate && python3 ../prism_sensors/pairing/dbLeaseLoader.py\"");
         exit(0);
     }
     

@@ -80,7 +80,7 @@ namespace pairing {
         ip4->getOctets(ipOctets);
         
         // create response packet
-        std::string netCreds = "bingus;FizzBuzz23!";
+        std::string netCreds = "PRISM Network;prismDemo!";
         SerialPacket p(PacketType::RESPONSE);
         p.setPayloadSize(5+netCreds.size());
         p.loadIntoPayload(ipOctets, 4);
