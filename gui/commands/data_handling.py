@@ -82,8 +82,8 @@ def extract_mfcc(audio_file_path, max_length, num_mfcc=40):
 
 def save_data(path: str, save_path):
     data, sr = sf.read(path)
-    y_reduced = nr.reduce_noise(y=data, sr=sr)
-    sf.write(path, y_reduced, sr)
+    #y_reduced = nr.reduce_noise(y=data, sr=sr)
+    #sf.write(path, y_reduced, sr)
     data = extract_mfcc(path, 100)
     np.save(save_path, data)
     print("Audio data extracted and saved")
