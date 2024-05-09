@@ -63,6 +63,7 @@ class MainWindow(QMainWindow):
             print("Speaker is not a registered user")
 
     def calendarCommand(self):
+        sleep(0.5)
         valid = self.getCurrentSpeaker(self.compare_path)
         if valid:
             print("User: ", self.users[self.activeUserIndex].user_name)
@@ -71,6 +72,7 @@ class MainWindow(QMainWindow):
             print("Speaker is not a registered user")
 
     def pairCommand(self):
+        sleep(0.5)
         valid = bool(self.getCurrentSpeaker(self.compare_path))
         if valid:
             print("User: ", self.users[self.activeUserIndex].user_name)

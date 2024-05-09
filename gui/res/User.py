@@ -35,4 +35,4 @@ class User():
                 return_dict[index] = True
             else:
                 return_dict[index] = False
-            print("Output avg: ", outputs_avg)
+                print("Output avg: ", outputs_avg)
