@@ -93,7 +93,7 @@ class MainWindow(QMainWindow):
                     ) 
         cursor = db.cursor()
 
-        query = "UPDATE Users SET model_path='commands/Users/demo_tester/JohnW_model', audio_path='commands/Users/demo_tester/JohnW_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
+        query = "UPDATE Users SET model_path='commands/Users/demo_tester/Lucas_model', audio_path='commands/Users/demo_tester/Lucas_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
         cursor.execute(query)
         db.commit()
 
