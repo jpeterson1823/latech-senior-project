@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 **/build/**
 docker/**
 *.o
@@ -7,3 +6,5 @@ docker/**
 **/.winvenv/**
 **/.vscode/**
 **/commands_venv/**
+**/.cache/**
+*.wav

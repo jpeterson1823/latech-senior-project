@@ -15,10 +15,10 @@ extern "C" {
 #define RAD_TO_DEG  57.295779513
 #define UPA_FREQ 40000
 #define UPA_ADC_BASE_VOLTAGE 2
-#define UPA_ANGLE_LIMIT 45
+#define UPA_ANGLE_LIMIT 25
 // change sweep resolution if you want more upa_results per sweep.
 // value represents a degree step
-#define UPA_SWEEP_RESOLUTION 0.5f
+#define UPA_SWEEP_RESOLUTION 0.1f
 
 // 0.05s * 500,000 samples/s = 5,000 samples
 // still provides range of 3.43m

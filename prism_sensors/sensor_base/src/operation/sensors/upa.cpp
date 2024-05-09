@@ -233,8 +233,8 @@ float UPASensor::poll(float angle) {
 
     // stop adc sampling and clean adc fifo
     adc_run(false);
-    adc_fifo_drain();
-    dma_channel_cleanup(dmaChannel);
+    //adc_fifo_drain();
+    //dma_channel_cleanup(dmaChannel);
 
     // get echo peaks
     uint16_t i;
@@ -260,7 +260,7 @@ float UPASensor::poll(float angle) {
 
     // get maximum value
     uint16_t max_i = 0;
-    for (i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+    for (i = 150; i < UPA_ADC_CAPTURE_DEPTH; i++) {
         //std::cout << adcCaptureBuf[i] << std::endl;
         if (adcCaptureBuf[i] > adcCaptureBuf[max_i])
             max_i = i;
