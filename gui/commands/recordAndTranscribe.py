@@ -34,7 +34,6 @@ def transcribe_buffer():
         with sr.AudioFile(audio_file) as source:
             audio = speech.record(source)
             try:
-=======
                 text = speech.recognize_sphinx(audio, keyword_entries=[("prism", 0.99), ("calendar", 0.99), ("weather", 0.99), ("show", 0.999), ("today", 0.99), ("pair", 0.99), 
                                                                        ("schedule", 0.99), ("device", 0.99)])
             except sr.exceptions.UnknownValueError:
