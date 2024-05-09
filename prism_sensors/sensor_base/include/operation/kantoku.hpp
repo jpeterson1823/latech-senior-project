@@ -61,8 +61,8 @@ private:
     At28hc64b prom;
     Action action;
     ModuleType moduleType;
-    UPASensor* upa;
     uint8_t uid;
+    UPASensor* upa;
 
 private:
     Action determineAction();

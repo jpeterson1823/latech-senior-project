@@ -401,5 +401,12 @@ void Kantoku::mainLoop() {
         socket::popRecvq();
 
         sleep_ms(1000);
+        while (!socket::dataAvailable()) {sleep_ms(100);}
+        //std::cout << "RECEIVED: " << socket::popRecvq() << "\n\n\n\n\n\n\n" << std::endl;
+        socket::popRecvq();
+
+        sleep_ms(1000);
+        if (socket::dataAvailable())
+            socket::popRecvq();
     }
 }

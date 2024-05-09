@@ -181,7 +181,7 @@ float UPASensor::calcPhaseDelay(float angle) {
     angle = validateAngle(angle);
     if (angle == 0)
         return 0;
-    return ((0.06283f)*sin(angle / RAD_TO_DEG))/0.008575;
+    return 87.465f*tan(angle*0.0174533f);
 }
 
 /**
@@ -236,50 +236,33 @@ float UPASensor::poll(float angle) {
     adc_fifo_drain();
     dma_channel_cleanup(dmaChannel);
 
-    // look through all samples and grab the index of largest echo measurement
-    //uint16_t index = 0;
-    //for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
-    //    std::cout << adcCaptureBuf[i] << '\n';
-    //    if (adcCaptureBuf[index] < adcCaptureBuf[i]){
-    //        index = i;
-    //    }
-    //}
-    //std::cout << "Largest ADC: " << (int)adcCaptureBuf[index] << std::endl;
-
-    // ADC DMA runs at 500Ksps, meaning each sample takes about 2us.
-    // (2us * index) = total travel time
-    // ttt / 2 = one-way echo
-    // ==> index = one-way echo in us
-    // index / (0.343 mm/us) = distance in mm
-    // ==> index / 0.343 = distance in mm
-
-    // calculate and return distance to echo
-    //return index / 0.343f;
-
-    // grab the first index above trigger value
-    //for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
-    //    if (adcCaptureBuf[i] >= 15) {
-    //        std::cout << i << std::endl;
-    //        return i / 0.343f;
-    //    }
-    //}
-
-    // use modulo to smooth data
-    uint16_t value = 0;
-    uint16_t scalar = 20;
-    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
-        if (adcCaptureBuf[i] > value)
-            value += (adcCaptureBuf[i] % scalar);
-        else if (adcCaptureBuf[i] < value)
-            value -= (adcCaptureBuf[i] % scalar);
-        adcCaptureBuf[i] = value;
+    // get echo peaks
+    uint16_t i;
+    std::vector<uint16_t> peakIndicies;
+    bool increasing = true;
+    for (i = 1; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+        if (adcCaptureBuf[i-1] > adcCaptureBuf[i]) {
+            if (increasing) {
+                peakIndicies.push_back(i);
+                increasing = false;
+            }
+        } else {
+            increasing = true;
+        }
     }
 
-    // go through data and grab highest point
+    // pad data
+    i = 0;
+    for (uint16_t pi : peakIndicies) {
+        while(i <= pi)
+            adcCaptureBuf[i++] = adcCaptureBuf[pi];
+    }
+
+    // get maximum value
     uint16_t max_i = 0;
-    for (uint16_t i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
+    for (i = 0; i < UPA_ADC_CAPTURE_DEPTH; i++) {
         //std::cout << adcCaptureBuf[i] << std::endl;
-        if (adcCaptureBuf[i] > max_i)
+        if (adcCaptureBuf[i] > adcCaptureBuf[max_i])
             max_i = i;
     }
 

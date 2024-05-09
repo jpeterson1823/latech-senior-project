@@ -36,7 +36,7 @@ int main() {
     // Start kantoku for a UPA module
     Kantoku kan(ModuleType::UPA);
     
-    // if base module is not paired, attempt to pair.
+    // if base module is not paired, attempt to pair.>
     if (kan.getPairStatus() != KANTOKU_PAIRED_SUCCESSFULLY) {
         // if pairing fails, exit
         if (!kan.attemptPair()) {
@@ -52,6 +52,7 @@ int main() {
     }
     else std::cout << "PAIRED PREVIOUSLY" << std::endl;
 
+    sleep_ms(2000);
     // create UPASensor object
     std::cout << "UPA Starting..." << std::endl;
     UPASensor upa;
