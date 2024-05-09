@@ -11,3 +11,4 @@ librosa
 noisereduce
 pocketsphinx
 resampy
+tensorboard

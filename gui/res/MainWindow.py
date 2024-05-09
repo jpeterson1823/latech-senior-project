@@ -12,6 +12,8 @@ import mysql.connector
 import os.path
 import commands.recordAndTranscribe as rat
 import numpy.typing as npt
+from time import sleep
+
 
 
 class Command(QObject):
@@ -30,7 +32,8 @@ class MainWindow(QMainWindow):
         self.users = []
         self.data = self.pullData()
         print(self.data)
-        self.activeUserIndex = 0
+        self.activeUserIndex = None
+        self.compare_path = "commands/command_audio/command.npy"
         self.command = Command()
         self.command.calendar_command.connect(self.calendar)
         self.command.weather_command.connect(self.wthr)
@@ -52,13 +55,28 @@ class MainWindow(QMainWindow):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
     
     def weatherCommand(self):
-        self.command.weather_command.emit()
+        valid = bool(self.getCurrentSpeaker(self.compare_path))
+        if valid:
+            self.command.weather_command.emit()
+            print("User index: ", self.activeUserIndex)
+        else:
+            print("Speaker is not a registered user")
 
     def calendarCommand(self):
-        self.command.calendar_command.emit()
+        valid = self.getCurrentSpeaker(self.compare_path)
+        if valid:
+            print("User index: ", self.activeUserIndex)
+            self.command.calendar_command.emit()
+        else:
+            print("Speaker is not a registered user")
 
     def pairCommand(self):
-        self.command.pair_command.emit()
+        valid = bool(self.getCurrentSpeaker(self.compare_path))
+        if valid:
+            print("User index: ", self.activeUserIndex)
+            self.command.pair_command.emit()
+        else:
+            print("Speaker is not a registered user")
 
     def pullData(self) -> list:
         self.result_ip = subprocess.run(["docker inspect -f \
@@ -73,9 +91,9 @@ class MainWindow(QMainWindow):
                     ) 
         cursor = db.cursor()
 
-        #query = "UPDATE Users SET model_path='commands/Users/demo_tester/Waskom_model', audio_path='commands/Users/demo_tester/audio_files/', calendar_path='calen.ui' WHERE Username='demo_tester'"
-        #cursor.execute(query)
-        #db.commit()
+        query = "UPDATE Users SET model_path='commands/Users/demo_tester/Waskom_model', audio_path='commands/Users/demo_tester/JohnW_npy/', calendar_path='calen.ui' WHERE Username='JohnW'"
+        cursor.execute(query)
+        db.commit()
 
         query = "SELECT Username, model_path, audio_path, calendar_path, idUsers FROM Users"
         cursor.execute(query)
@@ -86,16 +104,18 @@ class MainWindow(QMainWindow):
         manager = multiprocessing.Manager()
         return_dict = manager.dict()
         for i in range(len(self.users)):
-            p = Process(self.users[i].isThisUser, args=(comparison_array, i ,return_dict))
+            p = Process(target=self.users[i].isThisUser, args=(comparison_array, i ,return_dict))
             p.start()
             processes.append(p)
 
-
+        sleep(1)
+        valid_user = False
         for i in range(len(processes)):
-            processes[i].join()
             if return_dict[i]:
+                print(return_dict[i])
                 self.activeUserIndex = i
-        if not self.activeUserIndex:
+                valid_user = True
+        if not valid_user:
             return 0
         else:
             return 1

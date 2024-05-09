@@ -1,5 +1,6 @@
 import os, torch, random
 import numpy as np
+import LinearModel
 
 class User():
     def __init__(self, name, model, audio_files_path, calendar, userID):
@@ -12,7 +13,7 @@ class User():
     def isThisUser(self, comparison_array, index, return_dict) -> bool:
         tmp_list = os.listdir(self.audio_folder)
         choices = []
-        num_comparisons = 3
+        num_comparisons = 10
         for _ in range(num_comparisons):
             choice = random.choice(tmp_list)
             tmp_list.remove(choice)
@@ -30,6 +31,8 @@ class User():
                 outputs_avg += round(output.item(), 2)
             outputs_avg /= num_comparisons
             if outputs_avg > 0.5:
+                print("Output avg: ", outputs_avg)
                 return_dict[index] = True
             else:
                 return_dict[index] = False
+            print("Output avg: ", outputs_avg)
