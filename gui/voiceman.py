@@ -1,6 +1,6 @@
 from threading import Thread
 import time
-from multiprocessing import Process
+#from multiprocessing import Process
 import commands.data_handling as dh
 
 global gVoiceCommand, gVoiceActive
@@ -30,8 +30,8 @@ def _voice_man_thread_entry(mainWindow):
     while (True):
         print(gVoiceCommand)
         if gVoiceCommand['parsed'] != "":
-            p = Process(target=dh.save_data, args=('commands/command_audio/command.wav', 'commands/command_audio/command.npy'))
-            p.start()
+            #p = Process(target=dh.save_data, args=('commands/command_audio/command.wav', 'commands/command_audio/command.npy'))
+            #p.start()
             if "calendar" in gVoiceCommand['parsed'] or "schedule" in gVoiceCommand['parsed']:
                 mainWindow.calendarCommand()
             elif "pair" in gVoiceCommand['parsed'] and "device" in gVoiceCommand['parsed']:
@@ -39,7 +39,7 @@ def _voice_man_thread_entry(mainWindow):
             elif "weather" in gVoiceCommand['parsed']:
                 mainWindow.weatherCommand()
             _reset_command()
-            p.join()
+            #p.join()
 
         time.sleep(1)
 

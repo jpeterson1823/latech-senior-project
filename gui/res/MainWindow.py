@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.users = []
         self.data = self.pullData()
         print(self.data)
-        self.activeUserIndex = None
+        self.activeUserIndex = 0
         self.compare_path = "commands/command_audio/command.npy"
         self.command = Command()
         self.command.calendar_command.connect(self.calendar)
@@ -55,30 +55,30 @@ class MainWindow(QMainWindow):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
     
     def weatherCommand(self):
-        valid = bool(self.getCurrentSpeaker(self.compare_path))
-        if valid:
-            self.command.weather_command.emit()
-            print("User: ", self.users[self.activeUserIndex].user_name)
-        else:
-            print("Speaker is not a registered user")
+        #valid = bool(self.getCurrentSpeaker(self.compare_path))
+        #if valid:
+        self.command.weather_command.emit()
+            #print("User: ", self.users[self.activeUserIndex].user_name)
+        #else:
+        #    print("Speaker is not a registered user")
 
     def calendarCommand(self):
         sleep(0.5)
-        valid = self.getCurrentSpeaker(self.compare_path)
-        if valid:
-            print("User: ", self.users[self.activeUserIndex].user_name)
-            self.command.calendar_command.emit()
-        else:
-            print("Speaker is not a registered user")
+        #valid = self.getCurrentSpeaker(self.compare_path)
+        #if valid:
+        #    print("User: ", self.users[self.activeUserIndex].user_name)
+        self.command.calendar_command.emit()
+        #else:
+        #    print("Speaker is not a registered user")
 
     def pairCommand(self):
         sleep(0.5)
-        valid = bool(self.getCurrentSpeaker(self.compare_path))
-        if valid:
-            print("User: ", self.users[self.activeUserIndex].user_name)
-            self.command.pair_command.emit()
-        else:
-            print("Speaker is not a registered user")
+        #valid = bool(self.getCurrentSpeaker(self.compare_path))
+        #if valid:
+        #    print("User: ", self.users[self.activeUserIndex].user_name)
+        self.command.pair_command.emit()
+        #else:
+        #    print("Speaker is not a registered user")
 
     def pullData(self) -> list:
         self.result_ip = subprocess.run(["docker inspect -f \
