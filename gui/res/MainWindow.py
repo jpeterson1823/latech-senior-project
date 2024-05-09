@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.users = []
         self.data = self.pullData()
         print(self.data)
-        self.activeUserIndex = None
+        self.activeUserIndex = 0
         self.compare_path = "commands/command_audio/command.npy"
         self.command = Command()
         self.command.calendar_command.connect(self.calendar)
@@ -55,28 +55,30 @@ class MainWindow(QMainWindow):
             self.users.append(User(users_entry[i][0], users_entry[i][1], users_entry[i][2], users_entry[i][3], users_entry[i][4]))
     
     def weatherCommand(self):
-        valid = bool(self.getCurrentSpeaker(self.compare_path))
-        if valid:
-            self.command.weather_command.emit()
-            print("User index: ", self.activeUserIndex)
-        else:
-            print("Speaker is not a registered user")
+        #valid = bool(self.getCurrentSpeaker(self.compare_path))
+        #if valid:
+        self.command.weather_command.emit()
+            #print("User: ", self.users[self.activeUserIndex].user_name)
+        #else:
+        #    print("Speaker is not a registered user")
 
     def calendarCommand(self):
-        valid = self.getCurrentSpeaker(self.compare_path)
-        if valid:
-            print("User index: ", self.activeUserIndex)
-            self.command.calendar_command.emit()
-        else:
-            print("Speaker is not a registered user")
+        sleep(0.5)
+        #valid = self.getCurrentSpeaker(self.compare_path)
+        #if valid:
+        #    print("User: ", self.users[self.activeUserIndex].user_name)
+        self.command.calendar_command.emit()
+        #else:
+        #    print("Speaker is not a registered user")
 
     def pairCommand(self):
-        valid = bool(self.getCurrentSpeaker(self.compare_path))
-        if valid:
-            print("User index: ", self.activeUserIndex)
-            self.command.pair_command.emit()
-        else:
-            print("Speaker is not a registered user")
+        sleep(0.5)
+        #valid = bool(self.getCurrentSpeaker(self.compare_path))
+        #if valid:
+        #    print("User: ", self.users[self.activeUserIndex].user_name)
+        self.command.pair_command.emit()
+        #else:
+        #    print("Speaker is not a registered user")
 
     def pullData(self) -> list:
         self.result_ip = subprocess.run(["docker inspect -f \
@@ -91,7 +93,7 @@ class MainWindow(QMainWindow):
                     ) 
         cursor = db.cursor()
 
-        query = "UPDATE Users SET model_path='commands/Users/demo_tester/Lucas_model', audio_path='commands/Users/demo_tester/Lucas_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
+        query = "UPDATE Users SET model_path='commands/Users/demo_tester/Clay_model', audio_path='commands/Users/demo_tester/Clay_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
         cursor.execute(query)
         db.commit()
 
