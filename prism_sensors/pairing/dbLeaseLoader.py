@@ -34,12 +34,15 @@ if __name__ == "__main__":
     wspath.mkdir(parents=True, exist_ok=True)
     print(f"    Workspace created at {wspath}")
 
-    # query database for current leases
-    leases = querydb()
+    # query database for current sensor info
+    sensorInfo = querydb()
     print("    Queried database successfully.")
 
     # open file and write leases
-    with open(wspath / "/module.leases", "w+") as f:
-        for ip,mac in leases:
+    with open(wspath / "module.leases", "w+") as f:
+        for row in sensorInfo:
+            mac = row[3]
+            ip = row[4]
+            print(f"{mac};{ip}")
             f.writelines(f"{mac};{ip}")
     print("    dbLeaseLoader finished!")

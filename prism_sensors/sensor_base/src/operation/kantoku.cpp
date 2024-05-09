@@ -21,10 +21,8 @@ Kantoku::Kantoku(ModuleType moduleType) {
     this->moduleType = moduleType;
     this->uid = 1;
     // set controller IP
-    //IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
-    //IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 228);
-    IP4_ADDR(&netinfo.ctrlip, 192, 168, 9, 49);
-    IP4_ADDR(&netinfo.gw, 192, 168, 9, 0);
+    IP4_ADDR(&netinfo.ctrlip, 192, 168, 0, 1);
+    IP4_ADDR(&netinfo.gw, 192, 168, 0, 1);
     IP4_ADDR(&netinfo.mask, 255, 255, 255, 0);
     // get and store mac address
     cyw43_wifi_get_mac(&cyw43_state, CYW43_ITF_STA, netinfo.mac);

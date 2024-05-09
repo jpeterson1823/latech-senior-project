@@ -20,10 +20,10 @@ std::string DHCPLease::toString() {
 }
 
 
-const std::string DHCPMan::LEASE_FILE_PATH = std::string(getpwuid(getuid())->pw_dir) + "/Documents/.prism/module.leases";
+const std::string DHCPMan::LEASE_FILE_PATH = std::string(getpwuid(getuid())->pw_dir) + "/.prism/module.leases";
 DHCPMan::DHCPMan() { 
-    // fill availableIP4s with valid ip4str's (x.x.x.2-254)
-    IP4 ip4("192.168.9.2");
+    // fill availableIP4s with valid ip4str's (x.x.x.3-254)
+    IP4 ip4("192.168.0.3");
     while (ip4.octets[3] < 255) {
         availableIP4s.push_back(ip4.toString());
         ip4.octets[3] += 1;
@@ -91,22 +91,25 @@ void DHCPMan::loadLeaseFile() {
     while (leaseIfs.good() && leaseIfs.peek() != EOF) {
         // get the current line
         leaseIfs.getline(line.data(), 256);
-
+        std::cout << line << std::endl;
         // split the string into an ip4str and macstr
         std::size_t delimitIndex = line.find(';');
         std::string ip4str = line.substr(0,delimitIndex);
         std::string macstr = line.substr(delimitIndex+1, line.size() - delimitIndex - 1);
 
+        std::cout << ip4str << ' ' << macstr << std::endl;
         // find the location of the paired ip4str in availableIP4s
         std::vector<std::string>::iterator it; 
         for (it = availableIP4s.begin(); it != availableIP4s.end(); ++it) {
+            std::cout << *it << std::endl;
             if (it->compare(ip4str) == 0)
                 break;
         }
-        // remove the ip4str from availableIP4s
         availableIP4s.erase(it);
 
         // add pair to leases
+        std::cout << macstr << std::endl;
+        std::cout << ip4str << std::endl;
         leases.insert({new Mac(macstr), new IP4(ip4str)});
         std::cout << "fixed" << std::endl;
     }
