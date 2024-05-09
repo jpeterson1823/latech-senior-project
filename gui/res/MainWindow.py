@@ -58,14 +58,14 @@ class MainWindow(QMainWindow):
         valid = bool(self.getCurrentSpeaker(self.compare_path))
         if valid:
             self.command.weather_command.emit()
-            print("User index: ", self.activeUserIndex)
+            print("User: ", self.users[self.activeUserIndex].user_name)
         else:
             print("Speaker is not a registered user")
 
     def calendarCommand(self):
         valid = self.getCurrentSpeaker(self.compare_path)
         if valid:
-            print("User index: ", self.activeUserIndex)
+            print("User: ", self.users[self.activeUserIndex].user_name)
             self.command.calendar_command.emit()
         else:
             print("Speaker is not a registered user")
@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
     def pairCommand(self):
         valid = bool(self.getCurrentSpeaker(self.compare_path))
         if valid:
-            print("User index: ", self.activeUserIndex)
+            print("User: ", self.users[self.activeUserIndex].user_name)
             self.command.pair_command.emit()
         else:
             print("Speaker is not a registered user")
@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
                     ) 
         cursor = db.cursor()
 
-        query = "UPDATE Users SET model_path='commands/Users/demo_tester/Lucas_model', audio_path='commands/Users/demo_tester/Lucas_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
+        query = "UPDATE Users SET model_path='commands/Users/demo_tester/JohnW_model', audio_path='commands/Users/demo_tester/JohnW_npy/', calendar_path='calen.ui' WHERE Username='demo_tester'"
         cursor.execute(query)
         db.commit()
 
